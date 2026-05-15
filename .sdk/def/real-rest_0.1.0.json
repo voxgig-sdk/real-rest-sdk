@@ -1,0 +1,427 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Real REST API",
+    "description": "This API is designed to handle your HTTP requests 24/7 for free, supporting various methods like GET, POST, PUT, DELETE, and PATCH. It is ideal for demo projects, testing, learning, or educational purposes, providing a reliable backend to store and retrieve data. Your data is securely stored in a real database, ensuring that your created data will be preserved and not lost.",
+    "version": "1.0.0",
+    "contact": {
+      "url": "https://restful-api.dev/"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.restful-api.dev",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/objects": {
+      "get": {
+        "summary": "List of all objects",
+        "description": "Retrieve a list of all available objects from the database, including both reserved mock data and custom created objects.",
+        "operationId": "listAllObjects",
+        "tags": [
+          "Objects"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with list of objects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Object"
+                  }
+                },
+                "example": [
+                  {
+                    "id": "1",
+                    "name": "Google Pixel 6 Pro",
+                    "data": {
+                      "color": "Cloudy White",
+                      "capacity": "128 GB"
+                    }
+                  },
+                  {
+                    "id": "2",
+                    "name": "Apple iPhone 12 Mini, 256GB, Blue",
+                    "data": null
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a new object",
+        "description": "Create a new object with custom data. The data is stored in a real database and will be preserved.",
+        "operationId": "createObject",
+        "tags": [
+          "Objects"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ObjectInput"
+              },
+              "example": {
+                "name": "Apple iPad Air",
+                "data": {
+                  "Generation": "4th",
+                  "Price": "519.99",
+                  "Capacity": "256 GB"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Object created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectWithTimestamp"
+                },
+                "example": {
+                  "id": "13",
+                  "name": "Apple iPad Air",
+                  "data": {
+                    "Generation": "4th",
+                    "Price": "519.99",
+                    "Capacity": "256 GB"
+                  },
+                  "createdAt": "2022-11-21T20:06:23.986Z"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/objects/{id}": {
+      "get": {
+        "summary": "Get single object",
+        "description": "Retrieve a specific object by its ID.",
+        "operationId": "getObjectById",
+        "tags": [
+          "Objects"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the object to retrieve",
+            "schema": {
+              "type": "string"
+            },
+            "example": "4"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with object data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Object"
+                },
+                "example": {
+                  "id": "4",
+                  "name": "Apple iPhone 11, 64GB",
+                  "data": {
+                    "price": 389.99,
+                    "color": "Purple"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Object not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update an object",
+        "description": "Update an existing object by providing a complete representation of the updated object. This replaces the entire object with the new data.",
+        "operationId": "updateObject",
+        "tags": [
+          "Objects"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the object to update",
+            "schema": {
+              "type": "string"
+            },
+            "example": "6"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ObjectInput"
+              },
+              "example": {
+                "name": "Apple AirPods",
+                "data": {
+                  "color": "white",
+                  "generation": "3rd",
+                  "price": 135
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Object updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectWithUpdateTimestamp"
+                },
+                "example": {
+                  "id": "6",
+                  "name": "Apple AirPods",
+                  "data": {
+                    "color": "white",
+                    "generation": "3rd",
+                    "price": 135
+                  },
+                  "updatedAt": "2022-11-21T20:06:23.986Z"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Object not found"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Partially update an object",
+        "description": "Partially update an existing object by providing only the fields that need to be changed.",
+        "operationId": "partialUpdateObject",
+        "tags": [
+          "Objects"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the object to partially update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ObjectInput"
+              },
+              "example": {
+                "name": "Apple AirPods (Updated)",
+                "data": {
+                  "price": 140
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Object partially updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ObjectWithUpdateTimestamp"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Object not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an object",
+        "description": "Delete an existing object by its ID.",
+        "operationId": "deleteObject",
+        "tags": [
+          "Objects"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the object to delete",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Object deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Object deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Object not found"
+          }
+        }
+      }
+    },
+    "/objects?id={ids}": {
+      "get": {
+        "summary": "List of objects by ids",
+        "description": "Retrieve multiple objects in bulk by providing their respective object IDs as query parameters.",
+        "operationId": "getObjectsByIds",
+        "tags": [
+          "Objects"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "description": "Comma-separated list of object IDs to retrieve",
+            "schema": {
+              "type": "string"
+            },
+            "example": "1,2,3"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response with list of requested objects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Object": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the object"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the object"
+          },
+          "data": {
+            "type": "object",
+            "nullable": true,
+            "description": "Flexible JSON object containing custom attributes of various types",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
+      "ObjectInput": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the object"
+          },
+          "data": {
+            "type": "object",
+            "nullable": true,
+            "description": "Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.)",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "ObjectWithTimestamp": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Object"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "createdAt": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Timestamp when the object was created"
+              }
+            }
+          }
+        ]
+      },
+      "ObjectWithUpdateTimestamp": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Object"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "updatedAt": {
+                "type": "string",
+                "format": "date-time",
+                "description": "Timestamp when the object was last updated"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Objects",
+      "description": "Operations for managing objects with flexible data schemas"
+    }
+  ]
+}

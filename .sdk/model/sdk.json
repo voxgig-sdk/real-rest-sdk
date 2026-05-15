@@ -1,0 +1,629 @@
+{
+  "name": "real-rest",
+  "origin": "voxgig-sdk",
+  "def": "real-rest_0.1.0.json",
+  "main": {
+    "kit": {
+      "info": {
+        "contact": {
+          "url": "https://restful-api.dev/"
+        },
+        "description": "This API is designed to handle your HTTP requests 24/7 for free, supporting various methods like GET, POST, PUT, DELETE, and PATCH. It is ideal for demo projects, testing, learning, or educational purposes, providing a reliable backend to store and retrieve data. Your data is securely stored in a real database, ensuring that your created data will be preserved and not lost.",
+        "servers": [
+          {
+            "description": "Production server",
+            "url": "https://api.restful-api.dev"
+          }
+        ],
+        "title": "Real REST API",
+        "version": "1.0.0"
+      },
+      "config": {
+        "auth": {
+          "prefix": "Bearer"
+        },
+        "headers": {
+          "content-type": "application/json"
+        }
+      },
+      "entity": {
+        "object": {
+          "alias": {
+            "field": {}
+          },
+          "fields": [
+            {
+              "name": "data",
+              "req": false,
+              "type": "`$OBJECT`",
+              "active": true
+            },
+            {
+              "name": "id",
+              "req": true,
+              "type": "`$STRING`",
+              "active": true
+            },
+            {
+              "name": "name",
+              "req": true,
+              "type": "`$STRING`",
+              "active": true
+            }
+          ],
+          "id": {
+            "field": "id",
+            "name": "id"
+          },
+          "name": "object",
+          "op": {
+            "create": {
+              "name": "create",
+              "points": [
+                {
+                  "method": "POST",
+                  "orig": "/objects",
+                  "parts": [
+                    "objects"
+                  ],
+                  "transform": {
+                    "req": "`reqdata`",
+                    "res": "`body`"
+                  },
+                  "active": true,
+                  "args": {},
+                  "select": {}
+                }
+              ],
+              "input": "data"
+            },
+            "list": {
+              "name": "list",
+              "points": [
+                {
+                  "args": {
+                    "query": [
+                      {
+                        "example": "1,2,3",
+                        "kind": "query",
+                        "name": "id",
+                        "orig": "id",
+                        "reqd": true,
+                        "type": "`$STRING`",
+                        "active": true
+                      }
+                    ]
+                  },
+                  "method": "GET",
+                  "orig": "/objects?id={ids}",
+                  "parts": [
+                    "objects?id={ids}"
+                  ],
+                  "select": {
+                    "exist": [
+                      "id"
+                    ]
+                  },
+                  "transform": {
+                    "req": "`reqdata`",
+                    "res": "`body`"
+                  },
+                  "active": true
+                },
+                {
+                  "method": "GET",
+                  "orig": "/objects",
+                  "parts": [
+                    "objects"
+                  ],
+                  "transform": {
+                    "req": "`reqdata`",
+                    "res": "`body`"
+                  },
+                  "active": true,
+                  "args": {},
+                  "select": {}
+                }
+              ],
+              "input": "data"
+            },
+            "load": {
+              "name": "load",
+              "points": [
+                {
+                  "args": {
+                    "params": [
+                      {
+                        "example": "4",
+                        "kind": "param",
+                        "name": "id",
+                        "orig": "id",
+                        "reqd": true,
+                        "type": "`$STRING`",
+                        "active": true
+                      }
+                    ]
+                  },
+                  "method": "GET",
+                  "orig": "/objects/{id}",
+                  "parts": [
+                    "objects",
+                    "{id}"
+                  ],
+                  "select": {
+                    "exist": [
+                      "id"
+                    ]
+                  },
+                  "transform": {
+                    "req": "`reqdata`",
+                    "res": "`body`"
+                  },
+                  "active": true
+                }
+              ],
+              "input": "data"
+            },
+            "patch": {
+              "name": "patch",
+              "points": [
+                {
+                  "args": {
+                    "params": [
+                      {
+                        "kind": "param",
+                        "name": "id",
+                        "orig": "id",
+                        "reqd": true,
+                        "type": "`$STRING`",
+                        "active": true
+                      }
+                    ]
+                  },
+                  "method": "PATCH",
+                  "orig": "/objects/{id}",
+                  "parts": [
+                    "objects",
+                    "{id}"
+                  ],
+                  "select": {
+                    "exist": [
+                      "id"
+                    ]
+                  },
+                  "transform": {
+                    "req": "`reqdata`",
+                    "res": "`body`"
+                  },
+                  "active": true
+                }
+              ],
+              "input": "data"
+            },
+            "remove": {
+              "name": "remove",
+              "points": [
+                {
+                  "args": {
+                    "params": [
+                      {
+                        "kind": "param",
+                        "name": "id",
+                        "orig": "id",
+                        "reqd": true,
+                        "type": "`$STRING`",
+                        "active": true
+                      }
+                    ]
+                  },
+                  "method": "DELETE",
+                  "orig": "/objects/{id}",
+                  "parts": [
+                    "objects",
+                    "{id}"
+                  ],
+                  "select": {
+                    "exist": [
+                      "id"
+                    ]
+                  },
+                  "transform": {
+                    "req": "`reqdata`",
+                    "res": "`body`"
+                  },
+                  "active": true
+                }
+              ],
+              "input": "data"
+            },
+            "update": {
+              "name": "update",
+              "points": [
+                {
+                  "args": {
+                    "params": [
+                      {
+                        "example": "6",
+                        "kind": "param",
+                        "name": "id",
+                        "orig": "id",
+                        "reqd": true,
+                        "type": "`$STRING`",
+                        "active": true
+                      }
+                    ]
+                  },
+                  "method": "PUT",
+                  "orig": "/objects/{id}",
+                  "parts": [
+                    "objects",
+                    "{id}"
+                  ],
+                  "select": {
+                    "exist": [
+                      "id"
+                    ]
+                  },
+                  "transform": {
+                    "req": "`reqdata`",
+                    "res": "`body`"
+                  },
+                  "active": true
+                }
+              ],
+              "input": "data"
+            }
+          },
+          "active": true,
+          "relations": {
+            "ancestors": []
+          }
+        }
+      },
+      "feature": {
+        "test": {
+          "name": "test",
+          "title": "In-memory mock transport for testing without a live server",
+          "version": "0.0.1",
+          "active": true,
+          "config": {
+            "options": {
+              "active": false
+            }
+          },
+          "hook": {
+            "PostConstruct": {
+              "active": true,
+              "await": false
+            },
+            "PostConstructEntity": {
+              "active": true,
+              "await": false
+            },
+            "SetData": {
+              "active": true,
+              "await": false
+            },
+            "GetData": {
+              "active": true,
+              "await": false
+            },
+            "SetMatch": {
+              "active": true
+            },
+            "GetMatch": {
+              "active": true,
+              "await": false
+            },
+            "PrePoint": {
+              "active": true
+            },
+            "PreSpec": {
+              "active": true,
+              "await": false
+            },
+            "PreRequest": {
+              "active": true,
+              "await": false
+            },
+            "PreResponse": {
+              "active": true,
+              "await": false
+            },
+            "PreResult": {
+              "active": true,
+              "await": false
+            },
+            "PreTarget": {
+              "active": false,
+              "await": false
+            },
+            "PostOperation": {
+              "active": false,
+              "await": false
+            }
+          },
+          "target": {
+            "ts": {
+              "deps": {}
+            },
+            "go": {
+              "deps": {}
+            },
+            "lua": {
+              "deps": {}
+            },
+            "php": {
+              "deps": {}
+            },
+            "py": {
+              "deps": {}
+            },
+            "rb": {
+              "deps": {}
+            }
+          }
+        }
+      },
+      "flow": {
+        "BasicObjectFlow": {
+          "entity": "object",
+          "kind": "basic",
+          "name": "BasicObjectFlow",
+          "step": [
+            {
+              "input": {
+                "ref": "object_ref01"
+              },
+              "op": "create",
+              "active": true,
+              "match": {},
+              "data": {},
+              "spec": [],
+              "valid": []
+            },
+            {
+              "op": "list",
+              "valid": [
+                {
+                  "apply": "ItemExists",
+                  "def": {
+                    "ref": "object_ref01"
+                  }
+                }
+              ],
+              "active": true,
+              "match": {},
+              "data": {},
+              "input": {},
+              "spec": []
+            },
+            {
+              "input": {
+                "ref": "object_ref01",
+                "srcdatavar": "object_ref01_data",
+                "suffix": "_up0",
+                "textfield": "name"
+              },
+              "op": "update",
+              "spec": [
+                {
+                  "apply": "TextFieldMark",
+                  "def": {
+                    "mark": "Mark01-object_ref01"
+                  }
+                }
+              ],
+              "active": true,
+              "match": {},
+              "data": {},
+              "valid": []
+            },
+            {
+              "input": {
+                "ref": "object_ref01",
+                "srcdatavar": "object_ref01_data",
+                "suffix": "_dt0"
+              },
+              "match": {
+                "id": "object01"
+              },
+              "op": "load",
+              "valid": [
+                {
+                  "apply": "TextFieldMark",
+                  "def": {
+                    "mark": "Mark01-object_ref01"
+                  }
+                }
+              ],
+              "active": true,
+              "data": {},
+              "spec": []
+            },
+            {
+              "input": {
+                "ref": "object_ref01",
+                "suffix": "_rm0"
+              },
+              "match": {
+                "id": "object01"
+              },
+              "op": "remove",
+              "active": true,
+              "data": {},
+              "spec": [],
+              "valid": []
+            },
+            {
+              "input": {
+                "suffix": "_rt0"
+              },
+              "op": "list",
+              "valid": [
+                {
+                  "apply": "ItemNotExists",
+                  "def": {
+                    "ref": "object_ref01"
+                  }
+                }
+              ],
+              "active": true,
+              "match": {},
+              "data": {},
+              "spec": []
+            }
+          ],
+          "key$": "BasicObjectFlow",
+          "active": true,
+          "param": {}
+        }
+      },
+      "target": {
+        "ts": {
+          "title": "TypeScript",
+          "ext": "ts",
+          "comment": {
+            "line": "//"
+          },
+          "module": {
+            "name": "real-rest"
+          },
+          "base": "node_modules/@voxgig/sdkgen/project/.sdk",
+          "deps": {
+            "dotenv": {
+              "active": true,
+              "version": "^17.4.2",
+              "kind": "dev"
+            },
+            "typescript": {
+              "active": true,
+              "version": "^5.9.3",
+              "kind": "dev"
+            },
+            "@types/node": {
+              "active": true,
+              "version": "^25.6.0",
+              "kind": "dev"
+            }
+          },
+          "name": "ts",
+          "active": true
+        },
+        "go": {
+          "title": "Golang",
+          "ext": "go",
+          "comment": {
+            "line": "//"
+          },
+          "module": {
+            "name": "real-rest"
+          },
+          "srcfeature": false,
+          "deps": {
+            "github.com/voxgig/struct": {
+              "active": true,
+              "version": "v0.0.0",
+              "replace": "./utility/struct",
+              "kind": "prod"
+            }
+          },
+          "name": "go",
+          "active": true
+        },
+        "lua": {
+          "title": "Lua",
+          "ext": "lua",
+          "comment": {
+            "line": "--"
+          },
+          "module": {
+            "name": "real-rest"
+          },
+          "srcfeature": false,
+          "deps": {
+            "dkjson": {
+              "active": true,
+              "version": "2.5",
+              "kind": "prod"
+            }
+          },
+          "name": "lua",
+          "active": true
+        },
+        "php": {
+          "title": "PHP",
+          "ext": "php",
+          "comment": {
+            "line": "//"
+          },
+          "module": {
+            "name": "real-rest"
+          },
+          "srcfeature": false,
+          "deps": {},
+          "name": "php",
+          "active": true
+        },
+        "py": {
+          "title": "Python",
+          "ext": "py",
+          "comment": {
+            "line": "#"
+          },
+          "module": {
+            "name": "real-rest"
+          },
+          "srcfeature": false,
+          "deps": {
+            "requests": {
+              "active": true,
+              "version": "2.33",
+              "kind": "prod"
+            }
+          },
+          "name": "py",
+          "active": true
+        },
+        "rb": {
+          "title": "Ruby",
+          "ext": "rb",
+          "comment": {
+            "line": "#"
+          },
+          "module": {
+            "name": "real-rest"
+          },
+          "srcfeature": false,
+          "deps": {
+            "voxgig-struct": {
+              "active": true,
+              "version": "0.0.10",
+              "kind": "prod"
+            },
+            "json": {
+              "active": true,
+              "version": "0",
+              "kind": "prod"
+            }
+          },
+          "name": "rb",
+          "active": true
+        }
+      },
+      "option": {}
+    },
+    "def": {
+      "desc": ""
+    },
+    "api": {
+      "guide": {},
+      "entity": {}
+    }
+  },
+  "name__orig": "real-rest",
+  "Name": "RealRest",
+  "name_": "real_rest",
+  "name-": "real-rest",
+  "NAME": "REAL-REST"
+}

@@ -1,0 +1,29 @@
+{
+  "existing": {
+    "object": {
+      "OBJECT00": {
+        "data": {},
+        "id": "OBJECT00",
+        "name": "s20"
+      },
+      "OBJECT01": {
+        "data": {},
+        "id": "OBJECT01",
+        "name": "s3e"
+      },
+      "OBJECT02": {
+        "data": {},
+        "id": "OBJECT02",
+        "name": "s5c"
+      }
+    }
+  },
+  "new": {
+    "object": {
+      "object_ref01": {
+        "data": {},
+        "name": "s7a"
+      }
+    }
+  }
+}

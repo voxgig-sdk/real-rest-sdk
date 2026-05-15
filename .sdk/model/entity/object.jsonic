@@ -1,0 +1,230 @@
+# Entity: object
+
+main: kit: entity: object: {
+
+  alias: field: {}
+
+  fields: [
+    {
+      name: "data"
+      req: false
+      type: "`$OBJECT`"
+    }
+    {
+      name: "id"
+      req: true
+      type: "`$STRING`"
+    }
+    {
+      name: "name"
+      req: true
+      type: "`$STRING`"
+    }
+  ]
+
+  id: {
+    field: "id"
+    name: "id"
+  }
+
+  name: "object"
+  op: {
+    create: {
+      name: "create"
+      points: [
+        {
+          method: "POST"
+          orig: "/objects"
+          parts: [
+            "objects"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    list: {
+      name: "list"
+      points: [
+        {
+          args: {
+            query: [
+              {
+                example: "1,2,3"
+                kind: "query"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/objects?id={ids}"
+          parts: [
+            "objects?id={ids}"
+          ]
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+        {
+          method: "GET"
+          orig: "/objects"
+          parts: [
+            "objects"
+          ]
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    load: {
+      name: "load"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                example: "4"
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "GET"
+          orig: "/objects/{id}"
+          parts: [
+            "objects"
+            "{id}"
+          ]
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    patch: {
+      name: "patch"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PATCH"
+          orig: "/objects/{id}"
+          parts: [
+            "objects"
+            "{id}"
+          ]
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    remove: {
+      name: "remove"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "DELETE"
+          orig: "/objects/{id}"
+          parts: [
+            "objects"
+            "{id}"
+          ]
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+    update: {
+      name: "update"
+      points: [
+        {
+          args: {
+            params: [
+              {
+                example: "6"
+                kind: "param"
+                name: "id"
+                orig: "id"
+                reqd: true
+                type: "`$STRING`"
+              }
+            ]
+          }
+          method: "PUT"
+          orig: "/objects/{id}"
+          parts: [
+            "objects"
+            "{id}"
+          ]
+          select: {
+            exist: [
+              "id"
+            ]
+          }
+          transform: {
+            req: "`reqdata`"
+            res: "`body`"
+          }
+        }
+      ]
+    }
+  }
+
+
+
+}
