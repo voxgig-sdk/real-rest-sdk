@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	sdk "github.com/voxgig-sdk/real-rest-sdk"
-	"github.com/voxgig-sdk/real-rest-sdk/core"
+	sdk "github.com/voxgig-sdk/real-rest-sdk/go"
+	"github.com/voxgig-sdk/real-rest-sdk/go/core"
 )
 
 func TestObjectDirect(t *testing.T) {

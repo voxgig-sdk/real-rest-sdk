@@ -1,6 +1,6 @@
 package utility
 
-import "github.com/voxgig-sdk/real-rest-sdk/core"
+import "github.com/voxgig-sdk/real-rest-sdk/go/core"
 
 func makeContextUtil(ctxmap map[string]any, basectx *core.Context) *core.Context {
 	return core.NewContext(ctxmap, basectx)

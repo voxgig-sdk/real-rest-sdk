@@ -3,7 +3,7 @@ package utility
 import (
 	"fmt"
 
-	"github.com/voxgig-sdk/real-rest-sdk/core"
+	"github.com/voxgig-sdk/real-rest-sdk/go/core"
 )
 
 func resultBasicUtil(ctx *core.Context) *core.Result {

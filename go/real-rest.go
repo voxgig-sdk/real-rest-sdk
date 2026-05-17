@@ -1,10 +1,10 @@
 package voxgigrealrestsdk
 
 import (
-	"github.com/voxgig-sdk/real-rest-sdk/core"
-	"github.com/voxgig-sdk/real-rest-sdk/entity"
-	"github.com/voxgig-sdk/real-rest-sdk/feature"
-	_ "github.com/voxgig-sdk/real-rest-sdk/utility"
+	"github.com/voxgig-sdk/real-rest-sdk/go/core"
+	"github.com/voxgig-sdk/real-rest-sdk/go/entity"
+	"github.com/voxgig-sdk/real-rest-sdk/go/feature"
+	_ "github.com/voxgig-sdk/real-rest-sdk/go/utility"
 )
 
 // Type aliases preserve external API.
