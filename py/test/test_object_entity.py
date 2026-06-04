@@ -145,7 +145,6 @@ def _object_basic_setup(extra):
         "REALREST_TEST_OBJECT_ENTID": idmap,
         "REALREST_TEST_LIVE": "FALSE",
         "REALREST_TEST_EXPLAIN": "FALSE",
-        "REALREST_APIKEY": "NONE",
     })
 
     idmap_resolved = helpers.to_map(
@@ -156,7 +155,6 @@ def _object_basic_setup(extra):
     if env.get("REALREST_TEST_LIVE") == "TRUE":
         merged_opts = vs.merge([
             {
-                "apikey": env.get("REALREST_APIKEY"),
             },
             extra or {},
         ])

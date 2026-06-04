@@ -175,14 +175,12 @@ func objectDirectSetup(mockres any) *objectDirectSetupResult {
 	env := envOverride(map[string]any{
 		"REALREST_TEST_OBJECT_ENTID": map[string]any{},
 		"REALREST_TEST_LIVE":    "FALSE",
-		"REALREST_APIKEY":       "NONE",
 	})
 
 	live := env["REALREST_TEST_LIVE"] == "TRUE"
 
 	if live {
 		mergedOpts := map[string]any{
-			"apikey": env["REALREST_APIKEY"],
 		}
 		client := sdk.NewRealRestSDK(mergedOpts)
 

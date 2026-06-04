@@ -121,14 +121,12 @@ function object_direct_setup($mockres)
     $env = Runner::env_override([
         "REALREST_TEST_OBJECT_ENTID" => [],
         "REALREST_TEST_LIVE" => "FALSE",
-        "REALREST_APIKEY" => "NONE",
     ]);
 
     $live = $env["REALREST_TEST_LIVE"] === "TRUE";
 
     if ($live) {
         $merged_opts = [
-            "apikey" => $env["REALREST_APIKEY"],
         ];
         $client = new RealRestSDK($merged_opts);
         return [

@@ -16,8 +16,28 @@ main: {
       ]
       title: "Real REST API"
       version: "1.0.0"
+      tagline: "Free HTTP test backend that handles GET, POST, PUT, PATCH and DELETE against a real database"
+      homepage: "https://restful-api.dev/"
+      docs_url: "https://restful-api.dev/"
+      license_short: "No explicit licence; offered free for development, testing and learning use."
+      license_md: `- No explicit licence is published on the homepage.
+- Offered free of charge for demo projects, testing, learning and education.
+- Daily request quotas apply (50/day public, 100/day authenticated).
+- Treat as best-effort; do not rely on stored data for production workloads.`
+      about_md: `[Real REST API](https://restful-api.dev/) is a free, fully functional REST service backed by a real database, intended for demo projects, testing, learning and tutorials. It is operated by restful-api.dev and exposed at \`https://api.restful-api.dev\`.
+
+What you get from the API:
+
+- CRUD over a generic \`objects\` resource using GET, POST, PUT, PATCH and DELETE.
+- Each object has \`id\`, \`name\` and a free-form \`data\` payload (any valid JSON: nested objects, arrays or key-value pairs), plus server-managed timestamp fields in responses.
+- A pool of sample objects under \`/objects\` that anyone can read without credentials.
+- Authenticated endpoints for user-defined collections (\`/collections\`, \`/collections/{collectionName}/objects\`) reached via \`/register\` and \`/login\`.
+
+Operational notes: public endpoints require no API key; authenticated endpoints expect an \`x-api-key\` header and optional JWT bearer token. The service advertises roughly 50 requests/day on the public API and 100 requests/day on the authenticated API, resetting every 24 hours. CORS is not enabled on the public endpoint, so browser clients typically need a proxy.`
+      entity_desc: {
+        object: "A generic stored record with `id`, `name` and a free-form JSON `data` field, exposed under `/objects` and `/objects/{id}` for full CRUD via GET, POST, PUT, PATCH and DELETE."
+      }
+      auth: false
     }
   }
-}
-
 }

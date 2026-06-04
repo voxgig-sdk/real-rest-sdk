@@ -20,9 +20,7 @@ loading a specific record.
 <?php
 require_once 'realrest_sdk.php';
 
-$client = new RealRestSDK([
-    "apikey" => getenv("REAL-REST_APIKEY"),
-]);
+$client = new RealRestSDK([]);
 ```
 
 ### 2. List objects
@@ -140,7 +138,6 @@ Create a `.env.local` file at the project root:
 
 ```
 REAL-REST_TEST_LIVE=TRUE
-REAL-REST_APIKEY=<your-key>
 ```
 
 Then run:
@@ -163,7 +160,6 @@ Creates a new SDK client.
 
 | Option | Type | Description |
 | --- | --- | --- |
-| `apikey` | `string` | API key for authentication. |
 | `base` | `string` | Base URL of the API server. |
 | `prefix` | `string` | URL path prefix prepended to all requests. |
 | `suffix` | `string` | URL path suffix appended to all requests. |

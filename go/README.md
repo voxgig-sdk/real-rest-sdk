@@ -28,16 +28,13 @@ package main
 
 import (
     "fmt"
-    "os"
 
     sdk "github.com/voxgig-sdk/real-rest-sdk/go"
     "github.com/voxgig-sdk/real-rest-sdk/go/core"
 )
 
 func main() {
-    client := sdk.NewRealRestSDK(map[string]any{
-        "apikey": os.Getenv("REAL-REST_APIKEY"),
-    })
+    client := sdk.NewRealRestSDK(map[string]any{})
 ```
 
 ### 2. List objects
@@ -178,7 +175,6 @@ Create a `.env.local` file at the project root:
 
 ```
 REAL-REST_TEST_LIVE=TRUE
-REAL-REST_APIKEY=<your-key>
 ```
 
 Then run:
@@ -200,7 +196,6 @@ Creates a new SDK client.
 
 | Option | Type | Description |
 | --- | --- | --- |
-| `"apikey"` | `string` | API key for authentication. |
 | `"base"` | `string` | Base URL of the API server. |
 | `"prefix"` | `string` | URL path prefix prepended to all requests. |
 | `"suffix"` | `string` | URL path suffix appended to all requests. |
