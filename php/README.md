@@ -10,7 +10,7 @@ The PHP SDK for the RealRest API — an entity-oriented client using PHP convent
 
 ## Install
 ```bash
-composer require voxgig/real-rest-sdk
+composer require voxgig-sdk/real-rest
 ```
 
 

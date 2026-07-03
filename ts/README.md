@@ -10,7 +10,7 @@ The TypeScript SDK for the RealRest API — a type-safe, entity-oriented client 
 
 ## Install
 ```bash
-npm install real-rest
+npm install @voxgig-sdk/real-rest
 ```
 ## Tutorial: your first API call
 

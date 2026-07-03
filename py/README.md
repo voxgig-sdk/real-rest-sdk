@@ -10,7 +10,7 @@ The Python SDK for the RealRest API — an entity-oriented client following Pyth
 
 ## Install
 ```bash
-pip install real-rest-sdk
+pip install voxgig-sdk-real-rest
 ```
 
 Or install from source:

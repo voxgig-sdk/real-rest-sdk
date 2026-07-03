@@ -8,12 +8,14 @@ source = {
   dir = "real-rest-sdk/lua"
 }
 description = {
-  summary = "RealRest SDK for Lua",
-  license = "MIT"
+  summary = "Unofficial generated Lua SDK for the Real REST public API. Not affiliated with or endorsed by the upstream API provider.",
+  homepage = "https://github.com/voxgig-sdk/real-rest-sdk",
+  issues_url = "https://github.com/voxgig-sdk/real-rest-sdk/issues",
+  license = "MIT",
+  labels = { "voxgig", "sdk", "generated-sdk", "openapi", "api-client", "real-rest" }
 }
 dependencies = {
   "lua >= 5.3",
-  "dkjson >= 2.5",
   "dkjson >= 2.5",
 }
 build = {

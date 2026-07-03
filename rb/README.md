@@ -10,13 +10,13 @@ The Ruby SDK for the RealRest API — an entity-oriented client using idiomatic 
 
 ## Install
 ```bash
-gem install real-rest-sdk
+gem install voxgig-sdk-real-rest
 ```
 
 Or add to your `Gemfile`:
 
 ```ruby
-gem "real-rest-sdk"
+gem "voxgig-sdk-real-rest"
 ```
 
 Then run:

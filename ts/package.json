@@ -1,7 +1,23 @@
 {
   "name": "@voxgig-sdk/real-rest",
   "version": "0.0.1",
-  "description": "DESCRIPTION",
+  "description": "Unofficial generated TypeScript SDK for the Real REST public API. Not affiliated with or endorsed by the upstream API provider.",
+  "keywords": [
+    "voxgig",
+    "sdk",
+    "generated-sdk",
+    "openapi",
+    "api-client",
+    "real-rest"
+  ],
+  "homepage": "https://github.com/voxgig-sdk/real-rest-sdk#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/voxgig-sdk/real-rest-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/voxgig-sdk/real-rest-sdk/issues"
+  },
   "main": "dist/RealRestSDK.js",
   "type": "commonjs",
   "types": "dist/RealRestSDK.d.ts",
@@ -14,7 +30,10 @@
     "clean": "rm -rf node_modules yarn.lock package-lock.json",
     "reset": "npm run clean && npm i && npm run build && npm test"
   },
-  "author": "RealRest",
+  "author": {
+    "name": "Voxgig",
+    "url": "https://voxgig.com"
+  },
   "license": "MIT",
   "dependencies": {},
   "peerDependencies": {},
