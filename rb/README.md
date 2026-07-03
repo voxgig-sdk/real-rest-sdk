@@ -1,6 +1,11 @@
 # RealRest Ruby SDK
 
-The Ruby SDK for the RealRest API. Provides an entity-oriented interface using idiomatic Ruby conventions.
+
+
+The Ruby SDK for the RealRest API — an entity-oriented client using idiomatic Ruby conventions.
+
+> Other languages, the CLI, and MCP server live alongside this one — see
+> the [top-level README](../README.md).
 
 
 ## Install
@@ -31,13 +36,15 @@ loading a specific record.
 ```ruby
 require_relative "RealRest_sdk"
 
-client = RealRestSDK.new({})
+client = RealRestSDK.new({
+  "apikey" => ENV["REAL-REST_APIKEY"],
+})
 ```
 
 ### 2. List objects
 
 ```ruby
-result, err = client.Object(nil).list(nil, nil)
+result, err = client.Object().list
 raise err if err
 
 if result.is_a?(Array)
@@ -51,7 +58,7 @@ end
 ### 3. Load a object
 
 ```ruby
-result, err = client.Object(nil).load({ "id" => "example_id" }, nil)
+result, err = client.Object().load({ "id" => "example_id" })
 raise err if err
 puts result
 ```
@@ -60,13 +67,13 @@ puts result
 
 ```ruby
 # Create
-created, _ = client.Object(nil).create({ "name" => "Example" }, nil)
+created, _ = client.Object().create({ "name" => "Example" })
 
 # Update
-client.Object(nil).update({ "id" => created["id"], "name" => "Example-Renamed" }, nil)
+client.Object().update({ "id" => created["id"], "name" => "Example-Renamed" })
 
 # Remove
-client.Object(nil).remove({ "id" => created["id"] }, nil)
+client.Object().remove({ "id" => created["id"] })
 ```
 
 
@@ -110,11 +117,9 @@ puts fetchdef["headers"]
 Create a mock client for unit testing — no server required:
 
 ```ruby
-client = RealRestSDK.test(nil, nil)
+client = RealRestSDK.test
 
-result, err = client.RealRest(nil).load(
-  { "id" => "test01" }, nil
-)
+result, err = client.RealRest().load({ "id" => "test01" })
 # result contains mock response data
 ```
 
@@ -146,6 +151,7 @@ Create a `.env.local` file at the project root:
 
 ```
 REAL-REST_TEST_LIVE=TRUE
+REAL-REST_APIKEY=<your-key>
 ```
 
 Then run:
@@ -168,6 +174,7 @@ Creates a new SDK client.
 
 | Option | Type | Description |
 | --- | --- | --- |
+| `apikey` | `String` | API key for authentication. |
 | `base` | `String` | Base URL of the API server. |
 | `prefix` | `String` | URL path prefix prepended to all requests. |
 | `suffix` | `String` | URL path suffix appended to all requests. |

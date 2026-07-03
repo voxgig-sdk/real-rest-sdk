@@ -144,6 +144,7 @@ function object_basic_setup(extra)
     ["REALREST_TEST_OBJECT_ENTID"] = idmap,
     ["REALREST_TEST_LIVE"] = "FALSE",
     ["REALREST_TEST_EXPLAIN"] = "FALSE",
+    ["REALREST_APIKEY"] = "NONE",
   })
 
   local idmap_resolved = helpers.to_map(
@@ -155,6 +156,7 @@ function object_basic_setup(extra)
   if env["REALREST_TEST_LIVE"] == "TRUE" then
     local merged_opts = vs.merge({
       {
+        apikey = env["REALREST_APIKEY"],
       },
       extra or {},
     })

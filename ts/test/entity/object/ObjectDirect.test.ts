@@ -120,12 +120,14 @@ function directSetup(mockres?: any) {
   const env = envOverride({
     'REALREST_TEST_OBJECT_ENTID': {},
     'REALREST_TEST_LIVE': 'FALSE',
+    'REALREST_APIKEY': 'NONE',
   })
 
   const live = 'TRUE' === env.REALREST_TEST_LIVE
 
   if (live) {
     const client = new RealRestSDK({
+      apikey: env.REALREST_APIKEY,
     })
 
     let idmap: any = env['REALREST_TEST_OBJECT_ENTID']

@@ -1,6 +1,11 @@
 # RealRest Lua SDK
 
-The Lua SDK for the RealRest API. Provides an entity-oriented interface using Lua conventions.
+
+
+The Lua SDK for the RealRest API — an entity-oriented client using Lua conventions.
+
+> Other languages, the CLI, and MCP server live alongside this one — see
+> the [top-level README](../README.md).
 
 
 ## Install
@@ -26,13 +31,15 @@ loading a specific record.
 ```lua
 local sdk = require("real-rest_sdk")
 
-local client = sdk.new({})
+local client = sdk.new({
+  apikey = os.getenv("REAL-REST_APIKEY"),
+})
 ```
 
 ### 2. List objects
 
 ```lua
-local result, err = client:Object(nil):list(nil, nil)
+local result, err = client:Object():list()
 if err then error(err) end
 
 if type(result) == "table" then
@@ -46,7 +53,7 @@ end
 ### 3. Load a object
 
 ```lua
-local result, err = client:Object(nil):load({ id = "example_id" }, nil)
+local result, err = client:Object():load({ id = "example_id" })
 if err then error(err) end
 print(result)
 ```
@@ -55,13 +62,13 @@ print(result)
 
 ```lua
 -- Create
-local created, _ = client:Object(nil):create({ name = "Example" }, nil)
+local created, _ = client:Object():create({ name = "Example" })
 
 -- Update
-client:Object(nil):update({ id = created["id"], name = "Example-Renamed" }, nil)
+client:Object():update({ id = created["id"], name = "Example-Renamed" })
 
 -- Remove
-client:Object(nil):remove({ id = created["id"] }, nil)
+client:Object():remove({ id = created["id"] })
 ```
 
 
@@ -105,11 +112,9 @@ print(fetchdef["headers"])
 Create a mock client for unit testing — no server required:
 
 ```lua
-local client = sdk.test(nil, nil)
+local client = sdk.test()
 
-local result, err = client:RealRest(nil):load(
-  { id = "test01" }, nil
-)
+local result, err = client:RealRest():load({ id = "test01" })
 -- result contains mock response data
 ```
 
@@ -143,6 +148,7 @@ Create a `.env.local` file at the project root:
 
 ```
 REAL-REST_TEST_LIVE=TRUE
+REAL-REST_APIKEY=<your-key>
 ```
 
 Then run:
@@ -165,6 +171,7 @@ Creates a new SDK client.
 
 | Option | Type | Description |
 | --- | --- | --- |
+| `apikey` | `string` | API key for authentication. |
 | `base` | `string` | Base URL of the API server. |
 | `prefix` | `string` | URL path prefix prepended to all requests. |
 | `suffix` | `string` | URL path suffix appended to all requests. |

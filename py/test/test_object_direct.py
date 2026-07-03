@@ -106,12 +106,14 @@ def _object_direct_setup(mockres):
     env = runner.env_override({
         "REALREST_TEST_OBJECT_ENTID": {},
         "REALREST_TEST_LIVE": "FALSE",
+        "REALREST_APIKEY": "NONE",
     })
 
     live = env.get("REALREST_TEST_LIVE") == "TRUE"
 
     if live:
         merged_opts = {
+            "apikey": env.get("REALREST_APIKEY"),
         }
         client = RealRestSDK(merged_opts)
         return {

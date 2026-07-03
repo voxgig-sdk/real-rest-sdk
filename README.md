@@ -1,21 +1,8 @@
 # RealRest SDK
 
-Free HTTP test backend that handles GET, POST, PUT, PATCH and DELETE against a real database
+Real REST API client, generated from the OpenAPI spec.
 
 > TypeScript, Python, PHP, Golang, Ruby, Lua SDKs, a CLI, an interactive REPL, and an MCP server for AI agents — all generated from one OpenAPI spec by [@voxgig/sdkgen](https://github.com/voxgig/sdkgen).
-
-## About Real REST API
-
-[Real REST API](https://restful-api.dev/) is a free, fully functional REST service backed by a real database, intended for demo projects, testing, learning and tutorials. It is operated by restful-api.dev and exposed at `https://api.restful-api.dev`.
-
-What you get from the API:
-
-- CRUD over a generic `objects` resource using GET, POST, PUT, PATCH and DELETE.
-- Each object has `id`, `name` and a free-form `data` payload (any valid JSON: nested objects, arrays or key-value pairs), plus server-managed timestamp fields in responses.
-- A pool of sample objects under `/objects` that anyone can read without credentials.
-- Authenticated endpoints for user-defined collections (`/collections`, `/collections/{collectionName}/objects`) reached via `/register` and `/login`.
-
-Operational notes: public endpoints require no API key; authenticated endpoints expect an `x-api-key` header and optional JWT bearer token. The service advertises roughly 50 requests/day on the public API and 100 requests/day on the authenticated API, resetting every 24 hours. CORS is not enabled on the public endpoint, so browser clients typically need a proxy.
 
 ## Try it
 
@@ -49,29 +36,31 @@ gem install real-rest-sdk
 luarocks install real-rest-sdk
 ```
 
-## 30-second quickstart
+## Quickstart
 
 ### TypeScript
 
 ```ts
 import { RealRestSDK } from 'real-rest'
 
-const client = new RealRestSDK({})
+const client = new RealRestSDK({
+  apikey: process.env.REAL-REST_APIKEY,
+})
 
 // List all objects
 const objects = await client.Object().list()
+console.log(objects.data)
 ```
 
-See the [TypeScript README](ts/README.md) for the
-full guide, or scroll down for the same example in other languages.
+See the [TypeScript README](ts/README.md) for the full guide.
 
-## What's in the box
+## Surfaces
 
-| Surface | Use it for | Path |
-| --- | --- | --- |
-| **SDK** (TypeScript, Python, PHP, Golang, Ruby, Lua) | App integration | `ts/` `py/` `php/` `go/` `rb/` `lua/` |
-| **CLI** | Scripts, CI, ops, one-off API calls | `go-cli/` |
-| **MCP server** | AI agents (Claude, Cursor, Cline) | `go-mcp/` |
+| Surface | Path |
+| --- | --- |
+| **SDK** (TypeScript, Python, PHP, Golang, Ruby, Lua) | `ts/` `py/` `php/` `go/` `rb/` `lua/` |
+| **CLI** | `go-cli/` |
+| **MCP server** | `go-mcp/` |
 
 ## Use it from an AI agent (MCP)
 
@@ -101,7 +90,7 @@ The API exposes one entity:
 
 | Entity | Description | API path |
 | --- | --- | --- |
-| **Object** | A generic stored record with `id`, `name` and a free-form JSON `data` field, exposed under `/objects` and `/objects/{id}` for full CRUD via GET, POST, PUT, PATCH and DELETE. | `/objects` |
+| **Object** |  | `/objects` |
 
 Each entity supports the following operations where available: **load**,
 **list**, **create**, **update**, and **remove**.
@@ -111,17 +100,20 @@ Each entity supports the following operations where available: **load**,
 ### Python
 
 ```python
+import os
 from realrest_sdk import RealRestSDK
 
-client = RealRestSDK({})
+client = RealRestSDK({
+    "apikey": os.environ.get("REAL-REST_APIKEY"),
+})
 
 # List all objects
-objects, err = client.Object(None).list(None, None)
+objects, err = client.Object().list()
+print(objects)
 
 # Load a specific object
-object, err = client.Object(None).load(
-    {"id": "example_id"}, None
-)
+object, err = client.Object().load({"id": "example_id"})
+print(object)
 ```
 
 ### PHP
@@ -130,15 +122,17 @@ object, err = client.Object(None).load(
 <?php
 require_once 'realrest_sdk.php';
 
-$client = new RealRestSDK([]);
+$client = new RealRestSDK([
+    "apikey" => getenv("REAL-REST_APIKEY"),
+]);
 
 // List all objects
-[$objects, $err] = $client->Object(null)->list(null, null);
+[$objects, $err] = $client->Object()->list();
+print_r($objects);
 
 // Load a specific object
-[$object, $err] = $client->Object(null)->load(
-    ["id" => "example_id"], null
-);
+[$object, $err] = $client->Object()->load(["id" => "example_id"]);
+print_r($object);
 ```
 
 ### Golang
@@ -146,10 +140,13 @@ $client = new RealRestSDK([]);
 ```go
 import sdk "github.com/voxgig-sdk/real-rest-sdk/go"
 
-client := sdk.NewRealRestSDK(map[string]any{})
+client := sdk.NewRealRestSDK(map[string]any{
+    "apikey": os.Getenv("REAL-REST_APIKEY"),
+})
 
 // List all objects
 objects, err := client.Object(nil).List(nil, nil)
+fmt.Println(objects)
 ```
 
 ### Ruby
@@ -157,15 +154,17 @@ objects, err := client.Object(nil).List(nil, nil)
 ```ruby
 require_relative "RealRest_sdk"
 
-client = RealRestSDK.new({})
+client = RealRestSDK.new({
+  "apikey" => ENV["REAL-REST_APIKEY"],
+})
 
 # List all objects
-objects, err = client.Object(nil).list(nil, nil)
+objects, err = client.Object().list
+puts objects
 
 # Load a specific object
-object, err = client.Object(nil).load(
-  { "id" => "example_id" }, nil
-)
+object, err = client.Object().load({ "id" => "example_id" })
+puts object
 ```
 
 ### Lua
@@ -173,15 +172,17 @@ object, err = client.Object(nil).load(
 ```lua
 local sdk = require("real-rest_sdk")
 
-local client = sdk.new({})
+local client = sdk.new({
+  apikey = os.getenv("REAL-REST_APIKEY"),
+})
 
 -- List all objects
-local objects, err = client:Object(nil):list(nil, nil)
+local objects, err = client:Object():list()
+print(objects)
 
 -- Load a specific object
-local object, err = client:Object(nil):load(
-  { id = "example_id" }, nil
-)
+local object, err = client:Object():load({ id = "example_id" })
+print(object)
 ```
 
 ## Unit testing in offline mode
@@ -200,25 +201,21 @@ const result = await client.Object().load({ id: 'test01' })
 ### Python
 
 ```python
-client = RealRestSDK.test(None, None)
-result, err = client.Object(None).load(
-    {"id": "test01"}, None
-)
+client = RealRestSDK.test()
+result, err = client.Object().load({"id": "test01"})
 ```
 
 ### PHP
 
 ```php
-$client = RealRestSDK::test(null, null);
-[$result, $err] = $client->Object(null)->load(
-    ["id" => "test01"], null
-);
+$client = RealRestSDK::test();
+[$result, $err] = $client->Object()->load(["id" => "test01"]);
 ```
 
 ### Golang
 
 ```go
-client := sdk.TestSDK(nil, nil)
+client := sdk.Test()
 result, err := client.Object(nil).Load(
     map[string]any{"id": "test01"}, nil,
 )
@@ -227,19 +224,15 @@ result, err := client.Object(nil).Load(
 ### Ruby
 
 ```ruby
-client = RealRestSDK.test(nil, nil)
-result, err = client.Object(nil).load(
-  { "id" => "test01" }, nil
-)
+client = RealRestSDK.test
+result, err = client.Object().load({ "id" => "test01" })
 ```
 
 ### Lua
 
 ```lua
-local client = sdk.test(nil, nil)
-local result, err = client:Object(nil):load(
-  { id = "test01" }, nil
-)
+local client = sdk.test()
+local result, err = client:Object():load({ id = "test01" })
 ```
 
 ## How it works
@@ -343,15 +336,6 @@ local result, err = client:direct({
 - [Golang](go/README.md)
 - [Ruby](rb/README.md)
 - [Lua](lua/README.md)
-
-## Using the Real REST API
-
-- Upstream: [https://restful-api.dev/](https://restful-api.dev/)
-
-- No explicit licence is published on the homepage.
-- Offered free of charge for demo projects, testing, learning and education.
-- Daily request quotas apply (50/day public, 100/day authenticated).
-- Treat as best-effort; do not rely on stored data for production workloads.
 
 ---
 
