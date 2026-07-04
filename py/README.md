@@ -31,24 +31,28 @@ from realrest_sdk import RealRestSDK
 client = RealRestSDK()
 ```
 
-### 2. List objects
+### 2. List object records
+
+`list()` returns a `list` of records (each a `dict`) and raises on
+error — iterate it directly.
 
 ```python
 try:
-    result = client.object.list()
-    for item in result:
-        d = item.data_get()
-        print(d["id"], d["name"])
+    objects = client.Object().list({})
+    for object in objects:
+        print(object)
 except Exception as err:
     print(f"list failed: {err}")
 ```
 
 ### 3. Load an object
 
+`load()` returns the bare record (a `dict`) and raises on error.
+
 ```python
 try:
-    result = client.object.load({"id": "example_id"})
-    print(result)
+    object = client.Object().load({"id": "example_id"})
+    print(object)
 except Exception as err:
     print(f"load failed: {err}")
 ```
@@ -56,14 +60,14 @@ except Exception as err:
 ### 4. Create, update, and remove
 
 ```python
-# Create
-created = client.object.create({"name": "Example"})
+# Create — returns the bare created record (a dict)
+created = client.Object().create({"name": "Example"})
 
-# Update
-client.object.update({"id": created["id"], "name": "Example-Renamed"})
+# Update — the created record's id is a plain dict key
+client.Object().update({"id": created["id"], "name": "Example-Renamed"})
 
 # Remove
-client.object.remove({"id": created["id"]})
+client.Object().remove({"id": created["id"]})
 ```
 
 
@@ -109,8 +113,9 @@ Create a mock client for unit testing — no server required:
 ```python
 client = RealRestSDK.test()
 
-result = client.object.load({"id": "test01"})
-# result contains mock response data
+# Entity ops return the bare record and raise on error.
+object = client.Object().load({"id": "test01"})
+# object contains the mock response record
 ```
 
 ### Use a custom fetch function
@@ -186,7 +191,7 @@ Creates a test-mode client with mock transport. Both arguments may be `None`.
 | `get_utility` | `() -> Utility` | Copy of the SDK utility object. |
 | `prepare` | `(fetchargs) -> dict` | Build an HTTP request definition without sending. Raises on error. |
 | `direct` | `(fetchargs) -> dict` | Build and send an HTTP request. Returns a result dict (branch on `ok`). |
-| `Object` | `(data) -> ObjectEntity` | Create a Object entity instance. |
+| `Object` | `(data) -> ObjectEntity` | Create an Object entity instance. |
 
 ### Entity interface
 
@@ -245,7 +250,7 @@ API path: `/objects`
 
 ### Object
 
-Create an instance: `const object = client.object`
+Create an instance: `object = client.Object()`
 
 #### Operations
 
@@ -267,21 +272,21 @@ Create an instance: `const object = client.object`
 
 #### Example: Load
 
-```ts
-const object = await client.object.load({ id: 'object_id' })
+```python
+object = client.Object().load({"id": "object_id"})
 ```
 
 #### Example: List
 
-```ts
-const objects = await client.object.list()
+```python
+objects = client.Object().list({})
 ```
 
 #### Example: Create
 
-```ts
-const object = await client.object.create({
-  name: /* `$STRING` */,
+```python
+object = client.Object().create({
+    "name": ...,  # `$STRING`
 })
 ```
 
@@ -356,7 +361,7 @@ Entity instances are stateful. After a successful `load`, the entity
 stores the returned data and match criteria internally.
 
 ```python
-object = client.object
+object = client.Object()
 object.load({"id": "example_id"})
 
 # object.data_get() now returns the loaded object data

@@ -244,8 +244,9 @@ end
 
 
 
--- Idiomatic facade: client:object():list() / client:object():load({ id = ... })
-function RealRestSDK:object(data)
+-- Idiomatic facade: client:Object():list() / client:Object():load({ id = ... })
+-- Entity access is capitalised (PascalCase) for parity with the other SDKs.
+function RealRestSDK:Object(data)
   local EntityMod = require("entity.object_entity")
   if data == nil then
     if self._object == nil then
@@ -253,12 +254,6 @@ function RealRestSDK:object(data)
     end
     return self._object
   end
-  return EntityMod.new(self, data)
-end
-
--- Deprecated: use client:object() instead.
-function RealRestSDK:Object(data)
-  local EntityMod = require("entity.object_entity")
   return EntityMod.new(self, data)
 end
 

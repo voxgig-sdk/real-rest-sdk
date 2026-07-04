@@ -26,9 +26,11 @@ import { RealRestSDK } from '@voxgig-sdk/real-rest'
 
 const client = new RealRestSDK()
 
-// List all objects
-const objects = await client.object.list()
-console.log(objects.data)
+// List all objects (returns Object[])
+const objects = await client.Object().list()
+for (const object of objects) {
+  console.log(object)
+}
 ```
 
 See the [TypeScript README](ts/README.md) for the full guide.
@@ -83,12 +85,13 @@ from realrest_sdk import RealRestSDK
 
 client = RealRestSDK()
 
-# List all objects
-objects = client.object.list()
-print(objects)
+# List all objects (returns a list, raises on error)
+objects = client.Object().list({})
+for object in objects:
+    print(object)
 
-# Load a specific object
-object = client.object.load({"id": "example_id"})
+# Load a specific object (returns the record, raises on error)
+object = client.Object().load({"id": "example_id"})
 print(object)
 ```
 
@@ -100,12 +103,12 @@ require_once 'realrest_sdk.php';
 
 $client = new RealRestSDK();
 
-// List all objects (throws on error)
-$objects = $client->object()->list();
+// List all objects (returns an array; throws on error)
+$objects = $client->Object()->list();
 print_r($objects);
 
-// Load a specific object
-$object = $client->object()->load(["id" => "example_id"]);
+// Load a specific object (returns the bare record; throws on error)
+$object = $client->Object()->load(["id" => "example_id"]);
 print_r($object);
 ```
 
@@ -128,12 +131,12 @@ require_relative "RealRest_sdk"
 
 client = RealRestSDK.new
 
-# List all objects
-objects = client.object.list
+# List all objects (returns an Array; raises on error)
+objects = client.Object.list
 puts objects
 
-# Load a specific object
-object = client.object.load({ "id" => "example_id" })
+# Load a specific object (returns the bare record; raises on error)
+object = client.Object.load({ "id" => "example_id" })
 puts object
 ```
 
@@ -145,11 +148,11 @@ local sdk = require("real-rest_sdk")
 local client = sdk.new()
 
 -- List all objects
-local objects, err = client:object():list()
+local objects, err = client:Object():list()
 print(objects)
 
 -- Load a specific object
-local object, err = client:object():load({ id = "example_id" })
+local object, err = client:Object():load({ id = "example_id" })
 print(object)
 ```
 
@@ -162,22 +165,27 @@ in-memory mock, so unit tests run offline.
 
 ```ts
 const client = RealRestSDK.test()
-const result = await client.object.load({ id: 'test01' })
-// result.ok === true, result.data contains mock data
+const object = await client.Object().load({ id: 'test01' })
+// object is a bare Object populated with mock data
+console.log(object)
 ```
 
 ### Python
 
 ```python
 client = RealRestSDK.test()
-result = client.object.load({"id": "test01"})
+object = client.Object().load({"id": "test01"})
+print(object)
 ```
 
 ### PHP
 
 ```php
-$client = RealRestSDK::test();
-$result = $client->object()->load(["id" => "test01"]);
+// Seed fixture data so offline calls resolve without a live server.
+$client = RealRestSDK::test([
+    "entity" => ["object" => ["test01" => ["id" => "test01"]]],
+]);
+$object = $client->Object()->load(["id" => "test01"]);
 ```
 
 ### Golang
@@ -192,15 +200,18 @@ result, err := client.Object(nil).Load(
 ### Ruby
 
 ```ruby
-client = RealRestSDK.test
-result = client.object.load({ "id" => "test01" })
+# Seed fixture data so offline calls resolve without a live server.
+client = RealRestSDK.test({
+  "entity" => { "object" => { "test01" => { "id" => "test01" } } },
+})
+object = client.Object.load({ "id" => "test01" })
 ```
 
 ### Lua
 
 ```lua
 local client = sdk.test()
-local result, err = client:object():load({ id = "test01" })
+local result, err = client:Object():load({ id = "test01" })
 ```
 
 ## How it works
@@ -248,6 +259,9 @@ const result = await client.direct({
   method: 'GET',
   params: { id: 'example' },
 })
+if (result instanceof Error) {
+  throw result
+}
 console.log(result.data)
 ```
 

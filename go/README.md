@@ -30,75 +30,61 @@ go mod edit -replace github.com/voxgig-sdk/real-rest-sdk/go=../real-rest-sdk/go
 This tutorial walks through creating a client, listing entities, and
 loading a specific record.
 
-### 1. Create a client
+### Quickstart
+
+A complete program: create a client, then call the entity operations.
+Each operation returns `(value, error)` — the value is the data itself
+(there is no `{ok, data}` wrapper), so check `err` and use the value
+directly.
 
 ```go
 package main
 
 import (
     "fmt"
-
     sdk "github.com/voxgig-sdk/real-rest-sdk/go"
-    "github.com/voxgig-sdk/real-rest-sdk/go/core"
 )
 
 func main() {
     client := sdk.New()
-```
 
-### 2. List objects
-
-```go
-    result, err := client.Object(nil).List(nil, nil)
+    // List object records — the value is the array of records itself.
+    objects, err := client.Object(nil).List(nil, nil)
     if err != nil {
         panic(err)
     }
-
-    rm := core.ToMapAny(result)
-    if rm["ok"] == true {
-        for _, item := range rm["data"].([]any) {
-            p := core.ToMapAny(item)
-            fmt.Println(p["id"], p["name"])
-        }
+    for _, item := range objects.([]any) {
+        fmt.Println(item)
     }
-```
 
-### 3. Load an object
-
-```go
-    result, err = client.Object(nil).Load(
-        map[string]any{"id": "example_id"}, nil,
-    )
+    // Load a single object — the value is the loaded record.
+    object, err := client.Object(nil).Load(map[string]any{"id": "example_id"}, nil)
     if err != nil {
         panic(err)
     }
+    fmt.Println(object)
 
-    rm = core.ToMapAny(result)
-    if rm["ok"] == true {
-        fmt.Println(rm["data"])
+    // Create a object.
+    created, err := client.Object(nil).Create(map[string]any{"name": "Example"}, nil)
+    if err != nil {
+        panic(err)
     }
+    fmt.Println(created)
+
+    // Update a object.
+    updated, err := client.Object(nil).Update(map[string]any{"id": "example_id", "name": "Renamed"}, nil)
+    if err != nil {
+        panic(err)
+    }
+    fmt.Println(updated)
+
+    // Remove a object.
+    removed, err := client.Object(nil).Remove(map[string]any{"id": "example_id"}, nil)
+    if err != nil {
+        panic(err)
+    }
+    fmt.Println(removed)
 }
-```
-
-### 4. Create, update, and remove
-
-```go
-// Create
-created, _ := client.Object(nil).Create(
-    map[string]any{"name": "Example"}, nil,
-)
-cm := core.ToMapAny(created)
-newID := core.ToMapAny(cm["data"])["id"]
-
-// Update
-client.Object(nil).Update(
-    map[string]any{"id": newID, "name": "Example-Renamed"}, nil,
-)
-
-// Remove
-client.Object(nil).Remove(
-    map[string]any{"id": newID}, nil,
-)
 ```
 
 
@@ -148,10 +134,13 @@ Create a mock client for unit testing — no server required:
 ```go
 client := sdk.Test()
 
-result, err := client.Object(nil).Load(
+object, err := client.Object(nil).Load(
     map[string]any{"id": "test01"}, nil,
 )
-// result contains mock response data
+if err != nil {
+    panic(err)
+}
+fmt.Println(object) // the loaded mock data
 ```
 
 ### Use a custom fetch function
@@ -228,7 +217,7 @@ Creates a test-mode client with mock transport. Both arguments may be `nil`.
 | `GetUtility` | `() *Utility` | Copy of the SDK utility object. |
 | `Prepare` | `(fetchargs map[string]any) (map[string]any, error)` | Build an HTTP request definition without sending. |
 | `Direct` | `(fetchargs map[string]any) (map[string]any, error)` | Build and send an HTTP request. |
-| `Object` | `(data map[string]any) RealRestEntity` | Create a Object entity instance. |
+| `Object` | `(data map[string]any) RealRestEntity` | Create an Object entity instance. |
 
 ### Entity interface (RealRestEntity)
 
@@ -248,17 +237,24 @@ All entities implement the `RealRestEntity` interface.
 
 ### Result shape
 
-Entity operations return `(any, error)`. The `any` value is a
-`map[string]any` with these keys:
+Entity operations return `(value, error)`. The `value` is the
+operation's data **directly** — there is no wrapper:
 
-| Key | Type | Description |
-| --- | --- | --- |
-| `"ok"` | `bool` | `true` if the HTTP status is 2xx. |
-| `"status"` | `int` | HTTP status code. |
-| `"headers"` | `map[string]any` | Response headers. |
-| `"data"` | `any` | Parsed JSON response body. |
+| Operation | `value` |
+| --- | --- |
+| `Load` / `Create` / `Update` / `Remove` | the entity record (`map[string]any`) |
+| `List` | a `[]any` of entity records |
 
-On error, `"ok"` is `false` and `"err"` contains the error value.
+Check `err` first, then use the value directly (or the typed
+`...Typed` variants, which return the entity's model struct and a typed
+slice):
+
+    object, err := client.Object(nil).Load(map[string]any{"id": "example_id"}, nil)
+    if err != nil { /* handle */ }
+    // object is the loaded record
+
+Only `Direct()` returns a response envelope — a `map[string]any` with
+`"ok"`, `"status"`, `"headers"`, and `"data"` keys.
 
 ### Entities
 
@@ -304,13 +300,21 @@ Create an instance: `object := client.Object(nil)`
 #### Example: Load
 
 ```go
-result, err := client.Object(nil).Load(map[string]any{"id": "object_id"}, nil)
+object, err := client.Object(nil).Load(map[string]any{"id": "object_id"}, nil)
+if err != nil {
+    panic(err)
+}
+fmt.Println(object) // the loaded record
 ```
 
 #### Example: List
 
 ```go
-results, err := client.Object(nil).List(nil, nil)
+objects, err := client.Object(nil).List(nil, nil)
+if err != nil {
+    panic(err)
+}
+fmt.Println(objects) // the array of records
 ```
 
 #### Example: Create

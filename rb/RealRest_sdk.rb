@@ -208,13 +208,7 @@ class RealRestSDK
   end
 
 
-  # Idiomatic facade: client.object.list / client.object.load({ "id" => ... })
-  def object
-    require_relative 'entity/object_entity'
-    @object ||= ObjectEntity.new(self, nil)
-  end
-
-  # Deprecated: use client.object instead.
+  # Canonical facade: client.Object.list / client.Object.load({ "id" => ... })
   def Object(data = nil)
     require_relative 'entity/object_entity'
     ObjectEntity.new(self, data)

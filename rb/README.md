@@ -28,16 +28,14 @@ require_relative "RealRest_sdk"
 client = RealRestSDK.new
 ```
 
-### 2. List objects
+### 2. List object records
 
 ```ruby
 begin
-  result = client.object.list
-  if result.is_a?(Array)
-    result.each do |item|
-      d = item.data_get
-      puts "#{d["id"]} #{d["name"]}"
-    end
+  # list returns an Array of Object records — iterate directly.
+  objects = client.Object.list
+  objects.each do |item|
+    puts "#{item["id"]} #{item["name"]}"
   end
 rescue => err
   warn "list failed: #{err}"
@@ -48,8 +46,9 @@ end
 
 ```ruby
 begin
-  result = client.object.load({ "id" => "example_id" })
-  puts result
+  # load returns the bare Object record (raises on error).
+  object = client.Object.load({ "id" => "example_id" })
+  puts object
 rescue => err
   warn "load failed: #{err}"
 end
@@ -58,14 +57,14 @@ end
 ### 4. Create, update, and remove
 
 ```ruby
-# Create
-created = client.object.create({ "name" => "Example" })
+# create returns the bare created Object record.
+created = client.Object.create({ "name" => "Example" })
 
-# Update
-client.object.update({ "id" => created["id"], "name" => "Example-Renamed" })
+# Update — index the bare record directly (created["id"]).
+client.Object.update({ "id" => created["id"], "name" => "Example-Renamed" })
 
 # Remove
-client.object.remove({ "id" => created["id"] })
+client.Object.remove({ "id" => created["id"] })
 ```
 
 
@@ -109,13 +108,17 @@ end
 
 ### Use test mode
 
-Create a mock client for unit testing — no server required:
+Create a mock client for unit testing — no server required. Seed fixture
+data via the `entity` option so offline calls resolve without a live server:
 
 ```ruby
-client = RealRestSDK.test
+client = RealRestSDK.test({
+  "entity" => { "object" => { "test01" => { "id" => "test01" } } },
+})
 
-result = client.object.load({ "id" => "test01" })
-# result contains mock response data
+# load returns the bare mock record (raises on error).
+object = client.Object.load({ "id" => "test01" })
+puts object
 ```
 
 ### Use a custom fetch function
@@ -191,7 +194,7 @@ Creates a test-mode client with mock transport. Both arguments may be `nil`.
 | `get_utility` | `() -> Utility` | Copy of the SDK utility object. |
 | `prepare` | `(fetchargs) -> Hash` | Build an HTTP request definition without sending. Raises on error. |
 | `direct` | `(fetchargs) -> Hash` | Build and send an HTTP request. Returns a result hash (`result["ok"]`); does not raise. |
-| `Object` | `(data) -> ObjectEntity` | Create a Object entity instance. |
+| `Object` | `(data) -> ObjectEntity` | Create an Object entity instance. |
 
 ### Entity interface
 
@@ -249,7 +252,7 @@ API path: `/objects`
 
 ### Object
 
-Create an instance: `const object = client.object`
+Create an instance: `object = client.Object`
 
 #### Operations
 
@@ -271,21 +274,23 @@ Create an instance: `const object = client.object`
 
 #### Example: Load
 
-```ts
-const object = await client.object.load({ id: 'object_id' })
+```ruby
+# load returns the bare Object record (raises on error).
+object = client.Object.load({ "id" => "object_id" })
 ```
 
 #### Example: List
 
-```ts
-const objects = await client.object.list()
+```ruby
+# list returns an Array of Object records (raises on error).
+objects = client.Object.list
 ```
 
 #### Example: Create
 
-```ts
-const object = await client.object.create({
-  name: /* `$STRING` */,
+```ruby
+object = client.Object.create({
+  "name" => nil, # `$STRING`
 })
 ```
 
@@ -361,7 +366,7 @@ Entity instances are stateful. After a successful `load`, the entity
 stores the returned data and match criteria internally.
 
 ```ruby
-object = client.object
+object = client.Object
 object.load({ "id" => "example_id" })
 
 # object.data_get now returns the loaded object data

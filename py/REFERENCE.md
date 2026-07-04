@@ -80,7 +80,7 @@ Prepare a fetch definition without sending. Returns the `fetchdef` and raises on
 ## ObjectEntity
 
 ```python
-object = client.object
+object = client.Object()
 ```
 
 ### Fields
@@ -98,8 +98,8 @@ object = client.object
 Create a new entity with the given data. Returns the created entity data and raises on error.
 
 ```python
-result = client.object.create({
-    "name": # `$STRING`,
+result = client.Object().create({
+    "name": ...,  # `$STRING`
 })
 ```
 
@@ -108,7 +108,9 @@ result = client.object.create({
 List entities matching the given criteria. Returns a list and raises on error.
 
 ```python
-results = client.object.list({})
+results = client.Object().list({})
+for object in results:
+    print(object)
 ```
 
 #### `load(reqmatch, ctrl=None) -> dict`
@@ -116,7 +118,7 @@ results = client.object.list({})
 Load a single entity matching the given criteria. Returns the entity data and raises on error.
 
 ```python
-result = client.object.load({"id": "object_id"})
+result = client.Object().load({"id": "object_id"})
 ```
 
 #### `remove(reqmatch, ctrl=None) -> dict`
@@ -124,7 +126,7 @@ result = client.object.load({"id": "object_id"})
 Remove the entity matching the given criteria. Raises on error.
 
 ```python
-result = client.object.remove({"id": "object_id"})
+result = client.Object().remove({"id": "object_id"})
 ```
 
 #### `update(reqdata, ctrl=None) -> dict`
@@ -132,7 +134,7 @@ result = client.object.remove({"id": "object_id"})
 Update an existing entity. The data must include the entity `id`. Returns the updated entity data and raises on error.
 
 ```python
-result = client.object.update({
+result = client.Object().update({
     "id": "object_id",
     # Fields to update
 })

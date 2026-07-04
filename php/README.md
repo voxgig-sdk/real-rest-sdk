@@ -29,18 +29,16 @@ require_once 'realrest_sdk.php';
 $client = new RealRestSDK();
 ```
 
-### 2. List objects
+### 2. List object records
 
 ```php
 try {
-    $result = $client->object()->list();
-    if (is_array($result)) {
-        foreach ($result as $item) {
-            $d = $item->data_get();
-            echo $d["id"] . " " . $d["name"] . "\n";
-        }
+    // list() returns an array of Object records — iterate directly.
+    $objects = $client->Object()->list();
+    foreach ($objects as $item) {
+        echo $item["id"] . " " . $item["name"] . "\n";
     }
-} catch (\Exception $err) {
+} catch (\Throwable $err) {
     echo "Error: " . $err->getMessage();
 }
 ```
@@ -49,9 +47,10 @@ try {
 
 ```php
 try {
-    $result = $client->object()->load(["id" => "example_id"]);
-    print_r($result);
-} catch (\Exception $err) {
+    // load() returns the bare Object record (throws on error).
+    $object = $client->Object()->load(["id" => "example_id"]);
+    print_r($object);
+} catch (\Throwable $err) {
     echo "Error: " . $err->getMessage();
 }
 ```
@@ -59,14 +58,14 @@ try {
 ### 4. Create, update, and remove
 
 ```php
-// Create
-$created = $client->object()->create(["name" => "Example"]);
+// create() returns the bare created Object record.
+$created = $client->Object()->create(["name" => "Example"]);
 
-// Update
-$client->object()->update(["id" => $created["id"], "name" => "Example-Renamed"]);
+// Update — index the bare record directly ($created["id"]).
+$client->Object()->update(["id" => $created["id"], "name" => "Example-Renamed"]);
 
 // Remove
-$client->object()->remove(["id" => $created["id"]]);
+$client->Object()->remove(["id" => $created["id"]]);
 ```
 
 
@@ -110,13 +109,17 @@ print_r($fetchdef["headers"]);
 
 ### Use test mode
 
-Create a mock client for unit testing — no server required:
+Create a mock client for unit testing — no server required. Seed fixture
+data via the `entity` option so offline calls resolve without a live server:
 
 ```php
-$client = RealRestSDK::test();
+$client = RealRestSDK::test([
+    "entity" => ["object" => ["test01" => ["id" => "test01"]]],
+]);
 
-$result = $client->object()->load(["id" => "test01"]);
-// $result contains mock response data
+// load() returns the bare mock record (throws on error).
+$object = $client->Object()->load(["id" => "test01"]);
+print_r($object);
 ```
 
 ### Use a custom fetch function
@@ -195,7 +198,7 @@ Creates a test-mode client with mock transport. Both arguments may be `null`.
 | `get_utility` | `(): Utility` | Copy of the SDK utility object. |
 | `prepare` | `(array $fetchargs): array` | Build an HTTP request definition without sending. |
 | `direct` | `(array $fetchargs): array` | Build and send an HTTP request. |
-| `Object` | `($data): ObjectEntity` | Create a Object entity instance. |
+| `Object` | `($data): ObjectEntity` | Create an Object entity instance. |
 
 ### Entity interface
 
@@ -254,7 +257,7 @@ API path: `/objects`
 
 ### Object
 
-Create an instance: `const object = client.object`
+Create an instance: `$object = $client->Object();`
 
 #### Operations
 
@@ -276,22 +279,24 @@ Create an instance: `const object = client.object`
 
 #### Example: Load
 
-```ts
-const object = await client.object.load({ id: 'object_id' })
+```php
+// load() returns the bare Object record (throws on error).
+$object = $client->Object()->load(["id" => "object_id"]);
 ```
 
 #### Example: List
 
-```ts
-const objects = await client.object.list()
+```php
+// list() returns an array of Object records (throws on error).
+$objects = $client->Object()->list();
 ```
 
 #### Example: Create
 
-```ts
-const object = await client.object.create({
-  name: /* `$STRING` */,
-})
+```php
+$object = $client->Object()->create([
+    "name" => null, // `$STRING`
+]);
 ```
 
 
@@ -366,7 +371,7 @@ Entity instances are stateful. After a successful `load`, the entity
 stores the returned data and match criteria internally.
 
 ```php
-$object = $client->object();
+$object = $client->Object();
 $object->load(["id" => "example_id"]);
 
 // $object->dataGet() now returns the loaded object data

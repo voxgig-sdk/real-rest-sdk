@@ -86,7 +86,7 @@ same parameters as `direct()`. Raises on error.
 ## ObjectEntity
 
 ```ruby
-object = client.object
+object = client.Object
 ```
 
 ### Fields
@@ -104,7 +104,7 @@ object = client.object
 Create a new entity with the given data. Raises on error.
 
 ```ruby
-result = client.object.create({
+result = client.Object.create({
   "name" => # `$STRING`,
 })
 ```
@@ -114,7 +114,7 @@ result = client.object.create({
 List entities matching the given criteria. Returns an array. Raises on error.
 
 ```ruby
-results = client.object.list(nil)
+results = client.Object.list(nil)
 ```
 
 #### `load(reqmatch, ctrl = nil) -> result`
@@ -122,7 +122,7 @@ results = client.object.list(nil)
 Load a single entity matching the given criteria. Raises on error.
 
 ```ruby
-result = client.object.load({ "id" => "object_id" })
+result = client.Object.load({ "id" => "object_id" })
 ```
 
 #### `remove(reqmatch, ctrl = nil) -> result`
@@ -130,7 +130,7 @@ result = client.object.load({ "id" => "object_id" })
 Remove the entity matching the given criteria. Raises on error.
 
 ```ruby
-result = client.object.remove({ "id" => "object_id" })
+result = client.Object.remove({ "id" => "object_id" })
 ```
 
 #### `update(reqdata, ctrl = nil) -> result`
@@ -138,7 +138,7 @@ result = client.object.remove({ "id" => "object_id" })
 Update an existing entity. The data must include the entity `id`. Raises on error.
 
 ```ruby
-result = client.object.update({
+result = client.Object.update({
   "id" => "object_id",
   # Fields to update
 })

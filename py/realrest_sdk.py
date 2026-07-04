@@ -220,25 +220,15 @@ class RealRestSDK:
         }
 
 
-    @property
-    def object(self):
-        """Idiomatic facade: client.object.list() / client.object.load({"id": ...})."""
-        from entity.object_entity import ObjectEntity
-        cached = getattr(self, "_object", None)
-        if cached is None:
-            cached = ObjectEntity(self, None)
-            self._object = cached
-        return cached
-
-    def Object(self, data=None):
-        # Deprecated: use client.object instead.
+    def Object(self, data=None) -> "ObjectEntity":
+        """Entity factory: client.Object().list({}) / client.Object().load({"id": ...})."""
         from entity.object_entity import ObjectEntity
         return ObjectEntity(self, data)
 
 
 
     @classmethod
-    def test(cls, testopts=None, sdkopts=None):
+    def test(cls, testopts=None, sdkopts=None) -> "RealRestSDK":
         if sdkopts is None:
             sdkopts = {}
         sdkopts = vs.clone(sdkopts)
@@ -258,3 +248,9 @@ class RealRestSDK:
         sdk.mode = "test"
 
         return sdk
+
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from entity.object_entity import ObjectEntity

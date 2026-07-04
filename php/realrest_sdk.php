@@ -233,10 +233,10 @@ class RealRestSDK
 
     private $_object = null;
 
-    // Idiomatic facade: $client->object()->list() / ->load(["id" => ...]).
-    // Also serves the deprecated PascalCase alias Object() (PHP method
-    // names are case-insensitive).
-    public function object($data = null)
+    // Canonical facade: $client->Object()->list() / ->load(["id" => ...]).
+    // PHP method names are case-insensitive, so lowercase $client->object()
+    // resolves here too.
+    public function Object($data = null)
     {
         require_once __DIR__ . '/entity/object_entity.php';
         if ($data === null) {

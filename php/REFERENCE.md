@@ -85,7 +85,7 @@ Prepare a fetch definition without sending the request. Returns the
 ## ObjectEntity
 
 ```php
-$object = $client->object();
+$object = $client->Object();
 ```
 
 ### Fields
@@ -103,7 +103,7 @@ $object = $client->object();
 Create a new entity with the given data. Throws on error.
 
 ```php
-$result = $client->object()->create([
+$result = $client->Object()->create([
   "name" => /* `$STRING` */,
 ]);
 ```
@@ -113,7 +113,7 @@ $result = $client->object()->create([
 List entities matching the given criteria. Returns an array. Throws on error.
 
 ```php
-$results = $client->object()->list([]);
+$results = $client->Object()->list([]);
 ```
 
 #### `load(array $reqmatch, ?array $ctrl = null): mixed`
@@ -121,7 +121,7 @@ $results = $client->object()->list([]);
 Load a single entity matching the given criteria. Throws on error.
 
 ```php
-$result = $client->object()->load(["id" => "object_id"]);
+$result = $client->Object()->load(["id" => "object_id"]);
 ```
 
 #### `remove(array $reqmatch, ?array $ctrl = null): mixed`
@@ -129,7 +129,7 @@ $result = $client->object()->load(["id" => "object_id"]);
 Remove the entity matching the given criteria. Throws on error.
 
 ```php
-$result = $client->object()->remove(["id" => "object_id"]);
+$result = $client->Object()->remove(["id" => "object_id"]);
 ```
 
 #### `update(array $reqdata, ?array $ctrl = null): mixed`
@@ -137,7 +137,7 @@ $result = $client->object()->remove(["id" => "object_id"]);
 Update an existing entity. The data must include the entity `id`. Throws on error.
 
 ```php
-$result = $client->object()->update([
+$result = $client->Object()->update([
   "id" => "object_id",
   // Fields to update
 ]);

@@ -204,14 +204,7 @@ class RealRestSDK {
 
 
 
-  _object?: ObjectEntity
-
-  // Idiomatic facade: `client.object.list()` / `client.object.load({ id })`.
-  get object(): ObjectEntity {
-    return (this._object ??= new ObjectEntity(this, undefined))
-  }
-
-  /** @deprecated Use `client.object` instead. */
+  // Entity access: `client.Object().list()` / `client.Object().load({ id })`.
   Object(data?: any) {
     const self = this
     return new ObjectEntity(self,data)
