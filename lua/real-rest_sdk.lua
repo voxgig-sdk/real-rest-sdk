@@ -244,6 +244,19 @@ end
 
 
 
+-- Idiomatic facade: client:object():list() / client:object():load({ id = ... })
+function RealRestSDK:object(data)
+  local EntityMod = require("entity.object_entity")
+  if data == nil then
+    if self._object == nil then
+      self._object = EntityMod.new(self, nil)
+    end
+    return self._object
+  end
+  return EntityMod.new(self, data)
+end
+
+-- Deprecated: use client:object() instead.
 function RealRestSDK:Object(data)
   local EntityMod = require("entity.object_entity")
   return EntityMod.new(self, data)

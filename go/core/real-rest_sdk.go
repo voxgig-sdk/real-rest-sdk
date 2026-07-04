@@ -245,6 +245,9 @@ func (sdk *RealRestSDK) Direct(fetchargs map[string]any) (map[string]any, error)
 }
 
 
+// Object returns a Object entity bound to this client.
+// Idiomatic usage: client.Object(nil).List(nil, nil) or
+// client.Object(nil).Load(map[string]any{"id": ...}, nil).
 func (sdk *RealRestSDK) Object(data map[string]any) RealRestEntity {
 	return NewObjectEntityFunc(sdk, data)
 }

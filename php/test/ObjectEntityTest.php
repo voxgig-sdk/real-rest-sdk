@@ -43,8 +43,7 @@ class ObjectEntityTest extends TestCase
         $object_ref01_data = Helpers::to_map(Vs::getprop(
             Vs::getpath($setup["data"], "new.object"), "object_ref01"));
 
-        [$object_ref01_data_result, $err] = $object_ref01_ent->create($object_ref01_data, null);
-        $this->assertNull($err);
+        $object_ref01_data_result = $object_ref01_ent->create($object_ref01_data, null);
         $object_ref01_data = Helpers::to_map($object_ref01_data_result);
         $this->assertNotNull($object_ref01_data);
         $this->assertNotNull($object_ref01_data["id"]);
@@ -52,8 +51,7 @@ class ObjectEntityTest extends TestCase
         // LIST
         $object_ref01_match = [];
 
-        [$object_ref01_list_result, $err] = $object_ref01_ent->list($object_ref01_match, null);
-        $this->assertNull($err);
+        $object_ref01_list_result = $object_ref01_ent->list($object_ref01_match, null);
         $this->assertIsArray($object_ref01_list_result);
 
         $found_item = sdk_select(
@@ -70,8 +68,7 @@ class ObjectEntityTest extends TestCase
         $object_ref01_markdef_up0_value = "Mark01-object_ref01_" . $setup["now"];
         $object_ref01_data_up0_up[$object_ref01_markdef_up0_name] = $object_ref01_markdef_up0_value;
 
-        [$object_ref01_resdata_up0_result, $err] = $object_ref01_ent->update($object_ref01_data_up0_up, null);
-        $this->assertNull($err);
+        $object_ref01_resdata_up0_result = $object_ref01_ent->update($object_ref01_data_up0_up, null);
         $object_ref01_resdata_up0 = Helpers::to_map($object_ref01_resdata_up0_result);
         $this->assertNotNull($object_ref01_resdata_up0);
         $this->assertEquals($object_ref01_resdata_up0["id"], $object_ref01_data_up0_up["id"]);
@@ -81,8 +78,7 @@ class ObjectEntityTest extends TestCase
         $object_ref01_match_dt0 = [
             "id" => $object_ref01_data["id"],
         ];
-        [$object_ref01_data_dt0_loaded, $err] = $object_ref01_ent->load($object_ref01_match_dt0, null);
-        $this->assertNull($err);
+        $object_ref01_data_dt0_loaded = $object_ref01_ent->load($object_ref01_match_dt0, null);
         $object_ref01_data_dt0_load_result = Helpers::to_map($object_ref01_data_dt0_loaded);
         $this->assertNotNull($object_ref01_data_dt0_load_result);
         $this->assertEquals($object_ref01_data_dt0_load_result["id"], $object_ref01_data["id"]);
@@ -91,14 +87,12 @@ class ObjectEntityTest extends TestCase
         $object_ref01_match_rm0 = [
             "id" => $object_ref01_data["id"],
         ];
-        [$_, $err] = $object_ref01_ent->remove($object_ref01_match_rm0, null);
-        $this->assertNull($err);
+        $object_ref01_ent->remove($object_ref01_match_rm0, null);
 
         // LIST
         $object_ref01_match_rt0 = [];
 
-        [$object_ref01_list_rt0_result, $err] = $object_ref01_ent->list($object_ref01_match_rt0, null);
-        $this->assertNull($err);
+        $object_ref01_list_rt0_result = $object_ref01_ent->list($object_ref01_match_rt0, null);
         $this->assertIsArray($object_ref01_list_rt0_result);
 
         $not_found_item = sdk_select(
@@ -138,7 +132,6 @@ function object_basic_setup($extra)
         "REALREST_TEST_OBJECT_ENTID" => $idmap,
         "REALREST_TEST_LIVE" => "FALSE",
         "REALREST_TEST_EXPLAIN" => "FALSE",
-        "REALREST_APIKEY" => "NONE",
     ]);
 
     $idmap_resolved = Helpers::to_map(
@@ -150,7 +143,6 @@ function object_basic_setup($extra)
     if ($env["REALREST_TEST_LIVE"] === "TRUE") {
         $merged_opts = Vs::merge([
             [
-                "apikey" => $env["REALREST_APIKEY"],
             ],
             $extra ?? [],
         ]);

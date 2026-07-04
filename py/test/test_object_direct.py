@@ -24,7 +24,7 @@ class TestObjectDirect:
         client = setup["client"]
 
 
-        result, err = client.direct({
+        result = client.direct({
             "path": "objects?id={ids}",
             "method": "GET",
             "params": {},
@@ -33,8 +33,8 @@ class TestObjectDirect:
             # Live mode is lenient: synthetic IDs frequently 4xx and the
             # list-response shape varies wildly across public APIs. Skip
             # rather than fail when the call doesn't return a usable list.
-            if err is not None:
-                pytest.skip(f"list call failed (likely synthetic IDs against live API): {err}")
+            if result.get("err") is not None:
+                pytest.skip(f"list call failed (likely synthetic IDs against live API): {result.get('err')}")
                 return
             if not result.get("ok"):
                 pytest.skip("list call not ok (likely synthetic IDs against live API)")
@@ -44,7 +44,6 @@ class TestObjectDirect:
                 pytest.skip(f"expected 2xx status, got {status}")
                 return
         else:
-            assert err is None
             assert result["ok"] is True
             assert helpers.to_int(result["status"]) == 200
             assert isinstance(result["data"], list)
@@ -67,7 +66,7 @@ class TestObjectDirect:
         else:
             params["id"] = "direct01"
 
-        result, err = client.direct({
+        result = client.direct({
             "path": "objects/{id}",
             "method": "GET",
             "params": params,
@@ -77,8 +76,8 @@ class TestObjectDirect:
             # Live mode is lenient: synthetic IDs frequently 4xx. Skip
             # rather than fail when the load endpoint isn't reachable
             # with the IDs we can construct from setup.idmap.
-            if err is not None:
-                pytest.skip(f"load call failed (likely synthetic IDs against live API): {err}")
+            if result.get("err") is not None:
+                pytest.skip(f"load call failed (likely synthetic IDs against live API): {result.get('err')}")
                 return
             if not result.get("ok"):
                 pytest.skip("load call not ok (likely synthetic IDs against live API)")
@@ -88,7 +87,6 @@ class TestObjectDirect:
                 pytest.skip(f"expected 2xx status, got {status}")
                 return
         else:
-            assert err is None
             assert result["ok"] is True
             assert helpers.to_int(result["status"]) == 200
             assert result["data"] is not None
@@ -106,14 +104,12 @@ def _object_direct_setup(mockres):
     env = runner.env_override({
         "REALREST_TEST_OBJECT_ENTID": {},
         "REALREST_TEST_LIVE": "FALSE",
-        "REALREST_APIKEY": "NONE",
     })
 
     live = env.get("REALREST_TEST_LIVE") == "TRUE"
 
     if live:
         merged_opts = {
-            "apikey": env.get("REALREST_APIKEY"),
         }
         client = RealRestSDK(merged_opts)
         return {

@@ -44,17 +44,14 @@ class TestObjectEntity:
         object_ref01_data = helpers.to_map(vs.getprop(
             vs.getpath(setup["data"], "new.object"), "object_ref01"))
 
-        object_ref01_data_result, err = object_ref01_ent.create(object_ref01_data, None)
-        assert err is None
-        object_ref01_data = helpers.to_map(object_ref01_data_result)
+        object_ref01_data = helpers.to_map(object_ref01_ent.create(object_ref01_data, None))
         assert object_ref01_data is not None
         assert object_ref01_data["id"] is not None
 
         # LIST
         object_ref01_match = {}
 
-        object_ref01_list_result, err = object_ref01_ent.list(object_ref01_match, None)
-        assert err is None
+        object_ref01_list_result = object_ref01_ent.list(object_ref01_match, None)
         assert isinstance(object_ref01_list_result, list)
 
         found_item = vs.select(
@@ -71,9 +68,7 @@ class TestObjectEntity:
         object_ref01_markdef_up0_value = "Mark01-object_ref01_" + str(setup["now"])
         object_ref01_data_up0_up[object_ref01_markdef_up0_name] = object_ref01_markdef_up0_value
 
-        object_ref01_resdata_up0_result, err = object_ref01_ent.update(object_ref01_data_up0_up, None)
-        assert err is None
-        object_ref01_resdata_up0 = helpers.to_map(object_ref01_resdata_up0_result)
+        object_ref01_resdata_up0 = helpers.to_map(object_ref01_ent.update(object_ref01_data_up0_up, None))
         assert object_ref01_resdata_up0 is not None
         assert object_ref01_resdata_up0["id"] == object_ref01_data_up0_up["id"]
         assert object_ref01_resdata_up0[object_ref01_markdef_up0_name] == object_ref01_markdef_up0_value
@@ -82,8 +77,7 @@ class TestObjectEntity:
         object_ref01_match_dt0 = {
             "id": object_ref01_data["id"],
         }
-        object_ref01_data_dt0_loaded, err = object_ref01_ent.load(object_ref01_match_dt0, None)
-        assert err is None
+        object_ref01_data_dt0_loaded = object_ref01_ent.load(object_ref01_match_dt0, None)
         object_ref01_data_dt0_load_result = helpers.to_map(object_ref01_data_dt0_loaded)
         assert object_ref01_data_dt0_load_result is not None
         assert object_ref01_data_dt0_load_result["id"] == object_ref01_data["id"]
@@ -92,14 +86,12 @@ class TestObjectEntity:
         object_ref01_match_rm0 = {
             "id": object_ref01_data["id"],
         }
-        _, err = object_ref01_ent.remove(object_ref01_match_rm0, None)
-        assert err is None
+        object_ref01_ent.remove(object_ref01_match_rm0, None)
 
         # LIST
         object_ref01_match_rt0 = {}
 
-        object_ref01_list_rt0_result, err = object_ref01_ent.list(object_ref01_match_rt0, None)
-        assert err is None
+        object_ref01_list_rt0_result = object_ref01_ent.list(object_ref01_match_rt0, None)
         assert isinstance(object_ref01_list_rt0_result, list)
 
         not_found_item = vs.select(
@@ -145,7 +137,6 @@ def _object_basic_setup(extra):
         "REALREST_TEST_OBJECT_ENTID": idmap,
         "REALREST_TEST_LIVE": "FALSE",
         "REALREST_TEST_EXPLAIN": "FALSE",
-        "REALREST_APIKEY": "NONE",
     })
 
     idmap_resolved = helpers.to_map(
@@ -156,7 +147,6 @@ def _object_basic_setup(extra):
     if env.get("REALREST_TEST_LIVE") == "TRUE":
         merged_opts = vs.merge([
             {
-                "apikey": env.get("REALREST_APIKEY"),
             },
             extra or {},
         ])

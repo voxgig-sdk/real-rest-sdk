@@ -79,6 +79,10 @@ end
 
 
 
+---@param reqmatch ObjectLoadMatch
+---@param ctrl? table
+---@return Object
+---@return string? err
 function ObjectEntity:load(reqmatch, ctrl)
   local utility = self._utility
   local ctx = utility.make_context({
@@ -104,6 +108,10 @@ end
 
 
 
+---@param reqmatch ObjectListMatch
+---@param ctrl? table
+---@return Object[]
+---@return string? err
 function ObjectEntity:list(reqmatch, ctrl)
   local utility = self._utility
   local ctx = utility.make_context({
@@ -126,6 +134,10 @@ end
 
 
 
+---@param reqdata ObjectCreateData
+---@param ctrl? table
+---@return Object
+---@return string? err
 function ObjectEntity:create(reqdata, ctrl)
   local utility = self._utility
   local ctx = utility.make_context({
@@ -148,6 +160,10 @@ end
 
 
 
+---@param reqdata ObjectUpdateData
+---@param ctrl? table
+---@return Object
+---@return string? err
 function ObjectEntity:update(reqdata, ctrl)
   local utility = self._utility
   local ctx = utility.make_context({
@@ -173,6 +189,10 @@ end
 
 
 
+---@param reqmatch ObjectRemoveMatch
+---@param ctrl? table
+---@return Object
+---@return string? err
 function ObjectEntity:remove(reqmatch, ctrl)
   local utility = self._utility
   local ctx = utility.make_context({

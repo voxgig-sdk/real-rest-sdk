@@ -154,7 +154,6 @@ function basicSetup(extra?: any) {
     'REAL_REST_TEST_OBJECT_ENTID': idmap,
     'REAL_REST_TEST_LIVE': 'FALSE',
     'REAL_REST_TEST_EXPLAIN': 'FALSE',
-    'REAL_REST_APIKEY': 'NONE',
   })
 
   idmap = env['REAL_REST_TEST_OBJECT_ENTID']
@@ -164,7 +163,6 @@ function basicSetup(extra?: any) {
   if (live) {
     client = new RealRestSDK(merge([
       {
-        apikey: env.REAL_REST_APIKEY,
       },
       extra
     ]))

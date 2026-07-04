@@ -85,6 +85,27 @@ func (e *ObjectEntity) Match(args ...any) any {
 	return out
 }
 
+// DataTyped is the statically-typed accessor for this entity's data. With no
+// argument it returns the current data as an Object; with an argument it
+// sets the data and returns the stored value. It delegates to the untyped Data
+// (identical runtime) and converts at the typed boundary.
+func (e *ObjectEntity) DataTyped(data ...Object) Object {
+	if len(data) > 0 {
+		return typedFrom[Object](e.Data(asMap(data[0])))
+	}
+	return typedFrom[Object](e.Data())
+}
+
+// MatchTyped mirrors DataTyped for the entity's match filter. The match is a
+// partial of the entity, so it round-trips through Object (all fields
+// optional at the wire level).
+func (e *ObjectEntity) MatchTyped(match ...Object) Object {
+	if len(match) > 0 {
+		return typedFrom[Object](e.Match(asMap(match[0])))
+	}
+	return typedFrom[Object](e.Match())
+}
+
 
 func (e *ObjectEntity) Load(reqmatch map[string]any, ctrl map[string]any) (any, error) {
 	utility := e.utility
@@ -111,6 +132,17 @@ func (e *ObjectEntity) Load(reqmatch map[string]any, ctrl map[string]any) (any, 
 	})
 }
 
+// LoadTyped is the statically-typed variant of Load: it takes an
+// ObjectLoadMatch and returns an Object. It delegates to the untyped
+// Load (identical runtime) and converts at the typed boundary.
+func (e *ObjectEntity) LoadTyped(reqmatch ObjectLoadMatch, ctrl map[string]any) (Object, error) {
+	res, err := e.Load(asMap(reqmatch), ctrl)
+	if err != nil {
+		return Object{}, err
+	}
+	return typedFrom[Object](res), nil
+}
+
 
 
 
@@ -131,6 +163,17 @@ func (e *ObjectEntity) List(reqmatch map[string]any, ctrl map[string]any) (any, 
 			}
 		}
 	})
+}
+
+// ListTyped is the statically-typed variant of List: it takes an
+// ObjectListMatch and returns []Object. It delegates to the untyped
+// List (identical runtime) and converts at the typed boundary.
+func (e *ObjectEntity) ListTyped(reqmatch ObjectListMatch, ctrl map[string]any) ([]Object, error) {
+	res, err := e.List(asMap(reqmatch), ctrl)
+	if err != nil {
+		return nil, err
+	}
+	return typedSliceFrom[Object](res), nil
 }
 
 
@@ -156,6 +199,17 @@ func (e *ObjectEntity) Create(reqdata map[string]any, ctrl map[string]any) (any,
 			}
 		}
 	})
+}
+
+// CreateTyped is the statically-typed variant of Create: it takes an
+// ObjectCreateData and returns an Object. It delegates to the untyped
+// Create (identical runtime) and converts at the typed boundary.
+func (e *ObjectEntity) CreateTyped(reqdata ObjectCreateData, ctrl map[string]any) (Object, error) {
+	res, err := e.Create(asMap(reqdata), ctrl)
+	if err != nil {
+		return Object{}, err
+	}
+	return typedFrom[Object](res), nil
 }
 
 
@@ -186,6 +240,17 @@ func (e *ObjectEntity) Update(reqdata map[string]any, ctrl map[string]any) (any,
 	})
 }
 
+// UpdateTyped is the statically-typed variant of Update: it takes an
+// ObjectUpdateData and returns an Object. It delegates to the untyped
+// Update (identical runtime) and converts at the typed boundary.
+func (e *ObjectEntity) UpdateTyped(reqdata ObjectUpdateData, ctrl map[string]any) (Object, error) {
+	res, err := e.Update(asMap(reqdata), ctrl)
+	if err != nil {
+		return Object{}, err
+	}
+	return typedFrom[Object](res), nil
+}
+
 
 
 
@@ -212,6 +277,17 @@ func (e *ObjectEntity) Remove(reqmatch map[string]any, ctrl map[string]any) (any
 			}
 		}
 	})
+}
+
+// RemoveTyped is the statically-typed variant of Remove: it takes an
+// ObjectRemoveMatch and returns an Object. It delegates to the untyped
+// Remove (identical runtime) and converts at the typed boundary.
+func (e *ObjectEntity) RemoveTyped(reqmatch ObjectRemoveMatch, ctrl map[string]any) (Object, error) {
+	res, err := e.Remove(asMap(reqmatch), ctrl)
+	if err != nil {
+		return Object{}, err
+	}
+	return typedFrom[Object](res), nil
 }
 
 

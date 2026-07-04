@@ -9,9 +9,10 @@ The PHP SDK for the RealRest API — an entity-oriented client using PHP convent
 
 
 ## Install
-```bash
-composer require voxgig-sdk/real-rest
-```
+This package is not yet published to Packagist. Install it from the
+GitHub release tag (`php/vX.Y.Z`):
+
+- Releases: [https://github.com/voxgig-sdk/real-rest-sdk/releases](https://github.com/voxgig-sdk/real-rest-sdk/releases)
 
 
 ## Tutorial: your first API call
@@ -25,44 +26,47 @@ loading a specific record.
 <?php
 require_once 'realrest_sdk.php';
 
-$client = new RealRestSDK([
-    "apikey" => getenv("REAL-REST_APIKEY"),
-]);
+$client = new RealRestSDK();
 ```
 
 ### 2. List objects
 
 ```php
-[$result, $err] = $client->Object()->list();
-if ($err) { throw new \Exception($err); }
-
-if (is_array($result)) {
-    foreach ($result as $item) {
-        $d = $item->data_get();
-        echo $d["id"] . " " . $d["name"] . "\n";
+try {
+    $result = $client->object()->list();
+    if (is_array($result)) {
+        foreach ($result as $item) {
+            $d = $item->data_get();
+            echo $d["id"] . " " . $d["name"] . "\n";
+        }
     }
+} catch (\Exception $err) {
+    echo "Error: " . $err->getMessage();
 }
 ```
 
-### 3. Load a object
+### 3. Load an object
 
 ```php
-[$result, $err] = $client->Object()->load(["id" => "example_id"]);
-if ($err) { throw new \Exception($err); }
-print_r($result);
+try {
+    $result = $client->object()->load(["id" => "example_id"]);
+    print_r($result);
+} catch (\Exception $err) {
+    echo "Error: " . $err->getMessage();
+}
 ```
 
 ### 4. Create, update, and remove
 
 ```php
 // Create
-[$created, $_] = $client->Object()->create(["name" => "Example"]);
+$created = $client->object()->create(["name" => "Example"]);
 
 // Update
-$client->Object()->update(["id" => $created["id"], "name" => "Example-Renamed"]);
+$client->object()->update(["id" => $created["id"], "name" => "Example-Renamed"]);
 
 // Remove
-$client->Object()->remove(["id" => $created["id"]]);
+$client->object()->remove(["id" => $created["id"]]);
 ```
 
 
@@ -73,28 +77,31 @@ $client->Object()->remove(["id" => $created["id"]]);
 For endpoints not covered by entity methods:
 
 ```php
-[$result, $err] = $client->direct([
+// direct() is the raw-HTTP escape hatch: it returns a result array
+// (it does not throw). Branch on $result["ok"].
+$result = $client->direct([
     "path" => "/api/resource/{id}",
     "method" => "GET",
     "params" => ["id" => "example"],
 ]);
-if ($err) { throw new \Exception($err); }
 
 if ($result["ok"]) {
     echo $result["status"];  // 200
     print_r($result["data"]);  // response body
+} else {
+    echo "Error: " . $result["err"]->getMessage();
 }
 ```
 
 ### Prepare a request without sending it
 
 ```php
-[$fetchdef, $err] = $client->prepare([
+// prepare() throws on error and returns the fetch definition.
+$fetchdef = $client->prepare([
     "path" => "/api/resource/{id}",
     "method" => "DELETE",
     "params" => ["id" => "example"],
 ]);
-if ($err) { throw new \Exception($err); }
 
 echo $fetchdef["url"];
 echo $fetchdef["method"];
@@ -108,7 +115,7 @@ Create a mock client for unit testing — no server required:
 ```php
 $client = RealRestSDK::test();
 
-[$result, $err] = $client->RealRest()->load(["id" => "test01"]);
+$result = $client->object()->load(["id" => "test01"]);
 // $result contains mock response data
 ```
 
@@ -142,8 +149,7 @@ $client = new RealRestSDK([
 Create a `.env.local` file at the project root:
 
 ```
-REAL-REST_TEST_LIVE=TRUE
-REAL-REST_APIKEY=<your-key>
+REAL_REST_TEST_LIVE=TRUE
 ```
 
 Then run:
@@ -166,7 +172,6 @@ Creates a new SDK client.
 
 | Option | Type | Description |
 | --- | --- | --- |
-| `apikey` | `string` | API key for authentication. |
 | `base` | `string` | Base URL of the API server. |
 | `prefix` | `string` | URL path prefix prepended to all requests. |
 | `suffix` | `string` | URL path suffix appended to all requests. |
@@ -212,8 +217,12 @@ All entities share the same interface.
 
 ### Result shape
 
-Entity operations return `[$result, $err]`. The first value is an
-`array` with these keys:
+Entity operations return the bare result data (an `array` for single-entity
+ops, a `list` for `list`) and throw on error. Wrap calls in
+`try`/`catch` to handle failures.
+
+The `direct()` escape hatch never throws — it returns a result `array`
+you branch on via `$result["ok"]`:
 
 | Key | Type | Description |
 | --- | --- | --- |
@@ -245,7 +254,7 @@ API path: `/objects`
 
 ### Object
 
-Create an instance: `const object = client.Object()`
+Create an instance: `const object = client.object`
 
 #### Operations
 
@@ -268,19 +277,19 @@ Create an instance: `const object = client.Object()`
 #### Example: Load
 
 ```ts
-const object = await client.Object().load({ id: 'object_id' })
+const object = await client.object.load({ id: 'object_id' })
 ```
 
 #### Example: List
 
 ```ts
-const objects = await client.Object().list()
+const objects = await client.object.list()
 ```
 
 #### Example: Create
 
 ```ts
-const object = await client.Object().create({
+const object = await client.object.create({
   name: /* `$STRING` */,
 })
 ```
@@ -357,11 +366,11 @@ Entity instances are stateful. After a successful `load`, the entity
 stores the returned data and match criteria internally.
 
 ```php
-$moon = $client->Moon();
-[$result, $err] = $moon->load(["planet_id" => "earth", "id" => "luna"]);
+$object = $client->object();
+$object->load(["id" => "example_id"]);
 
-// $moon->dataGet() now returns the loaded moon data
-// $moon->matchGet() returns the last match criteria
+// $object->dataGet() now returns the loaded object data
+// $object->matchGet() returns the last match criteria
 ```
 
 Call `make()` to create a fresh instance with the same configuration

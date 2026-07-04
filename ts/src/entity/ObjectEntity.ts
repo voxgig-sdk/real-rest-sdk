@@ -14,9 +14,17 @@ import type {
   Control,
 } from '../types'
 
+import type {
+  Object,
+  ObjectLoadMatch,
+  ObjectListMatch,
+  ObjectCreateData,
+  ObjectUpdateData,
+  ObjectRemoveMatch,
+} from '../RealRestTypes'
 
 // TODO: needs Entity superclass
-class ObjectEntity extends RealRestEntityBase {
+class ObjectEntity extends RealRestEntityBase<Object> {
 
   constructor(client: RealRestSDK, entopts: any) {
     super(client, entopts)
@@ -32,7 +40,7 @@ class ObjectEntity extends RealRestEntityBase {
 
 
 
-  async load(this: any, reqmatch?: any, ctrl?: Control) {
+  async load(this: any, reqmatch?: ObjectLoadMatch, ctrl?: Control): Promise<Object> {
 
     const utility = this._utility
 
@@ -136,14 +144,16 @@ class ObjectEntity extends RealRestEntityBase {
         throw err
       }
       else {
-        return undefined
+        // Off-happy-path (throw disabled): typed as any so the method's
+        // Promise<Object> return stays clean under strict null checks.
+        return undefined as any
       }
     }
   }
 
 
 
-  async list(this: any, reqmatch?: any, ctrl?: Control) {
+  async list(this: any, reqmatch?: ObjectListMatch, ctrl?: Control): Promise<Object[]> {
 
     const utility = this._utility
 
@@ -243,14 +253,16 @@ class ObjectEntity extends RealRestEntityBase {
         throw err
       }
       else {
-        return undefined
+        // Off-happy-path (throw disabled): typed as any so the method's
+        // Promise<Object[]> return stays clean under strict null checks.
+        return undefined as any
       }
     }
   }
 
 
 
-  async create(this: any, reqdata?: any, ctrl?: Control) {
+  async create(this: any, reqdata?: ObjectCreateData, ctrl?: Control): Promise<Object> {
 
     const utility = this._utility
     const {
@@ -349,14 +361,16 @@ class ObjectEntity extends RealRestEntityBase {
         throw err
       }
       else {
-        return undefined
+        // Off-happy-path (throw disabled): typed as any so the method's
+        // Promise<Object> return stays clean under strict null checks.
+        return undefined as any
       }
     }
   }
 
 
 
-  async update(this: any, reqdata?: any, ctrl?: Control) {
+  async update(this: any, reqdata?: ObjectUpdateData, ctrl?: Control): Promise<Object> {
 
     const utility = this._utility
 
@@ -461,14 +475,16 @@ class ObjectEntity extends RealRestEntityBase {
         throw err
       }
       else {
-        return undefined
+        // Off-happy-path (throw disabled): typed as any so the method's
+        // Promise<Object> return stays clean under strict null checks.
+        return undefined as any
       }
     }
   }
 
 
 
-  async remove(this: any, reqmatch?: any, ctrl?: Control) {
+  async remove(this: any, reqmatch?: ObjectRemoveMatch, ctrl?: Control): Promise<Object> {
 
     const utility = this._utility
 
@@ -573,7 +589,9 @@ class ObjectEntity extends RealRestEntityBase {
         throw err
       }
       else {
-        return undefined
+        // Off-happy-path (throw disabled): typed as any so the method's
+        // Promise<Object> return stays clean under strict null checks.
+        return undefined as any
       }
     }
   }

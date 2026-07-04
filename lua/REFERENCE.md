@@ -19,7 +19,6 @@ Create a new SDK client instance.
 | Name | Type | Description |
 | --- | --- | --- |
 | `options` | `table` | SDK configuration options. |
-| `options.apikey` | `string` | API key for authentication. |
 | `options.base` | `string` | Base URL for API requests. |
 | `options.prefix` | `string` | URL prefix appended after base. |
 | `options.suffix` | `string` | URL suffix appended after path. |
@@ -84,7 +83,7 @@ same parameters as `direct()`.
 ## ObjectEntity
 
 ```lua
-local object = client:Object(nil)
+local object = client:object(nil)
 ```
 
 ### Fields
@@ -102,7 +101,7 @@ local object = client:Object(nil)
 Create a new entity with the given data.
 
 ```lua
-local result, err = client:Object():create({
+local result, err = client:object():create({
   name = --[[ `$STRING` ]],
 })
 ```
@@ -112,7 +111,7 @@ local result, err = client:Object():create({
 List entities matching the given criteria. Returns an array.
 
 ```lua
-local results, err = client:Object():list()
+local results, err = client:object():list()
 ```
 
 #### `load(reqmatch, ctrl) -> any, err`
@@ -120,7 +119,7 @@ local results, err = client:Object():list()
 Load a single entity matching the given criteria.
 
 ```lua
-local result, err = client:Object():load({ id = "object_id" })
+local result, err = client:object():load({ id = "object_id" })
 ```
 
 #### `remove(reqmatch, ctrl) -> any, err`
@@ -128,7 +127,7 @@ local result, err = client:Object():load({ id = "object_id" })
 Remove the entity matching the given criteria.
 
 ```lua
-local result, err = client:Object():remove({ id = "object_id" })
+local result, err = client:object():remove({ id = "object_id" })
 ```
 
 #### `update(reqdata, ctrl) -> any, err`
@@ -136,7 +135,7 @@ local result, err = client:Object():remove({ id = "object_id" })
 Update an existing entity. The data must include the entity `id`.
 
 ```lua
-local result, err = client:Object():update({
+local result, err = client:object():update({
   id = "object_id",
   -- Fields to update
 })

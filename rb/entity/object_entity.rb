@@ -45,6 +45,7 @@ class ObjectEntity
     end
   end
 
+  # @return [Object, Hash] the current Object data
   def data_get
     @_utility.feature_hook.call(@_entctx, "GetData")
     VoxgigStruct.clone(@_data)
@@ -57,12 +58,18 @@ class ObjectEntity
     end
   end
 
+  # @return [Hash] the current match filter (any subset of Object fields)
   def match_get
     @_utility.feature_hook.call(@_entctx, "GetMatch")
     VoxgigStruct.clone(@_match)
   end
 
   
+  # Load a single Object.
+  #
+  # @param reqmatch [ObjectLoadMatch, Hash, nil] match criteria (id/query fields)
+  # @param ctrl [Object, nil] optional per-call control
+  # @return [Object, Hash] the loaded Object; raises RealRestError on failure
   def load(reqmatch, ctrl = nil)
     utility = @_utility
     ctx = utility.make_context.call({
@@ -86,6 +93,11 @@ class ObjectEntity
 
 
   
+  # List Object items matching the given filter.
+  #
+  # @param reqmatch [ObjectListMatch, Hash, nil] match filter (any subset of Object fields)
+  # @param ctrl [Object, nil] optional per-call control
+  # @return [Array<Object>, Array] the matching Object items; raises RealRestError on failure
   def list(reqmatch, ctrl = nil)
     utility = @_utility
     ctx = utility.make_context.call({
@@ -106,6 +118,11 @@ class ObjectEntity
 
 
   
+  # Create a new Object.
+  #
+  # @param reqdata [ObjectCreateData, Hash, nil] body data
+  # @param ctrl [Object, nil] optional per-call control
+  # @return [Object, Hash] the created Object; raises RealRestError on failure
   def create(reqdata, ctrl = nil)
     utility = @_utility
     ctx = utility.make_context.call({
@@ -128,6 +145,11 @@ class ObjectEntity
 
 
   
+  # Update an existing Object.
+  #
+  # @param reqdata [ObjectUpdateData, Hash, nil] body data
+  # @param ctrl [Object, nil] optional per-call control
+  # @return [Object, Hash] the updated Object; raises RealRestError on failure
   def update(reqdata, ctrl = nil)
     utility = @_utility
     ctx = utility.make_context.call({
@@ -151,6 +173,11 @@ class ObjectEntity
 
 
   
+  # Remove an Object matching the given criteria.
+  #
+  # @param reqmatch [ObjectRemoveMatch, Hash, nil] match criteria (id/query fields)
+  # @param ctrl [Object, nil] optional per-call control
+  # @return [Object, Hash] the removed Object; raises RealRestError on failure
   def remove(reqmatch, ctrl = nil)
     utility = @_utility
     ctx = utility.make_context.call({
