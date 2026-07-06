@@ -4,6 +4,8 @@
 
 The Golang SDK for the RealRest API — an entity-oriented client using standard Go conventions. No generics required; data flows as `map[string]any`.
 
+It exposes the API as capitalised, semantic **Entities** — e.g. `client.Object(nil)` — each with the same small set of operations (`List`, `Load`, `Create`, `Update`, `Remove`, `Patch`) instead of raw URL paths and query strings. You call meaning, not endpoints, which keeps the cognitive load low.
+
 > Other languages, the CLI, and MCP server live alongside this one — see
 > the [top-level README](../README.md).
 
@@ -58,33 +60,62 @@ func main() {
     }
 
     // Load a single object — the value is the loaded record.
-    object, err := client.Object(nil).Load(map[string]any{"id": "example_id"}, nil)
+    object, err := client.Object(nil).Load(map[string]any{"id": "example"}, nil)
     if err != nil {
         panic(err)
     }
     fmt.Println(object)
 
     // Create a object.
-    created, err := client.Object(nil).Create(map[string]any{"name": "Example"}, nil)
+    created, err := client.Object(nil).Create(map[string]any{"name": "example"}, nil)
     if err != nil {
         panic(err)
     }
     fmt.Println(created)
 
     // Update a object.
-    updated, err := client.Object(nil).Update(map[string]any{"id": "example_id", "name": "Renamed"}, nil)
+    updated, err := client.Object(nil).Update(map[string]any{"id": "example"}, nil)
     if err != nil {
         panic(err)
     }
     fmt.Println(updated)
 
     // Remove a object.
-    removed, err := client.Object(nil).Remove(map[string]any{"id": "example_id"}, nil)
+    removed, err := client.Object(nil).Remove(map[string]any{"id": "example"}, nil)
     if err != nil {
         panic(err)
     }
     fmt.Println(removed)
 }
+```
+
+
+## Error handling
+
+Every entity operation returns `(value, error)`. Check `err` before
+using the value — there is no exception to catch:
+
+```go
+objects, err := client.Object(nil).List(nil, nil)
+if err != nil {
+    // handle err
+    return
+}
+_ = objects
+```
+
+`Direct` follows the same `(value, error)` convention:
+
+```go
+result, err := client.Direct(map[string]any{
+    "path":   "/api/resource/{id}",
+    "method": "GET",
+    "params": map[string]any{"id": "example_id"},
+})
+if err != nil {
+    // handle err
+}
+_ = result
 ```
 
 
@@ -134,13 +165,13 @@ Create a mock client for unit testing — no server required:
 ```go
 client := sdk.Test()
 
-object, err := client.Object(nil).Load(
-    map[string]any{"id": "test01"}, nil,
+object, err := client.Object(nil).List(
+    nil, nil,
 )
 if err != nil {
     panic(err)
 }
-fmt.Println(object) // the loaded mock data
+fmt.Println(object) // the returned mock data
 ```
 
 ### Use a custom fetch function
@@ -249,9 +280,9 @@ Check `err` first, then use the value directly (or the typed
 `...Typed` variants, which return the entity's model struct and a typed
 slice):
 
-    object, err := client.Object(nil).Load(map[string]any{"id": "example_id"}, nil)
+    object, err := client.Object(nil).List(map[string]any{/* fields */}, nil)
     if err != nil { /* handle */ }
-    // object is the loaded record
+    // object is the returned record
 
 Only `Direct()` returns a response envelope — a `map[string]any` with
 `"ok"`, `"status"`, `"headers"`, and `"data"` keys.
@@ -293,9 +324,9 @@ Create an instance: `object := client.Object(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | ``$OBJECT`` |  |
-| `id` | ``$STRING`` |  |
-| `name` | ``$STRING`` |  |
+| `data` | `map[string]any` |  |
+| `id` | `string` |  |
+| `name` | `string` |  |
 
 #### Example: Load
 
@@ -321,17 +352,21 @@ fmt.Println(objects) // the array of records
 
 ```go
 result, err := client.Object(nil).Create(map[string]any{
-    "name": /* `$STRING` */,
+    "name": /* string */,
 }, nil)
 ```
 
 
-## Explanation
+## Advanced
+
+> The sections above cover everyday use. The material below explains the
+> SDK's internals — useful when extending it with custom features, but not
+> needed for normal use.
 
 ### The operation pipeline
 
-Every entity operation (load, list, create, update, remove) follows a
-six-stage pipeline. Each stage fires a feature hook before executing:
+Every entity operation follows a six-stage pipeline. Each stage fires a
+feature hook before executing:
 
 ```
 PrePoint → PreSpec → PreRequest → PreResponse → PreResult → PreDone
@@ -348,9 +383,9 @@ PrePoint → PreSpec → PreRequest → PreResponse → PreResult → PreDone
 - **PreDone**: Final stage before returning to the caller. Entity
   state (match, data) is updated here.
 
-If any stage returns an error, the pipeline short-circuits and the
-error is returned to the caller. An unexpected panic triggers the
-`PreUnexpected` hook.
+If any stage errors, the pipeline short-circuits and the error surfaces
+to the caller — see [Error handling](#error-handling) for how that looks
+in this language.
 
 ### Features and hooks
 
@@ -391,14 +426,14 @@ like `core.ToMapAny`.
 
 ### Entity state
 
-Entity instances are stateful. After a successful `Load`, the entity
+Entity instances are stateful. After a successful `List`, the entity
 stores the returned data and match criteria internally.
 
 ```go
 object := client.Object(nil)
-object.Load(map[string]any{"id": "example_id"}, nil)
+object.List(nil, nil)
 
-// object.Data() now returns the loaded object data
+// object.Data() now returns the object data from the last list
 // object.Match() returns the last match criteria
 ```
 

@@ -8,7 +8,7 @@ Complete API reference for the RealRest Ruby SDK.
 ### Constructor
 
 ```ruby
-require_relative 'real-rest_sdk'
+require_relative 'RealRest_sdk'
 
 client = RealRestSDK.new(options)
 ```
@@ -93,9 +93,9 @@ object = client.Object
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | ``$OBJECT`` | No |  |
-| `id` | ``$STRING`` | Yes |  |
-| `name` | ``$STRING`` | Yes |  |
+| `data` | `Hash` | No |  |
+| `id` | `String` | Yes |  |
+| `name` | `String` | Yes |  |
 
 ### Operations
 
@@ -105,16 +105,16 @@ Create a new entity with the given data. Raises on error.
 
 ```ruby
 result = client.Object.create({
-  "name" => # `$STRING`,
+  "name" => "example", # String
 })
 ```
 
-#### `list(reqmatch, ctrl = nil) -> Array`
+#### `list(reqmatch = nil, ctrl = nil) -> Array`
 
-List entities matching the given criteria. Returns an array. Raises on error.
+List entities matching the given criteria (call with no argument to list all). Returns an array. Raises on error.
 
 ```ruby
-results = client.Object.list(nil)
+results = client.Object.list
 ```
 
 #### `load(reqmatch, ctrl = nil) -> result`

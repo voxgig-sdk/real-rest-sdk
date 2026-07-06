@@ -90,9 +90,9 @@ local object = client:Object(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | ``$OBJECT`` | No |  |
-| `id` | ``$STRING`` | Yes |  |
-| `name` | ``$STRING`` | Yes |  |
+| `data` | `table` | No |  |
+| `id` | `string` | Yes |  |
+| `name` | `string` | Yes |  |
 
 ### Operations
 
@@ -102,7 +102,7 @@ Create a new entity with the given data.
 
 ```lua
 local result, err = client:Object():create({
-  name = --[[ `$STRING` ]],
+  name = --[[ string ]],
 })
 ```
 

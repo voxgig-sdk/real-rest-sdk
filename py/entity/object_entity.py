@@ -68,8 +68,13 @@ class ObjectEntity:
         return vs.clone(self._match)
 
     
-    def load(self, reqmatch: ObjectLoadMatch, ctrl=None) -> Object:
+    def load(self, reqmatch=None, ctrl=None) -> Object:
         utility = self._utility
+        # reqmatch is optional: an entity with no id-like key loads with no
+        # match. Treat None as an empty match so client.Object().load()
+        # works with no args.
+        if reqmatch is None:
+            reqmatch = {}
         ctx = utility.make_context({
             "opname": "load",
             "ctrl": ctrl,
@@ -90,8 +95,12 @@ class ObjectEntity:
 
 
     
-    def list(self, reqmatch: ObjectListMatch, ctrl=None) -> list[Object]:
+    def list(self, reqmatch=None, ctrl=None) -> list[Object]:
         utility = self._utility
+        # reqmatch is optional: an omitted match lists all records. Treat None
+        # as an empty match so client.Object().list() works with no args.
+        if reqmatch is None:
+            reqmatch = {}
         ctx = utility.make_context({
             "opname": "list",
             "ctrl": ctrl,
@@ -152,8 +161,13 @@ class ObjectEntity:
 
 
     
-    def remove(self, reqmatch: ObjectRemoveMatch, ctrl=None) -> Object:
+    def remove(self, reqmatch=None, ctrl=None) -> Object:
         utility = self._utility
+        # reqmatch is optional: an entity with no id-like key removes with no
+        # match. Treat None as an empty match so client.Object().remove()
+        # works with no args.
+        if reqmatch is None:
+            reqmatch = {}
         ctx = utility.make_context({
             "opname": "remove",
             "ctrl": ctrl,

@@ -15,9 +15,17 @@ export interface ObjectLoadMatch {
   id: string
 }
 
-export type ObjectListMatch = Partial<Object>
+export interface ObjectListMatch {
+  data?: Record<string, any>
+  id?: string
+  name?: string
+}
 
-export type ObjectCreateData = Partial<Object>
+export interface ObjectCreateData {
+  data?: Record<string, any>
+  id: string
+  name: string
+}
 
 export interface ObjectUpdateData {
   id: string

@@ -79,12 +79,12 @@ describe('ObjectEntity', async () => {
     object_ref01_data_up0.id = object_ref01_data.id
 
     const object_ref01_markdef_up0 = { name: 'name', value: 'Mark01-object_ref01_' + setup.now }
-    object_ref01_data_up0 [object_ref01_markdef_up0.name] = object_ref01_markdef_up0.value
+    ;(object_ref01_data_up0 as any)[object_ref01_markdef_up0.name] = object_ref01_markdef_up0.value
 
     const object_ref01_resdata_up0 = await object_ref01_ent.update(object_ref01_data_up0)
     assert(object_ref01_resdata_up0.id === object_ref01_data_up0.id)
 
-    assert(object_ref01_resdata_up0[object_ref01_markdef_up0.name] === object_ref01_markdef_up0.value)
+    assert((object_ref01_resdata_up0 as any)[object_ref01_markdef_up0.name] === object_ref01_markdef_up0.value)
 
 
     // LOAD

@@ -19,6 +19,7 @@ go build -o real-rest-cli ./...
 ./real-rest-cli list object
 ./real-rest-cli load 1 object
 ./real-rest-cli load '{id:1}' object
+./real-rest-cli update '{id:1}' object
 
 # REPL
 ./real-rest-cli

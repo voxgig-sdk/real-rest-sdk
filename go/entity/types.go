@@ -20,20 +20,18 @@ type ObjectLoadMatch struct {
 	Id string `json:"id"`
 }
 
-// ObjectListMatch mirrors the object fields as an all-optional match
-// filter (Go analog of Partial<Object>).
+// ObjectListMatch is the typed request payload for Object.ListTyped.
 type ObjectListMatch struct {
 	Data *map[string]any `json:"data,omitempty"`
 	Id *string `json:"id,omitempty"`
 	Name *string `json:"name,omitempty"`
 }
 
-// ObjectCreateData mirrors the object fields as an all-optional match
-// filter (Go analog of Partial<Object>).
+// ObjectCreateData is the typed request payload for Object.CreateTyped.
 type ObjectCreateData struct {
 	Data *map[string]any `json:"data,omitempty"`
-	Id *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
+	Id string `json:"id"`
+	Name string `json:"name"`
 }
 
 // ObjectUpdateData is the typed request payload for Object.UpdateTyped.

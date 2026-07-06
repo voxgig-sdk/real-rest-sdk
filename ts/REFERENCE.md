@@ -116,9 +116,9 @@ const object = client.Object()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | ``$OBJECT`` | No |  |
-| `id` | ``$STRING`` | Yes |  |
-| `name` | ``$STRING`` | Yes |  |
+| `data` | `Record<string, any>` | No |  |
+| `id` | `string` | Yes |  |
+| `name` | `string` | Yes |  |
 
 ### Operations
 
@@ -128,7 +128,7 @@ Create a new entity with the given data.
 
 ```ts
 const result = await client.Object().create({
-  name: /* `$STRING` */,
+  name: /* string */,
 })
 ```
 

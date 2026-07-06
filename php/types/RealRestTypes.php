@@ -26,7 +26,7 @@ class ObjectLoadMatch
     public string $id;
 }
 
-/** Match filter for Object#list (any subset of Object fields). */
+/** Request payload for Object#list. */
 class ObjectListMatch
 {
     public ?array $data = null;
@@ -34,12 +34,12 @@ class ObjectListMatch
     public ?string $name = null;
 }
 
-/** Match filter for Object#create (any subset of Object fields). */
+/** Request payload for Object#create. */
 class ObjectCreateData
 {
     public ?array $data = null;
-    public ?string $id = null;
-    public ?string $name = null;
+    public string $id;
+    public string $name;
 }
 
 /** Request payload for Object#update. */

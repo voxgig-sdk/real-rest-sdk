@@ -35,10 +35,13 @@ class ObjectListMatch(TypedDict, total=False):
     name: str
 
 
-class ObjectCreateData(TypedDict, total=False):
-    data: dict
+class ObjectCreateDataRequired(TypedDict):
     id: str
     name: str
+
+
+class ObjectCreateData(ObjectCreateDataRequired, total=False):
+    data: dict
 
 
 class ObjectUpdateData(TypedDict):

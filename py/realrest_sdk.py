@@ -221,7 +221,7 @@ class RealRestSDK:
 
 
     def Object(self, data=None) -> "ObjectEntity":
-        """Entity factory: client.Object().list({}) / client.Object().load({"id": ...})."""
+        """Entity factory: client.Object().list() / client.Object().load({"id": ...})."""
         from entity.object_entity import ObjectEntity
         return ObjectEntity(self, data)
 

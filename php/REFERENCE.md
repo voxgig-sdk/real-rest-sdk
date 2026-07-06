@@ -8,7 +8,7 @@ Complete API reference for the RealRest PHP SDK.
 ### Constructor
 
 ```php
-require_once __DIR__ . '/real-rest_sdk.php';
+require_once __DIR__ . '/realrest_sdk.php';
 
 $client = new RealRestSDK($options);
 ```
@@ -45,11 +45,11 @@ $client = RealRestSDK::test();
 
 Create a new `ObjectEntity` instance. Pass `null` for no initial data.
 
-#### `optionsMap(): array`
+#### `options_map(): array`
 
 Return a deep copy of the current SDK options.
 
-#### `getUtility(): ProjectNameUtility`
+#### `get_utility(): RealRestUtility`
 
 Return a copy of the SDK utility object.
 
@@ -92,9 +92,9 @@ $object = $client->Object();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | ``$OBJECT`` | No |  |
-| `id` | ``$STRING`` | Yes |  |
-| `name` | ``$STRING`` | Yes |  |
+| `data` | `array` | No |  |
+| `id` | `string` | Yes |  |
+| `name` | `string` | Yes |  |
 
 ### Operations
 
@@ -104,16 +104,16 @@ Create a new entity with the given data. Throws on error.
 
 ```php
 $result = $client->Object()->create([
-  "name" => /* `$STRING` */,
+  "name" => null, // string
 ]);
 ```
 
-#### `list(array $reqmatch, ?array $ctrl = null): mixed`
+#### `list(?array $reqmatch = null, ?array $ctrl = null): mixed`
 
-List entities matching the given criteria. Returns an array. Throws on error.
+List entities matching the given criteria (call with no argument to list all). Returns an array. Throws on error.
 
 ```php
-$results = $client->Object()->list([]);
+$results = $client->Object()->list();
 ```
 
 #### `load(array $reqmatch, ?array $ctrl = null): mixed`
@@ -145,19 +145,19 @@ $result = $client->Object()->update([
 
 ### Common Methods
 
-#### `dataGet(): array`
+#### `data_get(): array`
 
 Get the entity data. Returns a copy of the current data.
 
-#### `dataSet($data): void`
+#### `data_set($data): void`
 
 Set the entity data.
 
-#### `matchGet(): array`
+#### `match_get(): array`
 
 Get the entity match criteria.
 
-#### `matchSet($match): void`
+#### `match_set($match): void`
 
 Set the entity match criteria.
 
@@ -166,7 +166,7 @@ Set the entity match criteria.
 Create a new `ObjectEntity` instance with the same client and
 options.
 
-#### `getName(): string`
+#### `get_name(): string`
 
 Return the entity name.
 

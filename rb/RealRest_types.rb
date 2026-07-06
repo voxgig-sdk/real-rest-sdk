@@ -34,7 +34,7 @@ ObjectLoadMatch = Struct.new(
   keyword_init: true
 )
 
-# Match filter for Object#list (any subset of Object fields).
+# Request payload for Object#list.
 #
 # @!attribute [rw] data
 #   @return [Hash, nil]
@@ -51,16 +51,16 @@ ObjectListMatch = Struct.new(
   keyword_init: true
 )
 
-# Match filter for Object#create (any subset of Object fields).
+# Request payload for Object#create.
 #
 # @!attribute [rw] data
 #   @return [Hash, nil]
 #
 # @!attribute [rw] id
-#   @return [String, nil]
+#   @return [String]
 #
 # @!attribute [rw] name
-#   @return [String, nil]
+#   @return [String]
 ObjectCreateData = Struct.new(
   :data,
   :id,

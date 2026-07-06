@@ -8,7 +8,7 @@ Complete API reference for the RealRest Python SDK.
 ### Constructor
 
 ```python
-from real-rest_sdk import RealRestSDK
+from realrest_sdk import RealRestSDK
 
 client = RealRestSDK(options)
 ```
@@ -87,9 +87,9 @@ object = client.Object()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | ``$OBJECT`` | No |  |
-| `id` | ``$STRING`` | Yes |  |
-| `name` | ``$STRING`` | Yes |  |
+| `data` | `dict` | No |  |
+| `id` | `str` | Yes |  |
+| `name` | `str` | Yes |  |
 
 ### Operations
 
@@ -99,16 +99,16 @@ Create a new entity with the given data. Returns the created entity data and rai
 
 ```python
 result = client.Object().create({
-    "name": ...,  # `$STRING`
+    "name": "example",  # str
 })
 ```
 
-#### `list(reqmatch, ctrl=None) -> list`
+#### `list(reqmatch=None, ctrl=None) -> list`
 
-List entities matching the given criteria. Returns a list and raises on error.
+List entities matching the given criteria. The match is optional — call `list()` with no argument to list all records. Returns a list and raises on error.
 
 ```python
-results = client.Object().list({})
+results = client.Object().list()
 for object in results:
     print(object)
 ```

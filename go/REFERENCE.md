@@ -97,9 +97,9 @@ object := client.Object(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | ``$OBJECT`` | No |  |
-| `id` | ``$STRING`` | Yes |  |
-| `name` | ``$STRING`` | Yes |  |
+| `data` | `map[string]any` | No |  |
+| `id` | `string` | Yes |  |
+| `name` | `string` | Yes |  |
 
 ### Operations
 
@@ -109,7 +109,7 @@ Create a new entity with the given data.
 
 ```go
 result, err := client.Object(nil).Create(map[string]any{
-    "name": /* `$STRING` */,
+    "name": /* string */,
 }, nil)
 ```
 
