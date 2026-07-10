@@ -60,28 +60,28 @@ func main() {
     }
 
     // Load a single object — the value is the loaded record.
-    object, err := client.Object(nil).Load(map[string]any{"id": "example"}, nil)
+    object, err := client.Object(nil).Load(map[string]any{"id": "example_id"}, nil)
     if err != nil {
         panic(err)
     }
     fmt.Println(object)
 
     // Create a object.
-    created, err := client.Object(nil).Create(map[string]any{"name": "example"}, nil)
+    created, err := client.Object(nil).Create(map[string]any{"id": "example_id", "name": "example_name"}, nil)
     if err != nil {
         panic(err)
     }
     fmt.Println(created)
 
     // Update a object.
-    updated, err := client.Object(nil).Update(map[string]any{"id": "example"}, nil)
+    updated, err := client.Object(nil).Update(map[string]any{"id": "example_id"}, nil)
     if err != nil {
         panic(err)
     }
     fmt.Println(updated)
 
     // Remove a object.
-    removed, err := client.Object(nil).Remove(map[string]any{"id": "example"}, nil)
+    removed, err := client.Object(nil).Remove(map[string]any{"id": "example_id"}, nil)
     if err != nil {
         panic(err)
     }
@@ -314,11 +314,11 @@ Create an instance: `object := client.Object(nil)`
 
 | Method | Description |
 | --- | --- |
-| `Create(data, ctrl)` | Create a new entity with the given data. |
 | `List(match, ctrl)` | List entities matching the criteria. |
 | `Load(match, ctrl)` | Load a single entity by match criteria. |
-| `Remove(match, ctrl)` | Remove the matching entity. |
+| `Create(data, ctrl)` | Create a new entity with the given data. |
 | `Update(data, ctrl)` | Update an existing entity. |
+| `Remove(match, ctrl)` | Remove the matching entity. |
 
 #### Fields
 
@@ -352,8 +352,13 @@ fmt.Println(objects) // the array of records
 
 ```go
 result, err := client.Object(nil).Create(map[string]any{
-    "name": /* string */,
+    "id": "example_id",
+    "name": "example_name",
 }, nil)
+if err != nil {
+    panic(err)
+}
+fmt.Println(result)
 ```
 
 

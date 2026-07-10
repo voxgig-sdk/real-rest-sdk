@@ -6,9 +6,6 @@
     },
     "kit": {
       "config": {
-        "auth": {
-          "prefix": "Bearer"
-        },
         "docs_order": [
           "ts",
           "py",
@@ -488,14 +485,17 @@
           "url": "https://restful-api.dev/"
         },
         "description": "This API is designed to handle your HTTP requests 24/7 for free, supporting various methods like GET, POST, PUT, DELETE, and PATCH. It is ideal for demo projects, testing, learning, or educational purposes, providing a reliable backend to store and retrieve data. Your data is securely stored in a real database, ensuring that your created data will be preserved and not lost.",
+        "meta_source": "https://www.freepublicapis.com",
         "servers": [
           {
             "description": "Production server",
             "url": "https://api.restful-api.dev"
           }
         ],
+        "summary": "This API is designed to handle your HTTP requests 24/7 for free, supporting various methods like GET, POST, PUT, DELETE, and PATCH.",
         "title": "Real REST API",
-        "version": "1.0.0"
+        "version": "1.0.0",
+        "website": "https://restful-api.dev"
       },
       "option": {},
       "target": {
@@ -548,6 +548,9 @@
           },
           "name": "go-cli",
           "phase": {
+            "agentguide": {
+              "active": false
+            },
             "entity": {
               "active": false
             },
@@ -598,6 +601,9 @@
           },
           "name": "go-mcp",
           "phase": {
+            "agentguide": {
+              "active": false
+            },
             "entity": {
               "active": false
             },

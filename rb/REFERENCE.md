@@ -105,7 +105,8 @@ Create a new entity with the given data. Raises on error.
 
 ```ruby
 result = client.Object.create({
-  "name" => "example", # String
+  "id" => "example_id", # String
+  "name" => "example_name", # String
 })
 ```
 

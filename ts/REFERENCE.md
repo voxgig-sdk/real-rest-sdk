@@ -128,7 +128,8 @@ Create a new entity with the given data.
 
 ```ts
 const result = await client.Object().create({
-  name: /* string */,
+  id: 'example_id',
+  name: 'example_name',
 })
 ```
 

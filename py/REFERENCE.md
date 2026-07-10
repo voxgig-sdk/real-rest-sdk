@@ -99,7 +99,8 @@ Create a new entity with the given data. Returns the created entity data and rai
 
 ```python
 result = client.Object().create({
-    "name": "example",  # str
+    "id": "example_id",  # str
+    "name": "example_name",  # str
 })
 ```
 

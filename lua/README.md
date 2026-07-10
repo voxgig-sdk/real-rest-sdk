@@ -59,7 +59,7 @@ print(object)
 
 ```lua
 -- Create
-local created, err = client:Object():create({ name = "example" })
+local created, err = client:Object():create({ id = "example_id", name = "example_name" })
 if err then error(err) end
 
 -- Update
@@ -309,7 +309,8 @@ local objects, err = client:Object():list()
 
 ```lua
 local object, err = client:Object():create({
-  name = nil, -- string
+  id = "example_id", -- string
+  name = "example_name", -- string
 })
 ```
 

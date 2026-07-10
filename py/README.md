@@ -66,7 +66,7 @@ except Exception as err:
 
 ```python
 # Create — returns the bare created record (a dict)
-created = client.Object().create({"name": "example"})
+created = client.Object().create({"id": "example_id", "name": "example_name"})
 
 # Update — the created record's id is a plain dict key
 client.Object().update({"id": created["id"]})
@@ -322,7 +322,8 @@ objects = client.Object().list()
 
 ```python
 object = client.Object().create({
-    "name": "example",  # str
+    "id": "example_id",  # str
+    "name": "example_name",  # str
 })
 ```
 

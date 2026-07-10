@@ -15,9 +15,9 @@ main: {
           url: "https://api.restful-api.dev"
         }
       ]
+      summary: "This API is designed to handle your HTTP requests 24/7 for free, supporting various methods like GET, POST, PUT, DELETE, and PATCH."
       title: "Real REST API"
       version: "1.0.0"
+      website: "https://restful-api.dev"
     }
   }
-}
-

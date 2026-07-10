@@ -104,6 +104,7 @@ Create a new entity with the given data. Throws on error.
 
 ```php
 $result = $client->Object()->create([
+  "id" => null, // string
   "name" => null, // string
 ]);
 ```

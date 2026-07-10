@@ -63,6 +63,7 @@ try {
 ```ts
 // Create — returns the created Object
 const created = await client.Object().create({
+  id: 'example_id',
   name: 'example_name',
 })
 
@@ -373,7 +374,8 @@ const objects = await client.Object().list()
 
 ```ts
 const object = await client.Object().create({
-  name: /* string */,
+  id: 'example_id',
+  name: 'example_name',
 })
 ```
 

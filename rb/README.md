@@ -60,7 +60,7 @@ end
 
 ```ruby
 # create returns the bare created Object record.
-created = client.Object.create({ "name" => "example" })
+created = client.Object.create({ "id" => "example_id", "name" => "example_name" })
 
 # Update — index the bare record directly (created["id"]).
 client.Object.update({ "id" => created["id"] })
@@ -321,7 +321,8 @@ objects = client.Object.list
 
 ```ruby
 object = client.Object.create({
-  "name" => "example", # String
+  "id" => "example_id", # String
+  "name" => "example_name", # String
 })
 ```
 

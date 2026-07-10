@@ -102,6 +102,7 @@ Create a new entity with the given data.
 
 ```lua
 local result, err = client:Object():create({
+  id = --[[ string ]],
   name = --[[ string ]],
 })
 ```
