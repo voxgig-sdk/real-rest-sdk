@@ -37,7 +37,20 @@ func main() {
 	addr := flag.String("addr", ":8080", "listen address for http transport")
 	flag.Parse()
 
-	client := sdk.NewRealRestSDK(nil)
+	// Configure from the environment: REAL_REST_APIKEY carries the API key and
+	// REAL_REST_BASE optionally overrides the API base URL (e.g. production).
+	// Both injectable by a secrets vault. Unset -> nil config defaults.
+	var opts map[string]any
+	if apikey := os.Getenv("REAL_REST_APIKEY"); apikey != "" {
+		opts = map[string]any{"apikey": apikey}
+	}
+	if base := os.Getenv("REAL_REST_BASE"); base != "" {
+		if opts == nil {
+			opts = map[string]any{}
+		}
+		opts["base"] = base
+	}
+	client := sdk.NewRealRestSDK(opts)
 	server := mcp.NewServer(
 		&mcp.Implementation{
 			Name:    "real-rest",
