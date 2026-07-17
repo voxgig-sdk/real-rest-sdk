@@ -1,4 +1,4 @@
--- ProjectName SDK exists test
+-- RealRest SDK exists test
 
 local sdk = require("real-rest_sdk")
 
