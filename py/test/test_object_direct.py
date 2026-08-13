@@ -3,9 +3,9 @@
 import json
 import pytest
 
-from utility.voxgig_struct import voxgig_struct as vs
+from realrest_sdk.utility.voxgig_struct import voxgig_struct as vs
 from realrest_sdk import RealRestSDK
-from core import helpers
+from realrest_sdk.core import helpers
 from test import runner
 
 
@@ -102,11 +102,11 @@ def _object_direct_setup(mockres):
     calls = []
 
     env = runner.env_override({
-        "REALREST_TEST_OBJECT_ENTID": {},
-        "REALREST_TEST_LIVE": "FALSE",
+        "REAL_REST_TEST_OBJECT_ENTID": {},
+        "REAL_REST_TEST_LIVE": "FALSE",
     })
 
-    live = env.get("REALREST_TEST_LIVE") == "TRUE"
+    live = env.get("REAL_REST_TEST_LIVE") == "TRUE"
 
     if live:
         merged_opts = {

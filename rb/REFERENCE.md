@@ -94,8 +94,16 @@ object = client.Object
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `data` | `Hash` | No |  |
-| `id` | `String` | Yes |  |
-| `name` | `String` | Yes |  |
+| `id` | `String` | No |  |
+| `name` | `String` | No |  |
+
+### Field Usage by Operation
+
+| Field | load | list | create | update | remove |
+| --- | --- | --- | --- | --- | --- |
+| `data` | - | - | - | - | - |
+| `id` | - | Yes | - | - | - |
+| `name` | - | Yes | Yes | Yes | - |
 
 ### Operations
 
@@ -105,8 +113,6 @@ Create a new entity with the given data. Raises on error.
 
 ```ruby
 result = client.Object.create({
-  "id" => "example_id", # String
-  "name" => "example_name", # String
 })
 ```
 

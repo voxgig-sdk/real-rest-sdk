@@ -67,14 +67,14 @@ func main() {
     fmt.Println(object)
 
     // Create a object.
-    created, err := client.Object(nil).Create(map[string]any{"id": "example_id", "name": "example_name"}, nil)
+    created, err := client.Object(nil).Create(map[string]any{"data": map[string]any{}, "name": "example_name"}, nil)
     if err != nil {
         panic(err)
     }
     fmt.Println(created)
 
     // Update a object.
-    updated, err := client.Object(nil).Update(map[string]any{"id": "example_id"}, nil)
+    updated, err := client.Object(nil).Update(map[string]any{"id": "example_id", "data": map[string]any{}, "name": "example_name"}, nil)
     if err != nil {
         panic(err)
     }
@@ -352,8 +352,6 @@ fmt.Println(objects) // the array of records
 
 ```go
 result, err := client.Object(nil).Create(map[string]any{
-    "id": "example_id",
-    "name": "example_name",
 }, nil)
 if err != nil {
     panic(err)

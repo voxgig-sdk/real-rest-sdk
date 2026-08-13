@@ -93,8 +93,16 @@ $object = $client->Object();
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `data` | `array` | No |  |
-| `id` | `string` | Yes |  |
-| `name` | `string` | Yes |  |
+| `id` | `string` | No |  |
+| `name` | `string` | No |  |
+
+### Field Usage by Operation
+
+| Field | load | list | create | update | remove |
+| --- | --- | --- | --- | --- | --- |
+| `data` | - | - | - | - | - |
+| `id` | - | Yes | - | - | - |
+| `name` | - | Yes | Yes | Yes | - |
 
 ### Operations
 
@@ -104,8 +112,6 @@ Create a new entity with the given data. Throws on error.
 
 ```php
 $result = $client->Object()->create([
-  "id" => null, // string
-  "name" => null, // string
 ]);
 ```
 

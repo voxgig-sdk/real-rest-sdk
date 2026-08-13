@@ -7,8 +7,8 @@
 
 export interface Object {
   data?: Record<string, any>
-  id: string
-  name: string
+  id?: string
+  name?: string
 }
 
 export interface ObjectLoadMatch {
@@ -23,12 +23,14 @@ export interface ObjectListMatch {
 
 export interface ObjectCreateData {
   data?: Record<string, any>
-  id: string
-  name: string
+  id?: string
+  name?: string
 }
 
 export interface ObjectUpdateData {
   id: string
+  data?: Record<string, any>
+  name?: string
 }
 
 export interface ObjectRemoveMatch {

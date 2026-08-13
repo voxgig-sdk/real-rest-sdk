@@ -14,11 +14,11 @@
 #   @return [Hash, nil]
 #
 # @!attribute [rw] id
-#   @return [String]
+#   @return [String, nil]
 #
 # @!attribute [rw] name
-#   @return [String]
-Object = Struct.new(
+#   @return [String, nil]
+ObjectType = Struct.new(
   :data,
   :id,
   :name,
@@ -57,10 +57,10 @@ ObjectListMatch = Struct.new(
 #   @return [Hash, nil]
 #
 # @!attribute [rw] id
-#   @return [String]
+#   @return [String, nil]
 #
 # @!attribute [rw] name
-#   @return [String]
+#   @return [String, nil]
 ObjectCreateData = Struct.new(
   :data,
   :id,
@@ -72,8 +72,16 @@ ObjectCreateData = Struct.new(
 #
 # @!attribute [rw] id
 #   @return [String]
+#
+# @!attribute [rw] data
+#   @return [Hash, nil]
+#
+# @!attribute [rw] name
+#   @return [String, nil]
 ObjectUpdateData = Struct.new(
   :id,
+  :data,
+  :name,
   keyword_init: true
 )
 

@@ -26,8 +26,8 @@ import {
 describe('ObjectEntity', async () => {
 
   // Per-test live pacing. Delay is read from sdk-test-control.json's
-  // `test.live.delayMs`; only sleeps when REALREST_TEST_LIVE=TRUE.
-  afterEach(liveDelay('REALREST_TEST_LIVE'))
+  // `test.live.delayMs`; only sleeps when REAL_REST_TEST_LIVE=TRUE.
+  afterEach(liveDelay('REAL_REST_TEST_LIVE'))
 
   test('instance', async () => {
     const testsdk = RealRestSDK.test()
@@ -62,14 +62,14 @@ describe('ObjectEntity', async () => {
     const object_ref01_ent = client.Object()
     let object_ref01_data = setup.data.new.object['object_ref01']
 
-    object_ref01_data = await object_ref01_ent.create(object_ref01_data)
+    object_ref01_data = (await object_ref01_ent.create(object_ref01_data)).data()
     assert(null != object_ref01_data.id)
 
 
     // LIST
     const object_ref01_match: any = {}
 
-    const object_ref01_list = await object_ref01_ent.list(object_ref01_match)
+    const object_ref01_list = (await object_ref01_ent.list(object_ref01_match)).map((e: any) => e.data())
 
     assert(!isempty(select(object_ref01_list, { id: object_ref01_data.id })))
 
@@ -81,7 +81,7 @@ describe('ObjectEntity', async () => {
     const object_ref01_markdef_up0 = { name: 'name', value: 'Mark01-object_ref01_' + setup.now }
     ;(object_ref01_data_up0 as any)[object_ref01_markdef_up0.name] = object_ref01_markdef_up0.value
 
-    const object_ref01_resdata_up0 = await object_ref01_ent.update(object_ref01_data_up0)
+    const object_ref01_resdata_up0 = (await object_ref01_ent.update(object_ref01_data_up0)).data()
     assert(object_ref01_resdata_up0.id === object_ref01_data_up0.id)
 
     assert((object_ref01_resdata_up0 as any)[object_ref01_markdef_up0.name] === object_ref01_markdef_up0.value)
@@ -90,7 +90,7 @@ describe('ObjectEntity', async () => {
     // LOAD
     const object_ref01_match_dt0: any = {}
     object_ref01_match_dt0.id = object_ref01_data.id
-    const object_ref01_data_dt0 = await object_ref01_ent.load(object_ref01_match_dt0)
+    const object_ref01_data_dt0 = (await object_ref01_ent.load(object_ref01_match_dt0)).data()
     assert(object_ref01_data_dt0.id === object_ref01_data.id)
 
 
@@ -102,7 +102,7 @@ describe('ObjectEntity', async () => {
     // LIST
     const object_ref01_match_rt0: any = {}
 
-    const object_ref01_list_rt0 = await object_ref01_ent.list(object_ref01_match_rt0)
+    const object_ref01_list_rt0 = (await object_ref01_ent.list(object_ref01_match_rt0)).map((e: any) => e.data())
 
     assert(isempty(select(object_ref01_list_rt0, { id: object_ref01_data.id })))
 

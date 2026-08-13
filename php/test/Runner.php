@@ -43,8 +43,8 @@ class RealRestTestRunner
 
     public static function env_override(array $m): array
     {
-        $live = self::getenv('REALREST_TEST_LIVE');
-        $override = self::getenv('REALREST_TEST_OVERRIDE');
+        $live = self::getenv('REAL_REST_TEST_LIVE');
+        $override = self::getenv('REAL_REST_TEST_OVERRIDE');
 
         if ($live === 'TRUE' || $override === 'TRUE') {
             foreach (array_keys($m) as $key) {
@@ -63,9 +63,9 @@ class RealRestTestRunner
             }
         }
 
-        $explain = self::getenv('REALREST_TEST_EXPLAIN');
+        $explain = self::getenv('REAL_REST_TEST_EXPLAIN');
         if ($explain !== null && $explain !== '') {
-            $m['REALREST_TEST_EXPLAIN'] = $explain;
+            $m['REAL_REST_TEST_EXPLAIN'] = $explain;
         }
 
         return $m;

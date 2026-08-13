@@ -23,6 +23,7 @@ require_once __DIR__ . '/MakeUrl.php';
 require_once __DIR__ . '/Param.php';
 require_once __DIR__ . '/PrepareAuth.php';
 require_once __DIR__ . '/PrepareBody.php';
+require_once __DIR__ . '/Graphql.php';
 require_once __DIR__ . '/PrepareHeaders.php';
 require_once __DIR__ . '/PrepareMethod.php';
 require_once __DIR__ . '/PrepareParams.php';
@@ -59,6 +60,8 @@ RealRestUtility::setRegistrar(function (RealRestUtility $u): void {
     $u->prepare_params = [RealRestPrepareParams::class, 'call'];
     $u->prepare_path = [RealRestPreparePath::class, 'call'];
     $u->prepare_query = [RealRestPrepareQuery::class, 'call'];
+    $u->graphql_body = [RealRestGraphql::class, 'body'];
+    $u->graphql_errors = [RealRestGraphql::class, 'errors'];
     $u->result_basic = [RealRestResultBasic::class, 'call'];
     $u->result_body = [RealRestResultBody::class, 'call'];
     $u->result_headers = [RealRestResultHeaders::class, 'call'];

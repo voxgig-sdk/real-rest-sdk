@@ -72,7 +72,7 @@ class ObjectEntityTest extends TestCase
         // The basic flow consumes synthetic IDs from the fixture. In live mode
         // without an *_ENTID env override, those IDs hit the live API and 4xx.
         if (!empty($setup["synthetic_only"])) {
-            $this->markTestSkipped("live entity test uses synthetic IDs from fixture — set REALREST_TEST_OBJECT_ENTID JSON to run live");
+            $this->markTestSkipped("live entity test uses synthetic IDs from fixture — set REAL_REST_TEST_OBJECT_ENTID JSON to run live");
             return;
         }
         $client = $setup["client"];
@@ -83,7 +83,7 @@ class ObjectEntityTest extends TestCase
             Vs::getpath($setup["data"], "new.object"), "object_ref01"));
 
         $object_ref01_data_result = $object_ref01_ent->create($object_ref01_data, null);
-        $object_ref01_data = Helpers::to_map($object_ref01_data_result);
+        $object_ref01_data = Helpers::to_map(is_object($object_ref01_data_result) && method_exists($object_ref01_data_result, 'data_get') ? $object_ref01_data_result->data_get() : $object_ref01_data_result);
         $this->assertNotNull($object_ref01_data);
         $this->assertNotNull($object_ref01_data["id"]);
 
@@ -108,7 +108,7 @@ class ObjectEntityTest extends TestCase
         $object_ref01_data_up0_up[$object_ref01_markdef_up0_name] = $object_ref01_markdef_up0_value;
 
         $object_ref01_resdata_up0_result = $object_ref01_ent->update($object_ref01_data_up0_up, null);
-        $object_ref01_resdata_up0 = Helpers::to_map($object_ref01_resdata_up0_result);
+        $object_ref01_resdata_up0 = Helpers::to_map(is_object($object_ref01_resdata_up0_result) && method_exists($object_ref01_resdata_up0_result, 'data_get') ? $object_ref01_resdata_up0_result->data_get() : $object_ref01_resdata_up0_result);
         $this->assertNotNull($object_ref01_resdata_up0);
         $this->assertEquals($object_ref01_resdata_up0["id"], $object_ref01_data_up0_up["id"]);
         $this->assertEquals($object_ref01_resdata_up0[$object_ref01_markdef_up0_name], $object_ref01_markdef_up0_value);
@@ -118,7 +118,7 @@ class ObjectEntityTest extends TestCase
             "id" => $object_ref01_data["id"],
         ];
         $object_ref01_data_dt0_loaded = $object_ref01_ent->load($object_ref01_match_dt0, null);
-        $object_ref01_data_dt0_load_result = Helpers::to_map($object_ref01_data_dt0_loaded);
+        $object_ref01_data_dt0_load_result = Helpers::to_map(is_object($object_ref01_data_dt0_loaded) && method_exists($object_ref01_data_dt0_loaded, 'data_get') ? $object_ref01_data_dt0_loaded->data_get() : $object_ref01_data_dt0_loaded);
         $this->assertNotNull($object_ref01_data_dt0_load_result);
         $this->assertEquals($object_ref01_data_dt0_load_result["id"], $object_ref01_data["id"]);
 
@@ -164,22 +164,22 @@ function object_basic_setup($extra)
     // Detect ENTID env override before envOverride consumes it. When live
     // mode is on without a real override, the basic test runs against synthetic
     // IDs from the fixture and 4xx's. Surface this so the test can skip.
-    $entid_env_raw = getenv("REALREST_TEST_OBJECT_ENTID");
+    $entid_env_raw = getenv("REAL_REST_TEST_OBJECT_ENTID");
     $idmap_overridden = $entid_env_raw !== false && str_starts_with(trim($entid_env_raw), "{");
 
     $env = Runner::env_override([
-        "REALREST_TEST_OBJECT_ENTID" => $idmap,
-        "REALREST_TEST_LIVE" => "FALSE",
-        "REALREST_TEST_EXPLAIN" => "FALSE",
+        "REAL_REST_TEST_OBJECT_ENTID" => $idmap,
+        "REAL_REST_TEST_LIVE" => "FALSE",
+        "REAL_REST_TEST_EXPLAIN" => "FALSE",
     ]);
 
     $idmap_resolved = Helpers::to_map(
-        $env["REALREST_TEST_OBJECT_ENTID"]);
+        $env["REAL_REST_TEST_OBJECT_ENTID"]);
     if ($idmap_resolved === null) {
         $idmap_resolved = Helpers::to_map($idmap);
     }
 
-    if ($env["REALREST_TEST_LIVE"] === "TRUE") {
+    if ($env["REAL_REST_TEST_LIVE"] === "TRUE") {
         $merged_opts = Vs::merge([
             [
             ],
@@ -188,13 +188,13 @@ function object_basic_setup($extra)
         $client = new RealRestSDK(Helpers::to_map($merged_opts));
     }
 
-    $live = $env["REALREST_TEST_LIVE"] === "TRUE";
+    $live = $env["REAL_REST_TEST_LIVE"] === "TRUE";
     return [
         "client" => $client,
         "data" => $entity_data,
         "idmap" => $idmap_resolved,
         "env" => $env,
-        "explain" => $env["REALREST_TEST_EXPLAIN"] === "TRUE",
+        "explain" => $env["REAL_REST_TEST_EXPLAIN"] === "TRUE",
         "live" => $live,
         "synthetic_only" => $live && !$idmap_overridden,
         "now" => (int)(microtime(true) * 1000),

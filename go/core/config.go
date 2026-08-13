@@ -34,14 +34,38 @@ func MakeConfig() map[string]any {
 					map[string]any{
 						"active": true,
 						"name": "id",
-						"req": true,
+						"op": map[string]any{
+							"list": map[string]any{
+								"req": true,
+								"type": "`$STRING`",
+							},
+						},
+						"req": false,
 						"type": "`$STRING`",
 						"index$": 1,
 					},
 					map[string]any{
 						"active": true,
 						"name": "name",
-						"req": true,
+						"op": map[string]any{
+							"create": map[string]any{
+								"req": true,
+								"type": "`$STRING`",
+							},
+							"list": map[string]any{
+								"req": true,
+								"type": "`$STRING`",
+							},
+							"patch": map[string]any{
+								"req": true,
+								"type": "`$STRING`",
+							},
+							"update": map[string]any{
+								"req": true,
+								"type": "`$STRING`",
+							},
+						},
+						"req": false,
 						"type": "`$STRING`",
 						"index$": 2,
 					},
@@ -55,6 +79,7 @@ func MakeConfig() map[string]any {
 							map[string]any{
 								"active": true,
 								"args": map[string]any{},
+								"kind": "http",
 								"method": "POST",
 								"orig": "/objects",
 								"parts": []any{
@@ -68,7 +93,6 @@ func MakeConfig() map[string]any {
 								"index$": 0,
 							},
 						},
-						"key$": "create",
 					},
 					"list": map[string]any{
 						"input": "data",
@@ -89,6 +113,7 @@ func MakeConfig() map[string]any {
 										},
 									},
 								},
+								"kind": "http",
 								"method": "GET",
 								"orig": "/objects?id={ids}",
 								"parts": []any{
@@ -108,6 +133,7 @@ func MakeConfig() map[string]any {
 							map[string]any{
 								"active": true,
 								"args": map[string]any{},
+								"kind": "http",
 								"method": "GET",
 								"orig": "/objects",
 								"parts": []any{
@@ -121,7 +147,6 @@ func MakeConfig() map[string]any {
 								"index$": 1,
 							},
 						},
-						"key$": "list",
 					},
 					"load": map[string]any{
 						"input": "data",
@@ -143,6 +168,7 @@ func MakeConfig() map[string]any {
 										},
 									},
 								},
+								"kind": "http",
 								"method": "GET",
 								"orig": "/objects/{id}",
 								"parts": []any{
@@ -156,12 +182,11 @@ func MakeConfig() map[string]any {
 								},
 								"transform": map[string]any{
 									"req": "`reqdata`",
-									"res": "`body`",
+									"res": "`body.data`",
 								},
 								"index$": 0,
 							},
 						},
-						"key$": "load",
 					},
 					"patch": map[string]any{
 						"input": "data",
@@ -181,6 +206,7 @@ func MakeConfig() map[string]any {
 										},
 									},
 								},
+								"kind": "http",
 								"method": "PATCH",
 								"orig": "/objects/{id}",
 								"parts": []any{
@@ -196,10 +222,8 @@ func MakeConfig() map[string]any {
 									"req": "`reqdata`",
 									"res": "`body`",
 								},
-								"index$": 0,
 							},
 						},
-						"key$": "patch",
 					},
 					"remove": map[string]any{
 						"input": "data",
@@ -220,6 +244,7 @@ func MakeConfig() map[string]any {
 										},
 									},
 								},
+								"kind": "http",
 								"method": "DELETE",
 								"orig": "/objects/{id}",
 								"parts": []any{
@@ -238,7 +263,6 @@ func MakeConfig() map[string]any {
 								"index$": 0,
 							},
 						},
-						"key$": "remove",
 					},
 					"update": map[string]any{
 						"input": "data",
@@ -260,6 +284,7 @@ func MakeConfig() map[string]any {
 										},
 									},
 								},
+								"kind": "http",
 								"method": "PUT",
 								"orig": "/objects/{id}",
 								"parts": []any{
@@ -278,7 +303,6 @@ func MakeConfig() map[string]any {
 								"index$": 0,
 							},
 						},
-						"key$": "update",
 					},
 				},
 				"relations": map[string]any{

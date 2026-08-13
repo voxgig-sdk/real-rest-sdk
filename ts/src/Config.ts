@@ -21,7 +21,7 @@ class Config {
 
 
   main = {
-    name: 'ProjectName',
+    name: 'RealRest',
   }
 
 
@@ -64,14 +64,38 @@ class Config {
         {
           "active": true,
           "name": "id",
-          "req": true,
+          "op": {
+            "list": {
+              "req": true,
+              "type": "`$STRING`"
+            }
+          },
+          "req": false,
           "type": "`$STRING`",
           "index$": 1
         },
         {
           "active": true,
           "name": "name",
-          "req": true,
+          "op": {
+            "create": {
+              "req": true,
+              "type": "`$STRING`"
+            },
+            "list": {
+              "req": true,
+              "type": "`$STRING`"
+            },
+            "patch": {
+              "req": true,
+              "type": "`$STRING`"
+            },
+            "update": {
+              "req": true,
+              "type": "`$STRING`"
+            }
+          },
+          "req": false,
           "type": "`$STRING`",
           "index$": 2
         }
@@ -85,6 +109,7 @@ class Config {
             {
               "active": true,
               "args": {},
+              "kind": "http",
               "method": "POST",
               "orig": "/objects",
               "parts": [
@@ -119,6 +144,7 @@ class Config {
                   }
                 ]
               },
+              "kind": "http",
               "method": "GET",
               "orig": "/objects?id={ids}",
               "parts": [
@@ -138,6 +164,7 @@ class Config {
             {
               "active": true,
               "args": {},
+              "kind": "http",
               "method": "GET",
               "orig": "/objects",
               "parts": [
@@ -173,6 +200,7 @@ class Config {
                   }
                 ]
               },
+              "kind": "http",
               "method": "GET",
               "orig": "/objects/{id}",
               "parts": [
@@ -186,7 +214,7 @@ class Config {
               },
               "transform": {
                 "req": "`reqdata`",
-                "res": "`body`"
+                "res": "`body.data`"
               },
               "index$": 0
             }
@@ -211,6 +239,7 @@ class Config {
                   }
                 ]
               },
+              "kind": "http",
               "method": "PATCH",
               "orig": "/objects/{id}",
               "parts": [
@@ -250,6 +279,7 @@ class Config {
                   }
                 ]
               },
+              "kind": "http",
               "method": "DELETE",
               "orig": "/objects/{id}",
               "parts": [
@@ -290,6 +320,7 @@ class Config {
                   }
                 ]
               },
+              "kind": "http",
               "method": "PUT",
               "orig": "/objects/{id}",
               "parts": [

@@ -52,7 +52,7 @@ except Exception as err:
 
 ### 3. Load an object
 
-`load()` returns the bare record (a `dict`) and raises on error.
+`load()` returns the ENTITY — call data_get() for the record — and raises on error.
 
 ```python
 try:
@@ -65,14 +65,14 @@ except Exception as err:
 ### 4. Create, update, and remove
 
 ```python
-# Create — returns the bare created record (a dict)
-created = client.Object().create({"id": "example_id", "name": "example_name"})
+# Create — returns the ENTITY (call data_get() for the record)
+created = client.Object().create({"data": {}, "name": "example_name"})
 
 # Update — the created record's id is a plain dict key
-client.Object().update({"id": created["id"]})
+client.Object().update({"id": created.data_get()["id"], "data": {}, "name": "example_name"})
 
 # Remove
-client.Object().remove({"id": created["id"]})
+client.Object().remove({"id": created.data_get()["id"]})
 ```
 
 
@@ -149,7 +149,8 @@ Create a mock client for unit testing — no server required:
 ```python
 client = RealRestSDK.test()
 
-# Entity ops return the bare record and raise on error.
+# Entity ops return the ENTITY and raises on error;
+# call data_get() for the record.
 object = client.Object().list()
 # object contains the mock response record
 ```
@@ -249,7 +250,7 @@ All entities share the same interface.
 
 ### Result shape
 
-Entity operations return the bare result data (a `dict` for single-entity
+Entity operations return the ENTITY (call data_get() for the record) (a `dict` for single-entity
 ops, a `list` for `list`) and raise on error. Wrap calls in
 `try`/`except` to handle failures.
 
@@ -322,8 +323,6 @@ objects = client.Object().list()
 
 ```python
 object = client.Object().create({
-    "id": "example_id",  # str
-    "name": "example_name",  # str
 })
 ```
 

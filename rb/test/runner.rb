@@ -23,8 +23,8 @@ module RealRestTestRunner
   end
 
   def self.env_override(m)
-    live = getenv("REALREST_TEST_LIVE")
-    override = getenv("REALREST_TEST_OVERRIDE")
+    live = getenv("REAL_REST_TEST_LIVE")
+    override = getenv("REAL_REST_TEST_OVERRIDE")
 
     if live == "TRUE" || override == "TRUE"
       m.each_key do |key|
@@ -44,8 +44,8 @@ module RealRestTestRunner
       end
     end
 
-    explain = getenv("REALREST_TEST_EXPLAIN")
-    m["REALREST_TEST_EXPLAIN"] = explain if explain && !explain.empty?
+    explain = getenv("REAL_REST_TEST_EXPLAIN")
+    m["REAL_REST_TEST_EXPLAIN"] = explain if explain && !explain.empty?
 
     m
   end

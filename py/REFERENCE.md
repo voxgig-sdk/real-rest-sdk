@@ -88,8 +88,16 @@ object = client.Object()
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `data` | `dict` | No |  |
-| `id` | `str` | Yes |  |
-| `name` | `str` | Yes |  |
+| `id` | `str` | No |  |
+| `name` | `str` | No |  |
+
+### Field Usage by Operation
+
+| Field | load | list | create | update | remove |
+| --- | --- | --- | --- | --- | --- |
+| `data` | - | - | - | - | - |
+| `id` | - | Yes | - | - | - |
+| `name` | - | Yes | Yes | Yes | - |
 
 ### Operations
 
@@ -99,8 +107,6 @@ Create a new entity with the given data. Returns the created entity data and rai
 
 ```python
 result = client.Object().create({
-    "id": "example_id",  # str
-    "name": "example_name",  # str
 })
 ```
 

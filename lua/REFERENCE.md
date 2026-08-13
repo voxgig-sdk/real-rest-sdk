@@ -91,8 +91,16 @@ local object = client:Object(nil)
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `data` | `table` | No |  |
-| `id` | `string` | Yes |  |
-| `name` | `string` | Yes |  |
+| `id` | `string` | No |  |
+| `name` | `string` | No |  |
+
+### Field Usage by Operation
+
+| Field | load | list | create | update | remove |
+| --- | --- | --- | --- | --- | --- |
+| `data` | - | - | - | - | - |
+| `id` | - | Yes | - | - | - |
+| `name` | - | Yes | Yes | Yes | - |
 
 ### Operations
 
@@ -102,8 +110,6 @@ Create a new entity with the given data.
 
 ```lua
 local result, err = client:Object():create({
-  id = --[[ string ]],
-  name = --[[ string ]],
 })
 ```
 

@@ -99,8 +99,16 @@ fmt.Println(object.GetName()) // "object"
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `data` | `map[string]any` | No |  |
-| `id` | `string` | Yes |  |
-| `name` | `string` | Yes |  |
+| `id` | `string` | No |  |
+| `name` | `string` | No |  |
+
+### Field Usage by Operation
+
+| Field | load | list | create | update | remove |
+| --- | --- | --- | --- | --- | --- |
+| `data` | - | - | - | - | - |
+| `id` | - | Yes | - | - | - |
+| `name` | - | Yes | Yes | Yes | - |
 
 ### Operations
 
@@ -134,8 +142,6 @@ Create a new entity with the given data.
 
 ```go
 result, err := client.Object(nil).Create(map[string]any{
-    "id": "example_id",
-    "name": "example_name",
 }, nil)
 if err != nil {
     panic(err)

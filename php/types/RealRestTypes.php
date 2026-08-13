@@ -16,8 +16,8 @@ declare(strict_types=1);
 class Object
 {
     public ?array $data = null;
-    public string $id;
-    public string $name;
+    public ?string $id = null;
+    public ?string $name = null;
 }
 
 /** Request payload for Object#load. */
@@ -38,14 +38,16 @@ class ObjectListMatch
 class ObjectCreateData
 {
     public ?array $data = null;
-    public string $id;
-    public string $name;
+    public ?string $id = null;
+    public ?string $name = null;
 }
 
 /** Request payload for Object#update. */
 class ObjectUpdateData
 {
     public string $id;
+    public ?array $data = null;
+    public ?string $name = null;
 }
 
 /** Request payload for Object#remove. */

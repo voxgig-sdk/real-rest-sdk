@@ -24,6 +24,7 @@ require_relative 'prepare_method'
 require_relative 'prepare_params'
 require_relative 'prepare_path'
 require_relative 'prepare_query'
+require_relative 'graphql'
 require_relative 'result_basic'
 require_relative 'result_body'
 require_relative 'result_headers'
@@ -55,6 +56,8 @@ RealRestUtility.registrar = ->(u) {
   u.prepare_params = RealRestUtilities::PrepareParams
   u.prepare_path = RealRestUtilities::PreparePath
   u.prepare_query = RealRestUtilities::PrepareQuery
+  u.graphql_body = RealRestUtilities::GraphqlBody
+  u.graphql_errors = RealRestUtilities::GraphqlErrors
   u.result_basic = RealRestUtilities::ResultBasic
   u.result_body = RealRestUtilities::ResultBody
   u.result_headers = RealRestUtilities::ResultHeaders

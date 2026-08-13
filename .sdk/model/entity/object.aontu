@@ -12,12 +12,36 @@ main: kit: entity: object: {
     }
     {
       name: "id"
-      req: true
+      op: {
+        list: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
+      req: false
       type: "`$STRING`"
     }
     {
       name: "name"
-      req: true
+      op: {
+        create: {
+          req: true
+          type: "`$STRING`"
+        }
+        list: {
+          req: true
+          type: "`$STRING`"
+        }
+        patch: {
+          req: true
+          type: "`$STRING`"
+        }
+        update: {
+          req: true
+          type: "`$STRING`"
+        }
+      }
+      req: false
       type: "`$STRING`"
     }
   ]
@@ -118,7 +142,7 @@ main: kit: entity: object: {
           }
           transform: {
             req: "`reqdata`"
-            res: "`body`"
+            res: "`body.data`"
           }
         }
       ]

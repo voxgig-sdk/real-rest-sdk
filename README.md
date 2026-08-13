@@ -38,9 +38,18 @@ network, and no credentials:
 ### TypeScript
 
 ```ts
-const client = RealRestSDK.test()
+// The offline mock starts EMPTY — seed it with the records the test needs.
+// Shape: { entity: { <entity-name>: { <id>: <record> } } }
+const client = RealRestSDK.test({
+  entity: {
+    object: {
+      test01: { id: 'test01' },
+    },
+  },
+})
 const objects = await client.Object().list()
-// objects is an array of bare Object records populated with mock data
+// objects is an array of Object entities, populated with mock data
+// — call objects[0].data() for the record itself
 console.log(objects)
 ```
 
@@ -110,7 +119,7 @@ import { RealRestSDK } from '@voxgig-sdk/real-rest'
 
 const client = new RealRestSDK()
 
-// List all objects (returns Object[])
+// List all objects (returns ObjectEntity[] — .data() for the record)
 const objects = await client.Object().list()
 for (const object of objects) {
   console.log(object)
@@ -155,7 +164,7 @@ The API exposes one entity:
 
 | Entity | Description | API path |
 | --- | --- | --- |
-| **Object** | The Object entity (create, list, load, patch, remove, update). | `/objects` |
+| **Object** | The Object entity (create, list, load, patch, remove, update). | `/objects?id={ids}` |
 
 The operations available across these entities are **load**, **list**, **create**, **update**, **remove** — see each entity's
 own list above for exactly which it supports.
@@ -191,7 +200,7 @@ $client = new RealRestSDK();
 $objects = $client->Object()->list();
 print_r($objects);
 
-// Load a specific object (returns the bare record; throws on error)
+// Load a specific object (returns the ENTITY; call data_get() for the record; throws on error)
 $object = $client->Object()->load(["id" => "example_id"]);
 print_r($object);
 ```
@@ -222,7 +231,7 @@ client = RealRestSDK.new
 objects = client.Object.list
 puts objects
 
-# Load a specific object (returns the bare record; raises on error)
+# Load a specific object (returns the ENTITY; call data_get for the record)
 object = client.Object.load({ "id" => "example_id" })
 puts object
 ```
@@ -359,6 +368,9 @@ Pass custom features via the `extend` option at construction time.
 
 This SDK is generated from the upstream OpenAPI specification. It is an
 unofficial client and is not affiliated with the API provider.
+
+The OpenAPI spec(s) this SDK was generated from are kept in the
+[`.sdk/def/`](.sdk/def/) folder.
 
 - Upstream API: [https://restful-api.dev/](https://restful-api.dev/)
 

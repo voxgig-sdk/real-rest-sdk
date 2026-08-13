@@ -117,8 +117,16 @@ const object = client.Object()
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `data` | `Record<string, any>` | No |  |
-| `id` | `string` | Yes |  |
-| `name` | `string` | Yes |  |
+| `id` | `string` | No |  |
+| `name` | `string` | No |  |
+
+### Field Usage by Operation
+
+| Field | load | list | create | update | remove |
+| --- | --- | --- | --- | --- | --- |
+| `data` | - | - | - | - | - |
+| `id` | - | Yes | - | - | - |
+| `name` | - | Yes | Yes | Yes | - |
 
 ### Operations
 
@@ -128,8 +136,6 @@ Create a new entity with the given data.
 
 ```ts
 const result = await client.Object().create({
-  id: 'example_id',
-  name: 'example_name',
 })
 ```
 

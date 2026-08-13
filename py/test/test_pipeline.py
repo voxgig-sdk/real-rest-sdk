@@ -16,11 +16,11 @@
 import pytest
 
 from realrest_sdk import RealRestSDK
-from core.error import RealRestError
-from core.result import RealRestResult
-from core.response import RealRestResponse
-from core.spec import RealRestSpec
-from feature.base_feature import RealRestBaseFeature
+from realrest_sdk.core.error import RealRestError
+from realrest_sdk.core.result import RealRestResult
+from realrest_sdk.core.response import RealRestResponse
+from realrest_sdk.core.spec import RealRestSpec
+from realrest_sdk.feature.base_feature import RealRestBaseFeature
 
 
 def _client():

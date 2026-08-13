@@ -49,7 +49,7 @@ try {
 
 ```php
 try {
-    // load() returns the bare Object record (throws on error).
+    // load() returns the ENTITY — call data_get() for the Object record (throws on error).
     $object = $client->Object()->load(["id" => "example_id"]);
     print_r($object);
 } catch (\Throwable $err) {
@@ -60,14 +60,14 @@ try {
 ### 4. Create, update, and remove
 
 ```php
-// create() returns the bare created Object record.
-$created = $client->Object()->create(["id" => "example_id", "name" => "example_name"]);
+// create() returns the ENTITY — call data_get() for the created Object record.
+$created = $client->Object()->create(["data" => [], "name" => "example_name"]);
 
-// Update — index the bare record directly ($created["id"]).
-$client->Object()->update(["id" => $created["id"]]);
+// Update — index the record via data_get() ($created->data_get()["id"]).
+$client->Object()->update(["id" => $created->data_get()["id"], "data" => [], "name" => "example_name"]);
 
 // Remove
-$client->Object()->remove(["id" => $created["id"]]);
+$client->Object()->remove(["id" => $created->data_get()["id"]]);
 ```
 
 
@@ -153,7 +153,8 @@ $client = RealRestSDK::test([
     "entity" => ["object" => ["test01" => ["id" => "test01"]]],
 ]);
 
-// Entity ops return the bare mock record (throws on error).
+// Entity ops return the ENTITY (throws on error);
+// call data_get() for the mock record.
 $object = $client->Object()->list();
 print_r($object);
 ```
@@ -256,7 +257,7 @@ All entities share the same interface.
 
 ### Result shape
 
-Entity operations return the bare result data (an `array` for single-entity
+Entity operations return the ENTITY (call data_get() for the record) (an `array` for single-entity
 ops, a `list` for `list`) and throw on error. Wrap calls in
 `try`/`catch` to handle failures.
 
@@ -316,7 +317,7 @@ Create an instance: `$object = $client->Object();`
 #### Example: Load
 
 ```php
-// load() returns the bare Object record (throws on error).
+// load() returns the ENTITY — call data_get() for the Object record (throws on error).
 $object = $client->Object()->load(["id" => "object_id"]);
 ```
 
@@ -331,8 +332,6 @@ $objects = $client->Object()->list();
 
 ```php
 $object = $client->Object()->create([
-    "id" => null, // string
-    "name" => null, // string
 ]);
 ```
 

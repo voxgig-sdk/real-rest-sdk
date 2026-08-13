@@ -35,7 +35,9 @@ const client = new RealRestSDK()
 
 ### 2. List object records
 
-`list()` resolves to an array of Object objects — iterate it directly:
+`list()` resolves to an array of Object ENTITIES — every operation
+resolves to entities, not raw records. Iterate them directly, and call
+`.data()` on one for the record it holds:
 
 ```ts
 const objects = await client.Object().list()
@@ -61,20 +63,22 @@ try {
 ### 4. Create, update, and remove
 
 ```ts
-// Create — returns the created Object
+// Create — returns the created Object ENTITY (.data() for the record)
 const created = await client.Object().create({
-  id: 'example_id',
+  data: {},
   name: 'example_name',
 })
 
-// Update — the id comes straight off the returned entity
+// Update — the id comes off the returned entity's data()
 const updated = await client.Object().update({
-  id: created.id!,
+  id: created.data().id!,
+  data: {},
+  name: 'example_name',
 })
 
 // Remove
 await client.Object().remove({
-  id: created.id!,
+  id: created.data().id!,
 })
 ```
 
@@ -153,7 +157,8 @@ Create a mock client for unit testing — no server required:
 const client = RealRestSDK.test()
 
 const object = await client.Object().list()
-// object is a bare entity populated with mock response data
+// object is the entity, populated with mock response data
+// — call object.data() for the record itself
 console.log(object)
 ```
 
@@ -374,8 +379,6 @@ const objects = await client.Object().list()
 
 ```ts
 const object = await client.Object().create({
-  id: 'example_id',
-  name: 'example_name',
 })
 ```
 

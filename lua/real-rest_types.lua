@@ -8,8 +8,8 @@
 
 ---@class Object
 ---@field data? table
----@field id string
----@field name string
+---@field id? string
+---@field name? string
 
 ---@class ObjectLoadMatch
 ---@field id string
@@ -21,11 +21,13 @@
 
 ---@class ObjectCreateData
 ---@field data? table
----@field id string
----@field name string
+---@field id? string
+---@field name? string
 
 ---@class ObjectUpdateData
 ---@field id string
+---@field data? table
+---@field name? string
 
 ---@class ObjectRemoveMatch
 ---@field id string

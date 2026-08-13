@@ -35,14 +35,38 @@ module RealRestConfig
             {
               "active" => true,
               "name" => "id",
-              "req" => true,
+              "op" => {
+                "list" => {
+                  "req" => true,
+                  "type" => "`$STRING`",
+                },
+              },
+              "req" => false,
               "type" => "`$STRING`",
               "index$" => 1,
             },
             {
               "active" => true,
               "name" => "name",
-              "req" => true,
+              "op" => {
+                "create" => {
+                  "req" => true,
+                  "type" => "`$STRING`",
+                },
+                "list" => {
+                  "req" => true,
+                  "type" => "`$STRING`",
+                },
+                "patch" => {
+                  "req" => true,
+                  "type" => "`$STRING`",
+                },
+                "update" => {
+                  "req" => true,
+                  "type" => "`$STRING`",
+                },
+              },
+              "req" => false,
               "type" => "`$STRING`",
               "index$" => 2,
             },
@@ -56,6 +80,7 @@ module RealRestConfig
                 {
                   "active" => true,
                   "args" => {},
+                  "kind" => "http",
                   "method" => "POST",
                   "orig" => "/objects",
                   "parts" => [
@@ -90,6 +115,7 @@ module RealRestConfig
                       },
                     ],
                   },
+                  "kind" => "http",
                   "method" => "GET",
                   "orig" => "/objects?id={ids}",
                   "parts" => [
@@ -109,6 +135,7 @@ module RealRestConfig
                 {
                   "active" => true,
                   "args" => {},
+                  "kind" => "http",
                   "method" => "GET",
                   "orig" => "/objects",
                   "parts" => [
@@ -144,6 +171,7 @@ module RealRestConfig
                       },
                     ],
                   },
+                  "kind" => "http",
                   "method" => "GET",
                   "orig" => "/objects/{id}",
                   "parts" => [
@@ -157,7 +185,7 @@ module RealRestConfig
                   },
                   "transform" => {
                     "req" => "`reqdata`",
-                    "res" => "`body`",
+                    "res" => "`body.data`",
                   },
                   "index$" => 0,
                 },
@@ -182,6 +210,7 @@ module RealRestConfig
                       },
                     ],
                   },
+                  "kind" => "http",
                   "method" => "PATCH",
                   "orig" => "/objects/{id}",
                   "parts" => [
@@ -221,6 +250,7 @@ module RealRestConfig
                       },
                     ],
                   },
+                  "kind" => "http",
                   "method" => "DELETE",
                   "orig" => "/objects/{id}",
                   "parts" => [
@@ -261,6 +291,7 @@ module RealRestConfig
                       },
                     ],
                   },
+                  "kind" => "http",
                   "method" => "PUT",
                   "orig" => "/objects/{id}",
                   "parts" => [

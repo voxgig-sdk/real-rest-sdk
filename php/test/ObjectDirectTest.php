@@ -119,11 +119,11 @@ function object_direct_setup($mockres)
     $calls = new \ArrayObject();
 
     $env = Runner::env_override([
-        "REALREST_TEST_OBJECT_ENTID" => [],
-        "REALREST_TEST_LIVE" => "FALSE",
+        "REAL_REST_TEST_OBJECT_ENTID" => [],
+        "REAL_REST_TEST_LIVE" => "FALSE",
     ]);
 
-    $live = $env["REALREST_TEST_LIVE"] === "TRUE";
+    $live = $env["REAL_REST_TEST_LIVE"] === "TRUE";
 
     if ($live) {
         $merged_opts = [

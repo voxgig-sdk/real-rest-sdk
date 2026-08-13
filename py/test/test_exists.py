@@ -1,4 +1,4 @@
-# ProjectName SDK exists test
+# RealRest SDK exists test
 
 import pytest
 from realrest_sdk import RealRestSDK
