@@ -40,7 +40,7 @@ class RealRestSDK
         $utility = new RealRestUtility();
         $this->_utility = $utility;
 
-        $config = RealRestConfig::make_config();
+        $config = RealRestConfig::shared_config();
 
         $this->_rootctx = ($utility->make_context)([
             "client" => $this,

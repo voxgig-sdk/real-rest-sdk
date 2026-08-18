@@ -13,7 +13,7 @@ declare(strict_types=1);
 // assoc-arrays; these classes name the shapes for tooling and typed callers.
 
 /** Object entity data model. */
-class Object
+class ObjectType
 {
     public ?array $data = null;
     public ?string $id = null;

@@ -15,7 +15,7 @@ require_relative "../RealRest_sdk"
 module RealRestFeatureHarness
   # True when this SDK was generated with the named feature.
   def self.has_feature?(name)
-    f = RealRestConfig.make_config["feature"]
+    f = RealRestConfig.shared_config["feature"]
     f.is_a?(Hash) && !f[name].nil?
   end
 

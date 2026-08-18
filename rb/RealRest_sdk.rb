@@ -28,7 +28,7 @@ class RealRestSDK
     utility = RealRestUtility.new
     @_utility = utility
 
-    config = RealRestConfig.make_config
+    config = RealRestConfig.shared_config
 
     @_rootctx = utility.make_context.call({
       "client" => self,
