@@ -87,9 +87,9 @@ object = client.Object()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `dict` | No |  |
-| `id` | `str` | No |  |
-| `name` | `str` | No |  |
+| `data` | `dict` | No | Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.) |
+| `id` | `str` | No | Unique identifier for the object |
+| `name` | `str` | No | Name of the object |
 
 ### Field Usage by Operation
 

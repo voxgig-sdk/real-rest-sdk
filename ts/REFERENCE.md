@@ -116,9 +116,9 @@ const object = client.Object()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `Record<string, any>` | No |  |
-| `id` | `string` | No |  |
-| `name` | `string` | No |  |
+| `data` | `Record<string, any>` | No | Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.) |
+| `id` | `string` | No | Unique identifier for the object |
+| `name` | `string` | No | Name of the object |
 
 ### Field Usage by Operation
 

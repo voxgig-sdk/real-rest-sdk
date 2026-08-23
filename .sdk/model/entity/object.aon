@@ -8,6 +8,7 @@ main: kit: entity: object: {
     {
       name: "data"
       req: false
+      short: "Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.)"
       type: "`$OBJECT`"
     }
     {
@@ -19,6 +20,7 @@ main: kit: entity: object: {
         }
       }
       req: false
+      short: "Unique identifier for the object"
       type: "`$STRING`"
     }
     {
@@ -42,6 +44,7 @@ main: kit: entity: object: {
         }
       }
       req: false
+      short: "Name of the object"
       type: "`$STRING`"
     }
   ]

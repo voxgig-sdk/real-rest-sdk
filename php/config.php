@@ -33,6 +33,9 @@ class RealRestConfig
         return [
             "main" => [
                 "name" => "RealRest",
+                "slug" => "real-rest",
+                "version" => "0.0.1",
+                "target" => "php",
             ],
             "feature" => [
                 "test" => [
@@ -55,6 +58,7 @@ class RealRestConfig
           'fields' => [
             [
               'name' => 'data',
+              'short' => 'Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.)',
               'type' => '`$OBJECT`',
             ],
             [
@@ -65,6 +69,7 @@ class RealRestConfig
                   'type' => '`$STRING`',
                 ],
               ],
+              'short' => 'Unique identifier for the object',
               'type' => '`$STRING`',
             ],
             [
@@ -87,6 +92,7 @@ class RealRestConfig
                   'type' => '`$STRING`',
                 ],
               ],
+              'short' => 'Name of the object',
               'type' => '`$STRING`',
             ],
           ],

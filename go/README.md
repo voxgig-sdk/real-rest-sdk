@@ -6,7 +6,7 @@ The Golang SDK for the RealRest API — an entity-oriented client using standard
 
 It exposes the API as capitalised, semantic **Entities** — e.g. `client.Object(nil)` — each with the same small set of operations (`List`, `Load`, `Create`, `Update`, `Remove`, `Patch`) instead of raw URL paths and query strings. You call meaning, not endpoints, which keeps the cognitive load low.
 
-> Other languages, the CLI, and MCP server live alongside this one — see
+> Also generated from this model: `go-cli`, `go-mcp`, `lua`, `php`, `py`, `rb`, `ts` — see
 > the [top-level README](../README.md).
 
 
@@ -293,9 +293,9 @@ Only `Direct()` returns a response envelope — a `map[string]any` with
 
 | Field | Description |
 | --- | --- |
-| `"data"` |  |
-| `"id"` |  |
-| `"name"` |  |
+| `"data"` | Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.) |
+| `"id"` | Unique identifier for the object |
+| `"name"` | Name of the object |
 
 Operations: Create, List, Load, Patch, Remove, Update.
 
@@ -324,9 +324,9 @@ Create an instance: `object := client.Object(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `map[string]any` |  |
-| `id` | `string` |  |
-| `name` | `string` |  |
+| `data` | `map[string]any` | Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.) |
+| `id` | `string` | Unique identifier for the object |
+| `name` | `string` | Name of the object |
 
 #### Example: Load
 

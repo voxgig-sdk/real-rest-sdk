@@ -19,9 +19,20 @@ class Config {
     return fi
   }
 
+  // False for a feature added at runtime via options.extend (station's
+  // adopt path) - the constructor uses this to skip makeFeature for names
+  // no generated class backs.
+  hasFeature(this: any, fn: string) {
+    return null != FEATURE_CLASS[fn]
+  }
+
 
   main = {
     name: 'RealRest',
+        slug: "real-rest",
+    version: "0.0.1",
+    target: "ts",
+
   }
 
 
@@ -56,6 +67,7 @@ class Config {
       "fields": [
         {
           "name": "data",
+          "short": "Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.)",
           "type": "`$OBJECT`"
         },
         {
@@ -66,6 +78,7 @@ class Config {
               "type": "`$STRING`"
             }
           },
+          "short": "Unique identifier for the object",
           "type": "`$STRING`"
         },
         {
@@ -88,6 +101,7 @@ class Config {
               "type": "`$STRING`"
             }
           },
+          "short": "Name of the object",
           "type": "`$STRING`"
         }
       ],

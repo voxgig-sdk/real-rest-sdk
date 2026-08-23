@@ -90,9 +90,9 @@ local object = client:Object(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `table` | No |  |
-| `id` | `string` | No |  |
-| `name` | `string` | No |  |
+| `data` | `table` | No | Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.) |
+| `id` | `string` | No | Unique identifier for the object |
+| `name` | `string` | No | Name of the object |
 
 ### Field Usage by Operation
 

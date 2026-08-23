@@ -28,6 +28,9 @@ def make_config():
     return {
         "main": {
             "name": "RealRest",
+            "slug": "real-rest",
+            "version": "0.0.1",
+            "target": "py",
         },
         "feature": {
             "test": {
@@ -50,6 +53,7 @@ def make_config():
         "fields": [
           {
             "name": "data",
+            "short": "Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.)",
             "type": "`$OBJECT`",
           },
           {
@@ -60,6 +64,7 @@ def make_config():
                 "type": "`$STRING`",
               },
             },
+            "short": "Unique identifier for the object",
             "type": "`$STRING`",
           },
           {
@@ -82,6 +87,7 @@ def make_config():
                 "type": "`$STRING`",
               },
             },
+            "short": "Name of the object",
             "type": "`$STRING`",
           },
         ],

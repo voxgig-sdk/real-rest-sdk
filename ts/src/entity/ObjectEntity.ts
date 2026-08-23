@@ -15,7 +15,7 @@ import type {
 } from '../types'
 
 import type {
-  Object,
+  ObjectType,
   ObjectLoadMatch,
   ObjectListMatch,
   ObjectCreateData,
@@ -24,7 +24,7 @@ import type {
 } from '../RealRestTypes'
 
 // TODO: needs Entity superclass
-class ObjectEntity extends RealRestEntityBase<Object> {
+class ObjectEntity extends RealRestEntityBase<ObjectType> {
 
   constructor(client: RealRestSDK, entopts: any) {
     super(client, entopts)

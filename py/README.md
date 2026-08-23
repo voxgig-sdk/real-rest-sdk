@@ -272,9 +272,9 @@ On error, `ok` is `False` and `err` contains the error value.
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `id` |  |
-| `name` |  |
+| `data` | Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.) |
+| `id` | Unique identifier for the object |
+| `name` | Name of the object |
 
 Operations: Create, List, Load, Patch, Remove, Update.
 
@@ -303,9 +303,9 @@ Create an instance: `object = client.Object()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `dict` |  |
-| `id` | `str` |  |
-| `name` | `str` |  |
+| `data` | `dict` | Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.) |
+| `id` | `str` | Unique identifier for the object |
+| `name` | `str` | Name of the object |
 
 #### Example: Load
 

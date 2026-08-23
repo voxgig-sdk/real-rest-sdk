@@ -36,6 +36,7 @@
               "active": true,
               "name": "data",
               "req": false,
+              "short": "Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.)",
               "type": "`$OBJECT`"
             },
             {
@@ -48,6 +49,7 @@
                 }
               },
               "req": false,
+              "short": "Unique identifier for the object",
               "type": "`$STRING`"
             },
             {
@@ -72,6 +74,7 @@
                 }
               },
               "req": false,
+              "short": "Name of the object",
               "type": "`$STRING`"
             }
           ],

@@ -269,9 +269,9 @@ returns a result `Hash` with these keys:
 
 | Field | Description |
 | --- | --- |
-| `data` |  |
-| `id` |  |
-| `name` |  |
+| `data` | Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.) |
+| `id` | Unique identifier for the object |
+| `name` | Name of the object |
 
 Operations: Create, List, Load, Patch, Remove, Update.
 
@@ -300,9 +300,9 @@ Create an instance: `object = client.Object`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `Hash` |  |
-| `id` | `String` |  |
-| `name` | `String` |  |
+| `data` | `Hash` | Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.) |
+| `id` | `String` | Unique identifier for the object |
+| `name` | `String` | Name of the object |
 
 #### Example: Load
 

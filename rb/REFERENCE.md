@@ -93,9 +93,9 @@ object = client.Object
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `Hash` | No |  |
-| `id` | `String` | No |  |
-| `name` | `String` | No |  |
+| `data` | `Hash` | No | Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.) |
+| `id` | `String` | No | Unique identifier for the object |
+| `name` | `String` | No | Name of the object |
 
 ### Field Usage by Operation
 
