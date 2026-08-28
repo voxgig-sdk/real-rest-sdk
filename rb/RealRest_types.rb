@@ -36,18 +36,10 @@ ObjectLoadMatch = Struct.new(
 
 # Request payload for Object#list.
 #
-# @!attribute [rw] data
-#   @return [Hash, nil]
-#
 # @!attribute [rw] id
-#   @return [String, nil]
-#
-# @!attribute [rw] name
-#   @return [String, nil]
+#   @return [String]
 ObjectListMatch = Struct.new(
-  :data,
   :id,
-  :name,
   keyword_init: true
 )
 

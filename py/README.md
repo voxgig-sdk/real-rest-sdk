@@ -43,7 +43,7 @@ error — iterate it directly.
 
 ```python
 try:
-    objects = client.Object().list()
+    objects = client.Object().list({"id": "example_id"})
     for object in objects:
         print(object)
 except Exception as err:
@@ -316,7 +316,7 @@ object = client.Object().load({"id": "object_id"})
 #### Example: List
 
 ```python
-objects = client.Object().list()
+objects = client.Object().list({"id": "example_id"})
 ```
 
 #### Example: Create
@@ -325,6 +325,29 @@ objects = client.Object().list()
 object = client.Object().create({
 })
 ```
+
+## Features
+
+This SDK ships 1 optional features. Each is **inactive until you
+switch it on**, so an SDK you have not configured behaves exactly as if none of
+them existed — no retries, no cache, no logging, no measurable overhead.
+
+Activate a feature by name in the client options, alongside the options shown
+above:
+
+| Feature | What it does |
+|---|---|
+| [`test`](#test) | In-memory mock transport for testing without a live server |
+
+### test
+
+In-memory mock transport for testing without a live server.
+
+| Option | Default |
+|---|---|
+| `active` | `false` |
+
+Set `feature.test.active` to enable it, then override any of the options above.
 
 
 ## Advanced

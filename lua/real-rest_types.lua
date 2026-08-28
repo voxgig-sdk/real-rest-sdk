@@ -15,9 +15,7 @@
 ---@field id string
 
 ---@class ObjectListMatch
----@field data? table
----@field id? string
----@field name? string
+---@field id string
 
 ---@class ObjectCreateData
 ---@field data? table

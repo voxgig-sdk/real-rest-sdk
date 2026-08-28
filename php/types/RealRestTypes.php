@@ -29,9 +29,7 @@ class ObjectLoadMatch
 /** Request payload for Object#list. */
 class ObjectListMatch
 {
-    public ?array $data = null;
-    public ?string $id = null;
-    public ?string $name = null;
+    public string $id;
 }
 
 /** Request payload for Object#create. */

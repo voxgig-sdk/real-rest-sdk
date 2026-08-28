@@ -16,9 +16,7 @@ export interface ObjectLoadMatch {
 }
 
 export interface ObjectListMatch {
-  data?: Record<string, any>
-  id?: string
-  name?: string
+  id: string
 }
 
 export interface ObjectCreateData {

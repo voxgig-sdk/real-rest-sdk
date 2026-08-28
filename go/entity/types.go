@@ -26,9 +26,7 @@ type ObjectLoadMatch struct {
 
 // ObjectListMatch is the typed request payload for Object.ListTyped.
 type ObjectListMatch struct {
-	Data *map[string]any `json:"data,omitempty"`
-	Id *string `json:"id,omitempty"`
-	Name *string `json:"name,omitempty"`
+	Id string `json:"id"`
 }
 
 // ObjectCreateData is the typed request payload for Object.CreateTyped.

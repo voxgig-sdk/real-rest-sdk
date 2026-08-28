@@ -26,10 +26,8 @@ class ObjectLoadMatch(TypedDict):
     id: str
 
 
-class ObjectListMatch(TypedDict, total=False):
-    data: dict
+class ObjectListMatch(TypedDict):
     id: str
-    name: str
 
 
 class ObjectCreateData(TypedDict, total=False):
