@@ -62,8 +62,10 @@ main: kit: entity: object: {
         {
           method: "POST"
           orig: "/objects"
-          parts: [
-            "objects"
+          segments: [
+            {
+              lit: "objects"
+            }
           ]
           transform: {
             req: "`reqdata`"
@@ -90,8 +92,10 @@ main: kit: entity: object: {
           }
           method: "GET"
           orig: "/objects?id={ids}"
-          parts: [
-            "objects?id={ids}"
+          segments: [
+            {
+              lit: "objects?id={ids}"
+            }
           ]
           select: {
             exist: [
@@ -106,8 +110,10 @@ main: kit: entity: object: {
         {
           method: "GET"
           orig: "/objects"
-          parts: [
-            "objects"
+          segments: [
+            {
+              lit: "objects"
+            }
           ]
           transform: {
             req: "`reqdata`"
@@ -134,9 +140,13 @@ main: kit: entity: object: {
           }
           method: "GET"
           orig: "/objects/{id}"
-          parts: [
-            "objects"
-            "{id}"
+          segments: [
+            {
+              lit: "objects"
+            }
+            {
+              var: "id"
+            }
           ]
           select: {
             exist: [
@@ -167,9 +177,13 @@ main: kit: entity: object: {
           }
           method: "PATCH"
           orig: "/objects/{id}"
-          parts: [
-            "objects"
-            "{id}"
+          segments: [
+            {
+              lit: "objects"
+            }
+            {
+              var: "id"
+            }
           ]
           select: {
             exist: [
@@ -200,9 +214,13 @@ main: kit: entity: object: {
           }
           method: "DELETE"
           orig: "/objects/{id}"
-          parts: [
-            "objects"
-            "{id}"
+          segments: [
+            {
+              lit: "objects"
+            }
+            {
+              var: "id"
+            }
           ]
           select: {
             exist: [
@@ -234,9 +252,13 @@ main: kit: entity: object: {
           }
           method: "PUT"
           orig: "/objects/{id}"
-          parts: [
-            "objects"
-            "{id}"
+          segments: [
+            {
+              lit: "objects"
+            }
+            {
+              var: "id"
+            }
           ]
           select: {
             exist: [

@@ -97,6 +97,10 @@ class RealRestConfig
               'type' => '`$STRING`',
             ],
           ],
+          'id' => [
+            'field' => 'id',
+            'name' => 'id',
+          ],
           'name' => 'object',
           'op' => [
             'create' => [
@@ -108,13 +112,18 @@ class RealRestConfig
                   'kind' => 'http',
                   'method' => 'POST',
                   'orig' => '/objects',
-                  'parts' => [
-                    'objects',
+                  'segments' => [
+                    [
+                      'lit' => 'objects',
+                    ],
                   ],
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body`',
+                  ],
+                  'parts' => [
+                    'objects',
                   ],
                 ],
               ],
@@ -139,8 +148,10 @@ class RealRestConfig
                   'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/objects?id={ids}',
-                  'parts' => [
-                    'objects?id={ids}',
+                  'segments' => [
+                    [
+                      'lit' => 'objects?id={ids}',
+                    ],
                   ],
                   'select' => [
                     'exist' => [
@@ -151,19 +162,27 @@ class RealRestConfig
                     'req' => '`reqdata`',
                     'res' => '`body`',
                   ],
+                  'parts' => [
+                    'objects?id={ids}',
+                  ],
                 ],
                 [
                   'args' => [],
                   'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/objects',
-                  'parts' => [
-                    'objects',
+                  'segments' => [
+                    [
+                      'lit' => 'objects',
+                    ],
                   ],
                   'select' => [],
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body`',
+                  ],
+                  'parts' => [
+                    'objects',
                   ],
                 ],
               ],
@@ -188,9 +207,13 @@ class RealRestConfig
                   'kind' => 'http',
                   'method' => 'GET',
                   'orig' => '/objects/{id}',
-                  'parts' => [
-                    'objects',
-                    '{id}',
+                  'segments' => [
+                    [
+                      'lit' => 'objects',
+                    ],
+                    [
+                      'var' => 'id',
+                    ],
                   ],
                   'select' => [
                     'exist' => [
@@ -200,6 +223,10 @@ class RealRestConfig
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body.data`',
+                  ],
+                  'parts' => [
+                    'objects',
+                    '{id}',
                   ],
                 ],
               ],
@@ -223,9 +250,13 @@ class RealRestConfig
                   'kind' => 'http',
                   'method' => 'PATCH',
                   'orig' => '/objects/{id}',
-                  'parts' => [
-                    'objects',
-                    '{id}',
+                  'segments' => [
+                    [
+                      'lit' => 'objects',
+                    ],
+                    [
+                      'var' => 'id',
+                    ],
                   ],
                   'select' => [
                     'exist' => [
@@ -235,6 +266,10 @@ class RealRestConfig
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body`',
+                  ],
+                  'parts' => [
+                    'objects',
+                    '{id}',
                   ],
                 ],
               ],
@@ -258,9 +293,13 @@ class RealRestConfig
                   'kind' => 'http',
                   'method' => 'DELETE',
                   'orig' => '/objects/{id}',
-                  'parts' => [
-                    'objects',
-                    '{id}',
+                  'segments' => [
+                    [
+                      'lit' => 'objects',
+                    ],
+                    [
+                      'var' => 'id',
+                    ],
                   ],
                   'select' => [
                     'exist' => [
@@ -270,6 +309,10 @@ class RealRestConfig
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body`',
+                  ],
+                  'parts' => [
+                    'objects',
+                    '{id}',
                   ],
                 ],
               ],
@@ -294,9 +337,13 @@ class RealRestConfig
                   'kind' => 'http',
                   'method' => 'PUT',
                   'orig' => '/objects/{id}',
-                  'parts' => [
-                    'objects',
-                    '{id}',
+                  'segments' => [
+                    [
+                      'lit' => 'objects',
+                    ],
+                    [
+                      'var' => 'id',
+                    ],
                   ],
                   'select' => [
                     'exist' => [
@@ -306,6 +353,10 @@ class RealRestConfig
                   'transform' => [
                     'req' => '`reqdata`',
                     'res' => '`body`',
+                  ],
+                  'parts' => [
+                    'objects',
+                    '{id}',
                   ],
                 ],
               ],

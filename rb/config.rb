@@ -83,6 +83,10 @@ module RealRestConfig
               "type" => "`$STRING`",
             },
           ],
+          "id" => {
+            "field" => "id",
+            "name" => "id",
+          },
           "name" => "object",
           "op" => {
             "create" => {
@@ -94,14 +98,19 @@ module RealRestConfig
                   "kind" => "http",
                   "method" => "POST",
                   "orig" => "/objects",
-                  "parts" => [
-                    "objects",
+                  "segments" => [
+                    {
+                      "lit" => "objects",
+                    },
                   ],
                   "select" => {},
                   "transform" => {
                     "req" => "`reqdata`",
                     "res" => "`body`",
                   },
+                  "parts" => [
+                    "objects",
+                  ],
                 },
               ],
             },
@@ -125,8 +134,10 @@ module RealRestConfig
                   "kind" => "http",
                   "method" => "GET",
                   "orig" => "/objects?id={ids}",
-                  "parts" => [
-                    "objects?id={ids}",
+                  "segments" => [
+                    {
+                      "lit" => "objects?id={ids}",
+                    },
                   ],
                   "select" => {
                     "exist" => [
@@ -137,20 +148,28 @@ module RealRestConfig
                     "req" => "`reqdata`",
                     "res" => "`body`",
                   },
+                  "parts" => [
+                    "objects?id={ids}",
+                  ],
                 },
                 {
                   "args" => {},
                   "kind" => "http",
                   "method" => "GET",
                   "orig" => "/objects",
-                  "parts" => [
-                    "objects",
+                  "segments" => [
+                    {
+                      "lit" => "objects",
+                    },
                   ],
                   "select" => {},
                   "transform" => {
                     "req" => "`reqdata`",
                     "res" => "`body`",
                   },
+                  "parts" => [
+                    "objects",
+                  ],
                 },
               ],
             },
@@ -174,9 +193,13 @@ module RealRestConfig
                   "kind" => "http",
                   "method" => "GET",
                   "orig" => "/objects/{id}",
-                  "parts" => [
-                    "objects",
-                    "{id}",
+                  "segments" => [
+                    {
+                      "lit" => "objects",
+                    },
+                    {
+                      "var" => "id",
+                    },
                   ],
                   "select" => {
                     "exist" => [
@@ -187,6 +210,10 @@ module RealRestConfig
                     "req" => "`reqdata`",
                     "res" => "`body.data`",
                   },
+                  "parts" => [
+                    "objects",
+                    "{id}",
+                  ],
                 },
               ],
             },
@@ -209,9 +236,13 @@ module RealRestConfig
                   "kind" => "http",
                   "method" => "PATCH",
                   "orig" => "/objects/{id}",
-                  "parts" => [
-                    "objects",
-                    "{id}",
+                  "segments" => [
+                    {
+                      "lit" => "objects",
+                    },
+                    {
+                      "var" => "id",
+                    },
                   ],
                   "select" => {
                     "exist" => [
@@ -222,6 +253,10 @@ module RealRestConfig
                     "req" => "`reqdata`",
                     "res" => "`body`",
                   },
+                  "parts" => [
+                    "objects",
+                    "{id}",
+                  ],
                 },
               ],
             },
@@ -244,9 +279,13 @@ module RealRestConfig
                   "kind" => "http",
                   "method" => "DELETE",
                   "orig" => "/objects/{id}",
-                  "parts" => [
-                    "objects",
-                    "{id}",
+                  "segments" => [
+                    {
+                      "lit" => "objects",
+                    },
+                    {
+                      "var" => "id",
+                    },
                   ],
                   "select" => {
                     "exist" => [
@@ -257,6 +296,10 @@ module RealRestConfig
                     "req" => "`reqdata`",
                     "res" => "`body`",
                   },
+                  "parts" => [
+                    "objects",
+                    "{id}",
+                  ],
                 },
               ],
             },
@@ -280,9 +323,13 @@ module RealRestConfig
                   "kind" => "http",
                   "method" => "PUT",
                   "orig" => "/objects/{id}",
-                  "parts" => [
-                    "objects",
-                    "{id}",
+                  "segments" => [
+                    {
+                      "lit" => "objects",
+                    },
+                    {
+                      "var" => "id",
+                    },
                   ],
                   "select" => {
                     "exist" => [
@@ -293,6 +340,10 @@ module RealRestConfig
                     "req" => "`reqdata`",
                     "res" => "`body`",
                   },
+                  "parts" => [
+                    "objects",
+                    "{id}",
+                  ],
                 },
               ],
             },
