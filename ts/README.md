@@ -28,7 +28,7 @@ loading a specific record.
 ### 1. Create a client
 
 ```ts
-import { RealRestSDK } from '@voxgig-sdk/real-rest'
+import { RealRestSDK } from '@voxgig-sdk/real-rest-sdk'
 
 const client = new RealRestSDK()
 ```
@@ -465,7 +465,7 @@ real-rest/
 Import the SDK from the package root:
 
 ```ts
-import { RealRestSDK } from '@voxgig-sdk/real-rest'
+import { RealRestSDK } from '@voxgig-sdk/real-rest-sdk'
 ```
 
 ### Entity state

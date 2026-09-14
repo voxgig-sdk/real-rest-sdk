@@ -105,7 +105,7 @@ local results, err = client:Object():list()
 
 | Language | Package | Install |
 | --- | --- | --- |
-| TypeScript | `@voxgig-sdk/real-rest` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/releases) |
+| TypeScript | `@voxgig-sdk/real-rest-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/releases) |
 | Python | `voxgig-sdk-real-rest` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/releases) |
 | PHP | `voxgig-sdk/real-rest` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/releases) |
 | Golang | `github.com/voxgig-sdk/real-rest-sdk/go` | `go get github.com/voxgig-sdk/real-rest-sdk/go@latest` |
@@ -119,7 +119,7 @@ local results, err = client:Object():list()
 ### TypeScript
 
 ```ts
-import { RealRestSDK } from '@voxgig-sdk/real-rest'
+import { RealRestSDK } from '@voxgig-sdk/real-rest-sdk'
 
 const client = new RealRestSDK()
 

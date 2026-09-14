@@ -1,5 +1,5 @@
 {
-  "name": "@voxgig-sdk/real-rest",
+  "name": "@voxgig-sdk/real-rest-sdk",
   "version": "0.0.1",
   "description": "Unofficial generated TypeScript SDK for the Real REST public API. Not affiliated with or endorsed by the upstream API provider.",
   "keywords": [
