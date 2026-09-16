@@ -60,6 +60,12 @@ main: kit: entity: object: {
       name: "create"
       points: [
         {
+          contract: {
+            id: "POST /objects"
+            json: "{\"operationId\":\"createObject\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"example\":{\"data\":{\"Capacity\":\"256 GB\",\"Generation\":\"4th\",\"Price\":\"519.99\"},\"name\":\"Apple iPad Air\"},\"schema\":{\"properties\":{\"data\":{\"additionalProperties\":true,\"description\":\"Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.)\",\"nullable\":true,\"type\":\"object\"},\"name\":{\"description\":\"Name of the object\",\"type\":\"string\"}},\"required\":[\"name\"],\"type\":\"object\"}}},\"required\":true},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"example\":{\"createdAt\":\"2022-11-21T20:06:23.986Z\",\"data\":{\"Capacity\":\"256 GB\",\"Generation\":\"4th\",\"Price\":\"519.99\"},\"id\":\"13\",\"name\":\"Apple iPad Air\"},\"schema\":{\"allOf\":[{\"properties\":{\"data\":{\"additionalProperties\":true,\"description\":\"Flexible JSON object containing custom attributes of various types\",\"nullable\":true,\"type\":\"object\"},\"id\":{\"description\":\"Unique identifier for the object\",\"type\":\"string\"},\"name\":{\"description\":\"Name of the object\",\"type\":\"string\"}},\"required\":[\"id\",\"name\"],\"type\":\"object\"},{\"properties\":{\"createdAt\":{\"description\":\"Timestamp when the object was created\",\"format\":\"date-time\",\"type\":\"string\"}},\"type\":\"object\"}]}}},\"description\":\"Object created successfully\"}},\"securitySource\":\"unspecified\"}"
+            source: "openapi3"
+            version: 1
+          }
           method: "POST"
           orig: "/objects"
           segments: [
@@ -90,6 +96,12 @@ main: kit: entity: object: {
               }
             ]
           }
+          contract: {
+            id: "GET /objects?id={ids}"
+            json: "{\"operationId\":\"getObjectsByIds\",\"parameters\":[{\"description\":\"Comma-separated list of object IDs to retrieve\",\"example\":\"1,2,3\",\"in\":\"query\",\"name\":\"id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"items\":{\"properties\":{\"data\":{\"additionalProperties\":true,\"description\":\"Flexible JSON object containing custom attributes of various types\",\"nullable\":true,\"type\":\"object\"},\"id\":{\"description\":\"Unique identifier for the object\",\"type\":\"string\"},\"name\":{\"description\":\"Name of the object\",\"type\":\"string\"}},\"required\":[\"id\",\"name\"],\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"Successful response with list of requested objects\"}},\"securitySource\":\"unspecified\"}"
+            source: "openapi3"
+            version: 1
+          }
           method: "GET"
           orig: "/objects?id={ids}"
           segments: [
@@ -108,6 +120,12 @@ main: kit: entity: object: {
           }
         }
         {
+          contract: {
+            id: "GET /objects"
+            json: "{\"operationId\":\"listAllObjects\",\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"example\":[{\"data\":{\"capacity\":\"128 GB\",\"color\":\"Cloudy White\"},\"id\":\"1\",\"name\":\"Google Pixel 6 Pro\"},{\"data\":null,\"id\":\"2\",\"name\":\"Apple iPhone 12 Mini, 256GB, Blue\"}],\"schema\":{\"items\":{\"properties\":{\"data\":{\"additionalProperties\":true,\"description\":\"Flexible JSON object containing custom attributes of various types\",\"nullable\":true,\"type\":\"object\"},\"id\":{\"description\":\"Unique identifier for the object\",\"type\":\"string\"},\"name\":{\"description\":\"Name of the object\",\"type\":\"string\"}},\"required\":[\"id\",\"name\"],\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"Successful response with list of objects\"}},\"securitySource\":\"unspecified\"}"
+            source: "openapi3"
+            version: 1
+          }
           method: "GET"
           orig: "/objects"
           segments: [
@@ -137,6 +155,12 @@ main: kit: entity: object: {
                 type: "`$STRING`"
               }
             ]
+          }
+          contract: {
+            id: "GET /objects/{id}"
+            json: "{\"operationId\":\"getObjectById\",\"parameters\":[{\"description\":\"The ID of the object to retrieve\",\"example\":\"4\",\"in\":\"path\",\"name\":\"id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"example\":{\"data\":{\"color\":\"Purple\",\"price\":389.99},\"id\":\"4\",\"name\":\"Apple iPhone 11, 64GB\"},\"schema\":{\"properties\":{\"data\":{\"additionalProperties\":true,\"description\":\"Flexible JSON object containing custom attributes of various types\",\"nullable\":true,\"type\":\"object\"},\"id\":{\"description\":\"Unique identifier for the object\",\"type\":\"string\"},\"name\":{\"description\":\"Name of the object\",\"type\":\"string\"}},\"required\":[\"id\",\"name\"],\"type\":\"object\"}}},\"description\":\"Successful response with object data\"},\"404\":{\"description\":\"Object not found\"}},\"securitySource\":\"unspecified\"}"
+            source: "openapi3"
+            version: 1
           }
           method: "GET"
           orig: "/objects/{id}"
@@ -175,6 +199,12 @@ main: kit: entity: object: {
               }
             ]
           }
+          contract: {
+            id: "PATCH /objects/{id}"
+            json: "{\"operationId\":\"partialUpdateObject\",\"parameters\":[{\"description\":\"The ID of the object to partially update\",\"in\":\"path\",\"name\":\"id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"example\":{\"data\":{\"price\":140},\"name\":\"Apple AirPods (Updated)\"},\"schema\":{\"properties\":{\"data\":{\"additionalProperties\":true,\"description\":\"Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.)\",\"nullable\":true,\"type\":\"object\"},\"name\":{\"description\":\"Name of the object\",\"type\":\"string\"}},\"required\":[\"name\"],\"type\":\"object\"}}},\"required\":true},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"allOf\":[{\"properties\":{\"data\":{\"additionalProperties\":true,\"description\":\"Flexible JSON object containing custom attributes of various types\",\"nullable\":true,\"type\":\"object\"},\"id\":{\"description\":\"Unique identifier for the object\",\"type\":\"string\"},\"name\":{\"description\":\"Name of the object\",\"type\":\"string\"}},\"required\":[\"id\",\"name\"],\"type\":\"object\"},{\"properties\":{\"updatedAt\":{\"description\":\"Timestamp when the object was last updated\",\"format\":\"date-time\",\"type\":\"string\"}},\"type\":\"object\"}]}}},\"description\":\"Object partially updated successfully\"},\"404\":{\"description\":\"Object not found\"}},\"securitySource\":\"unspecified\"}"
+            source: "openapi3"
+            version: 1
+          }
           method: "PATCH"
           orig: "/objects/{id}"
           segments: [
@@ -211,6 +241,12 @@ main: kit: entity: object: {
                 type: "`$STRING`"
               }
             ]
+          }
+          contract: {
+            id: "DELETE /objects/{id}"
+            json: "{\"operationId\":\"deleteObject\",\"parameters\":[{\"description\":\"The ID of the object to delete\",\"in\":\"path\",\"name\":\"id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"message\":{\"example\":\"Object deleted successfully\",\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Object deleted successfully\"},\"404\":{\"description\":\"Object not found\"}},\"securitySource\":\"unspecified\"}"
+            source: "openapi3"
+            version: 1
           }
           method: "DELETE"
           orig: "/objects/{id}"
@@ -249,6 +285,12 @@ main: kit: entity: object: {
                 type: "`$STRING`"
               }
             ]
+          }
+          contract: {
+            id: "PUT /objects/{id}"
+            json: "{\"operationId\":\"updateObject\",\"parameters\":[{\"description\":\"The ID of the object to update\",\"example\":\"6\",\"in\":\"path\",\"name\":\"id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"example\":{\"data\":{\"color\":\"white\",\"generation\":\"3rd\",\"price\":135},\"name\":\"Apple AirPods\"},\"schema\":{\"properties\":{\"data\":{\"additionalProperties\":true,\"description\":\"Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.)\",\"nullable\":true,\"type\":\"object\"},\"name\":{\"description\":\"Name of the object\",\"type\":\"string\"}},\"required\":[\"name\"],\"type\":\"object\"}}},\"required\":true},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"example\":{\"data\":{\"color\":\"white\",\"generation\":\"3rd\",\"price\":135},\"id\":\"6\",\"name\":\"Apple AirPods\",\"updatedAt\":\"2022-11-21T20:06:23.986Z\"},\"schema\":{\"allOf\":[{\"properties\":{\"data\":{\"additionalProperties\":true,\"description\":\"Flexible JSON object containing custom attributes of various types\",\"nullable\":true,\"type\":\"object\"},\"id\":{\"description\":\"Unique identifier for the object\",\"type\":\"string\"},\"name\":{\"description\":\"Name of the object\",\"type\":\"string\"}},\"required\":[\"id\",\"name\"],\"type\":\"object\"},{\"properties\":{\"updatedAt\":{\"description\":\"Timestamp when the object was last updated\",\"format\":\"date-time\",\"type\":\"string\"}},\"type\":\"object\"}]}}},\"description\":\"Object updated successfully\"},\"404\":{\"description\":\"Object not found\"}},\"securitySource\":\"unspecified\"}"
+            source: "openapi3"
+            version: 1
           }
           method: "PUT"
           orig: "/objects/{id}"
