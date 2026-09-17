@@ -105,12 +105,12 @@ local results, err = client:Object():list()
 
 | Language | Package | Install |
 | --- | --- | --- |
-| TypeScript | `@voxgig-sdk/real-rest-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/releases) |
-| Python | `voxgig-sdk-real-rest` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/releases) |
-| PHP | `voxgig-sdk/real-rest` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/releases) |
+| TypeScript | `@voxgig-sdk/real-rest-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/tags) |
+| Python | `voxgig-sdk-real-rest` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/tags) |
+| PHP | `voxgig-sdk/real-rest` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/tags) |
 | Golang | `github.com/voxgig-sdk/real-rest-sdk/go` | `go get github.com/voxgig-sdk/real-rest-sdk/go@latest` |
-| Ruby | `voxgig-sdk-real-rest` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/releases) |
-| Lua | `voxgig-sdk-real-rest` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/releases) |
+| Ruby | `voxgig-sdk-real-rest` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/tags) |
+| Lua | `voxgig-sdk-real-rest` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/tags) |
 | Go CLI | `github.com/voxgig-sdk/real-rest-sdk/go-cli` | `go install github.com/voxgig-sdk/real-rest-sdk/go-cli/cmd/real-rest@latest` |
 | Go MCP server | `github.com/voxgig-sdk/real-rest-sdk/go-mcp` | `go get github.com/voxgig-sdk/real-rest-sdk/go-mcp@latest` |
 
