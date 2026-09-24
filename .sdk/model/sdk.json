@@ -24,36 +24,105 @@
         "repr": "auto"
       },
       "contributor": {},
+      "doc": {
+        "active": true,
+        "assets": {
+          "path": ".sdk/doc/assets"
+        },
+        "brand": {
+          "label": "",
+          "notice": "",
+          "shortNotice": "",
+          "url": ""
+        },
+        "ci": {
+          "active": true,
+          "branch": "main"
+        },
+        "content": {
+          "path": ".sdk/doc/content"
+        },
+        "edition": {
+          "summary": {
+            "active": true,
+            "base": "node_modules/@voxgig/docgen/project/.sdk",
+            "brand": {},
+            "filter": {
+              "entities": [],
+              "features": [],
+              "targets": []
+            },
+            "kind": "summary",
+            "name": "summary",
+            "origname": "",
+            "output": {
+              "path": "SUMMARY.md"
+            },
+            "package": "@voxgig/docgen",
+            "published": false,
+            "site": {
+              "active": true
+            },
+            "style": {},
+            "title": ""
+          }
+        },
+        "qa": {
+          "vocabulary": []
+        },
+        "style": {
+          "color": {
+            "accent": "#00c6d8",
+            "background": "#f5f5f9",
+            "darkBackground": "#0f1117",
+            "darkText": "#e6edf3",
+            "primary": "#e70042",
+            "text": "#0a0a0a"
+          },
+          "font": "Nunito, system-ui, sans-serif",
+          "fontFile": "",
+          "headingFont": "Nunito, system-ui, sans-serif",
+          "headingFontFile": "",
+          "logo": "",
+          "mode": "light",
+          "mono": "ui-monospace, monospace",
+          "monoFile": ""
+        },
+        "target": {}
+      },
       "entity": {
         "object": {
           "active": true,
           "alias": {
             "field": {}
           },
-          "fields": [
-            {
-              "active": true,
-              "name": "data",
-              "req": false,
-              "short": "Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.)",
-              "type": "`$OBJECT`"
+          "fields": {
+            "data": {
+              "a": true,
+              "h": "Data",
+              "n": "data",
+              "r": false,
+              "sh": "Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.)",
+              "t": "`$OBJECT`"
             },
-            {
-              "active": true,
-              "name": "id",
+            "id": {
+              "a": true,
+              "h": "Id",
+              "n": "id",
               "op": {
                 "list": {
                   "req": true,
                   "type": "`$STRING`"
                 }
               },
-              "req": false,
-              "short": "Unique identifier for the object",
-              "type": "`$STRING`"
+              "r": false,
+              "sh": "Unique identifier for the object",
+              "t": "`$STRING`"
             },
-            {
-              "active": true,
-              "name": "name",
+            "name": {
+              "a": true,
+              "h": "Name",
+              "n": "name",
               "op": {
                 "create": {
                   "req": true,
@@ -72,11 +141,11 @@
                   "type": "`$STRING`"
                 }
               },
-              "req": false,
-              "short": "Name of the object",
-              "type": "`$STRING`"
+              "r": false,
+              "sh": "Name of the object",
+              "t": "`$STRING`"
             }
-          ],
+          },
           "id": {
             "field": "id",
             "name": "id"
@@ -88,24 +157,24 @@
               "name": "create",
               "points": [
                 {
-                  "active": true,
-                  "args": {},
-                  "contract": {
+                  "a": true,
+                  "co": {
                     "id": "POST /objects",
-                    "json": "{\"operationId\":\"createObject\",\"parameters\":[],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"example\":{\"data\":{\"Capacity\":\"256 GB\",\"Generation\":\"4th\",\"Price\":\"519.99\"},\"name\":\"Apple iPad Air\"},\"schema\":{\"properties\":{\"data\":{\"additionalProperties\":true,\"description\":\"Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.)\",\"nullable\":true,\"type\":\"object\"},\"name\":{\"description\":\"Name of the object\",\"type\":\"string\"}},\"required\":[\"name\"],\"type\":\"object\"}}},\"required\":true},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"example\":{\"createdAt\":\"2022-11-21T20:06:23.986Z\",\"data\":{\"Capacity\":\"256 GB\",\"Generation\":\"4th\",\"Price\":\"519.99\"},\"id\":\"13\",\"name\":\"Apple iPad Air\"},\"schema\":{\"allOf\":[{\"properties\":{\"data\":{\"additionalProperties\":true,\"description\":\"Flexible JSON object containing custom attributes of various types\",\"nullable\":true,\"type\":\"object\"},\"id\":{\"description\":\"Unique identifier for the object\",\"type\":\"string\"},\"name\":{\"description\":\"Name of the object\",\"type\":\"string\"}},\"required\":[\"id\",\"name\"],\"type\":\"object\"},{\"properties\":{\"createdAt\":{\"description\":\"Timestamp when the object was created\",\"format\":\"date-time\",\"type\":\"string\"}},\"type\":\"object\"}]}}},\"description\":\"Object created successfully\"}},\"securitySource\":\"unspecified\"}",
                     "source": "openapi3",
-                    "version": 1
+                    "version": 2
                   },
-                  "kind": "http",
-                  "method": "POST",
-                  "orig": "/objects",
-                  "segments": [
+                  "g": {},
+                  "k": "http",
+                  "m": "POST",
+                  "o": "/objects",
+                  "q": {},
+                  "r": {},
+                  "s": [
                     {
                       "lit": "objects"
                     }
                   ],
-                  "select": {},
-                  "transform": {
+                  "t": {
                     "req": "`reqdata`",
                     "res": "`body`"
                   }
@@ -117,63 +186,63 @@
               "name": "list",
               "points": [
                 {
-                  "active": true,
-                  "args": {
+                  "a": true,
+                  "co": {
+                    "id": "GET /objects?id={ids}",
+                    "source": "openapi3",
+                    "version": 2
+                  },
+                  "g": {
                     "query": [
                       {
-                        "active": true,
-                        "example": "1,2,3",
-                        "kind": "query",
-                        "name": "id",
-                        "orig": "id",
-                        "reqd": true,
-                        "type": "`$STRING`"
+                        "a": true,
+                        "ex": "1,2,3",
+                        "k": "query",
+                        "n": "id",
+                        "or": "id",
+                        "r": true,
+                        "t": "`$STRING`"
                       }
                     ]
                   },
-                  "contract": {
-                    "id": "GET /objects?id={ids}",
-                    "json": "{\"operationId\":\"getObjectsByIds\",\"parameters\":[{\"description\":\"Comma-separated list of object IDs to retrieve\",\"example\":\"1,2,3\",\"in\":\"query\",\"name\":\"id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"items\":{\"properties\":{\"data\":{\"additionalProperties\":true,\"description\":\"Flexible JSON object containing custom attributes of various types\",\"nullable\":true,\"type\":\"object\"},\"id\":{\"description\":\"Unique identifier for the object\",\"type\":\"string\"},\"name\":{\"description\":\"Name of the object\",\"type\":\"string\"}},\"required\":[\"id\",\"name\"],\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"Successful response with list of requested objects\"}},\"securitySource\":\"unspecified\"}",
-                    "source": "openapi3",
-                    "version": 1
-                  },
-                  "kind": "http",
-                  "method": "GET",
-                  "orig": "/objects?id={ids}",
-                  "segments": [
-                    {
-                      "lit": "objects?id={ids}"
-                    }
-                  ],
-                  "select": {
+                  "k": "http",
+                  "m": "GET",
+                  "o": "/objects?id={ids}",
+                  "q": {
                     "exist": [
                       "id"
                     ]
                   },
-                  "transform": {
+                  "r": {},
+                  "s": [
+                    {
+                      "lit": "objects?id={ids}"
+                    }
+                  ],
+                  "t": {
                     "req": "`reqdata`",
                     "res": "`body`"
                   }
                 },
                 {
-                  "active": true,
-                  "args": {},
-                  "contract": {
+                  "a": true,
+                  "co": {
                     "id": "GET /objects",
-                    "json": "{\"operationId\":\"listAllObjects\",\"parameters\":[],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"example\":[{\"data\":{\"capacity\":\"128 GB\",\"color\":\"Cloudy White\"},\"id\":\"1\",\"name\":\"Google Pixel 6 Pro\"},{\"data\":null,\"id\":\"2\",\"name\":\"Apple iPhone 12 Mini, 256GB, Blue\"}],\"schema\":{\"items\":{\"properties\":{\"data\":{\"additionalProperties\":true,\"description\":\"Flexible JSON object containing custom attributes of various types\",\"nullable\":true,\"type\":\"object\"},\"id\":{\"description\":\"Unique identifier for the object\",\"type\":\"string\"},\"name\":{\"description\":\"Name of the object\",\"type\":\"string\"}},\"required\":[\"id\",\"name\"],\"type\":\"object\"},\"type\":\"array\"}}},\"description\":\"Successful response with list of objects\"}},\"securitySource\":\"unspecified\"}",
                     "source": "openapi3",
-                    "version": 1
+                    "version": 2
                   },
-                  "kind": "http",
-                  "method": "GET",
-                  "orig": "/objects",
-                  "segments": [
+                  "g": {},
+                  "k": "http",
+                  "m": "GET",
+                  "o": "/objects",
+                  "q": {},
+                  "r": {},
+                  "s": [
                     {
                       "lit": "objects"
                     }
                   ],
-                  "select": {},
-                  "transform": {
+                  "t": {
                     "req": "`reqdata`",
                     "res": "`body`"
                   }
@@ -185,30 +254,35 @@
               "name": "load",
               "points": [
                 {
-                  "active": true,
-                  "args": {
+                  "a": true,
+                  "co": {
+                    "id": "GET /objects/{id}",
+                    "source": "openapi3",
+                    "version": 2
+                  },
+                  "g": {
                     "params": [
                       {
-                        "active": true,
-                        "example": "4",
-                        "kind": "param",
-                        "name": "id",
-                        "orig": "id",
-                        "reqd": true,
-                        "type": "`$STRING`"
+                        "a": true,
+                        "ex": "4",
+                        "k": "param",
+                        "n": "id",
+                        "or": "id",
+                        "r": true,
+                        "t": "`$STRING`"
                       }
                     ]
                   },
-                  "contract": {
-                    "id": "GET /objects/{id}",
-                    "json": "{\"operationId\":\"getObjectById\",\"parameters\":[{\"description\":\"The ID of the object to retrieve\",\"example\":\"4\",\"in\":\"path\",\"name\":\"id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"example\":{\"data\":{\"color\":\"Purple\",\"price\":389.99},\"id\":\"4\",\"name\":\"Apple iPhone 11, 64GB\"},\"schema\":{\"properties\":{\"data\":{\"additionalProperties\":true,\"description\":\"Flexible JSON object containing custom attributes of various types\",\"nullable\":true,\"type\":\"object\"},\"id\":{\"description\":\"Unique identifier for the object\",\"type\":\"string\"},\"name\":{\"description\":\"Name of the object\",\"type\":\"string\"}},\"required\":[\"id\",\"name\"],\"type\":\"object\"}}},\"description\":\"Successful response with object data\"},\"404\":{\"description\":\"Object not found\"}},\"securitySource\":\"unspecified\"}",
-                    "source": "openapi3",
-                    "version": 1
+                  "k": "http",
+                  "m": "GET",
+                  "o": "/objects/{id}",
+                  "q": {
+                    "exist": [
+                      "id"
+                    ]
                   },
-                  "kind": "http",
-                  "method": "GET",
-                  "orig": "/objects/{id}",
-                  "segments": [
+                  "r": {},
+                  "s": [
                     {
                       "lit": "objects"
                     },
@@ -216,12 +290,7 @@
                       "var": "id"
                     }
                   ],
-                  "select": {
-                    "exist": [
-                      "id"
-                    ]
-                  },
-                  "transform": {
+                  "t": {
                     "req": "`reqdata`",
                     "res": "`body.data`"
                   }
@@ -233,29 +302,34 @@
               "name": "patch",
               "points": [
                 {
-                  "active": true,
-                  "args": {
+                  "a": true,
+                  "co": {
+                    "id": "PATCH /objects/{id}",
+                    "source": "openapi3",
+                    "version": 2
+                  },
+                  "g": {
                     "params": [
                       {
-                        "active": true,
-                        "kind": "param",
-                        "name": "id",
-                        "orig": "id",
-                        "reqd": true,
-                        "type": "`$STRING`"
+                        "a": true,
+                        "k": "param",
+                        "n": "id",
+                        "or": "id",
+                        "r": true,
+                        "t": "`$STRING`"
                       }
                     ]
                   },
-                  "contract": {
-                    "id": "PATCH /objects/{id}",
-                    "json": "{\"operationId\":\"partialUpdateObject\",\"parameters\":[{\"description\":\"The ID of the object to partially update\",\"in\":\"path\",\"name\":\"id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"example\":{\"data\":{\"price\":140},\"name\":\"Apple AirPods (Updated)\"},\"schema\":{\"properties\":{\"data\":{\"additionalProperties\":true,\"description\":\"Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.)\",\"nullable\":true,\"type\":\"object\"},\"name\":{\"description\":\"Name of the object\",\"type\":\"string\"}},\"required\":[\"name\"],\"type\":\"object\"}}},\"required\":true},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"allOf\":[{\"properties\":{\"data\":{\"additionalProperties\":true,\"description\":\"Flexible JSON object containing custom attributes of various types\",\"nullable\":true,\"type\":\"object\"},\"id\":{\"description\":\"Unique identifier for the object\",\"type\":\"string\"},\"name\":{\"description\":\"Name of the object\",\"type\":\"string\"}},\"required\":[\"id\",\"name\"],\"type\":\"object\"},{\"properties\":{\"updatedAt\":{\"description\":\"Timestamp when the object was last updated\",\"format\":\"date-time\",\"type\":\"string\"}},\"type\":\"object\"}]}}},\"description\":\"Object partially updated successfully\"},\"404\":{\"description\":\"Object not found\"}},\"securitySource\":\"unspecified\"}",
-                    "source": "openapi3",
-                    "version": 1
+                  "k": "http",
+                  "m": "PATCH",
+                  "o": "/objects/{id}",
+                  "q": {
+                    "exist": [
+                      "id"
+                    ]
                   },
-                  "kind": "http",
-                  "method": "PATCH",
-                  "orig": "/objects/{id}",
-                  "segments": [
+                  "r": {},
+                  "s": [
                     {
                       "lit": "objects"
                     },
@@ -263,12 +337,7 @@
                       "var": "id"
                     }
                   ],
-                  "select": {
-                    "exist": [
-                      "id"
-                    ]
-                  },
-                  "transform": {
+                  "t": {
                     "req": "`reqdata`",
                     "res": "`body`"
                   }
@@ -280,29 +349,34 @@
               "name": "remove",
               "points": [
                 {
-                  "active": true,
-                  "args": {
+                  "a": true,
+                  "co": {
+                    "id": "DELETE /objects/{id}",
+                    "source": "openapi3",
+                    "version": 2
+                  },
+                  "g": {
                     "params": [
                       {
-                        "active": true,
-                        "kind": "param",
-                        "name": "id",
-                        "orig": "id",
-                        "reqd": true,
-                        "type": "`$STRING`"
+                        "a": true,
+                        "k": "param",
+                        "n": "id",
+                        "or": "id",
+                        "r": true,
+                        "t": "`$STRING`"
                       }
                     ]
                   },
-                  "contract": {
-                    "id": "DELETE /objects/{id}",
-                    "json": "{\"operationId\":\"deleteObject\",\"parameters\":[{\"description\":\"The ID of the object to delete\",\"in\":\"path\",\"name\":\"id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"responses\":{\"200\":{\"content\":{\"application/json\":{\"schema\":{\"properties\":{\"message\":{\"example\":\"Object deleted successfully\",\"type\":\"string\"}},\"type\":\"object\"}}},\"description\":\"Object deleted successfully\"},\"404\":{\"description\":\"Object not found\"}},\"securitySource\":\"unspecified\"}",
-                    "source": "openapi3",
-                    "version": 1
+                  "k": "http",
+                  "m": "DELETE",
+                  "o": "/objects/{id}",
+                  "q": {
+                    "exist": [
+                      "id"
+                    ]
                   },
-                  "kind": "http",
-                  "method": "DELETE",
-                  "orig": "/objects/{id}",
-                  "segments": [
+                  "r": {},
+                  "s": [
                     {
                       "lit": "objects"
                     },
@@ -310,12 +384,7 @@
                       "var": "id"
                     }
                   ],
-                  "select": {
-                    "exist": [
-                      "id"
-                    ]
-                  },
-                  "transform": {
+                  "t": {
                     "req": "`reqdata`",
                     "res": "`body`"
                   }
@@ -327,30 +396,35 @@
               "name": "update",
               "points": [
                 {
-                  "active": true,
-                  "args": {
+                  "a": true,
+                  "co": {
+                    "id": "PUT /objects/{id}",
+                    "source": "openapi3",
+                    "version": 2
+                  },
+                  "g": {
                     "params": [
                       {
-                        "active": true,
-                        "example": "6",
-                        "kind": "param",
-                        "name": "id",
-                        "orig": "id",
-                        "reqd": true,
-                        "type": "`$STRING`"
+                        "a": true,
+                        "ex": "6",
+                        "k": "param",
+                        "n": "id",
+                        "or": "id",
+                        "r": true,
+                        "t": "`$STRING`"
                       }
                     ]
                   },
-                  "contract": {
-                    "id": "PUT /objects/{id}",
-                    "json": "{\"operationId\":\"updateObject\",\"parameters\":[{\"description\":\"The ID of the object to update\",\"example\":\"6\",\"in\":\"path\",\"name\":\"id\",\"required\":true,\"schema\":{\"type\":\"string\"}}],\"protocol\":\"http\",\"requestBody\":{\"content\":{\"application/json\":{\"example\":{\"data\":{\"color\":\"white\",\"generation\":\"3rd\",\"price\":135},\"name\":\"Apple AirPods\"},\"schema\":{\"properties\":{\"data\":{\"additionalProperties\":true,\"description\":\"Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.)\",\"nullable\":true,\"type\":\"object\"},\"name\":{\"description\":\"Name of the object\",\"type\":\"string\"}},\"required\":[\"name\"],\"type\":\"object\"}}},\"required\":true},\"responses\":{\"200\":{\"content\":{\"application/json\":{\"example\":{\"data\":{\"color\":\"white\",\"generation\":\"3rd\",\"price\":135},\"id\":\"6\",\"name\":\"Apple AirPods\",\"updatedAt\":\"2022-11-21T20:06:23.986Z\"},\"schema\":{\"allOf\":[{\"properties\":{\"data\":{\"additionalProperties\":true,\"description\":\"Flexible JSON object containing custom attributes of various types\",\"nullable\":true,\"type\":\"object\"},\"id\":{\"description\":\"Unique identifier for the object\",\"type\":\"string\"},\"name\":{\"description\":\"Name of the object\",\"type\":\"string\"}},\"required\":[\"id\",\"name\"],\"type\":\"object\"},{\"properties\":{\"updatedAt\":{\"description\":\"Timestamp when the object was last updated\",\"format\":\"date-time\",\"type\":\"string\"}},\"type\":\"object\"}]}}},\"description\":\"Object updated successfully\"},\"404\":{\"description\":\"Object not found\"}},\"securitySource\":\"unspecified\"}",
-                    "source": "openapi3",
-                    "version": 1
+                  "k": "http",
+                  "m": "PUT",
+                  "o": "/objects/{id}",
+                  "q": {
+                    "exist": [
+                      "id"
+                    ]
                   },
-                  "kind": "http",
-                  "method": "PUT",
-                  "orig": "/objects/{id}",
-                  "segments": [
+                  "r": {},
+                  "s": [
                     {
                       "lit": "objects"
                     },
@@ -358,12 +432,7 @@
                       "var": "id"
                     }
                   ],
-                  "select": {
-                    "exist": [
-                      "id"
-                    ]
-                  },
-                  "transform": {
+                  "t": {
                     "req": "`reqdata`",
                     "res": "`body`"
                   }
@@ -792,24 +861,24 @@
           "param": {},
           "step": [
             {
-              "active": true,
-              "data": {},
-              "input": {
+              "a": true,
+              "d": {},
+              "i": {
                 "ref": "object_ref01"
               },
-              "match": {},
-              "op": "create",
-              "spec": [],
-              "valid": []
+              "m": {},
+              "o": "create",
+              "s": [],
+              "v": []
             },
             {
-              "active": true,
-              "data": {},
-              "input": {},
-              "match": {},
-              "op": "list",
-              "spec": [],
-              "valid": [
+              "a": true,
+              "d": {},
+              "i": {},
+              "m": {},
+              "o": "list",
+              "s": [],
+              "v": [
                 {
                   "apply": "ItemExists",
                   "def": {
@@ -819,17 +888,17 @@
               ]
             },
             {
-              "active": true,
-              "data": {},
-              "input": {
+              "a": true,
+              "d": {},
+              "i": {
                 "ref": "object_ref01",
                 "srcdatavar": "object_ref01_data",
                 "suffix": "_up0",
                 "textfield": "name"
               },
-              "match": {},
-              "op": "update",
-              "spec": [
+              "m": {},
+              "o": "update",
+              "s": [
                 {
                   "apply": "TextFieldMark",
                   "def": {
@@ -837,22 +906,22 @@
                   }
                 }
               ],
-              "valid": []
+              "v": []
             },
             {
-              "active": true,
-              "data": {},
-              "input": {
+              "a": true,
+              "d": {},
+              "i": {
                 "ref": "object_ref01",
                 "srcdatavar": "object_ref01_data",
                 "suffix": "_dt0"
               },
-              "match": {
+              "m": {
                 "id": "object01"
               },
-              "op": "load",
-              "spec": [],
-              "valid": [
+              "o": "load",
+              "s": [],
+              "v": [
                 {
                   "apply": "TextFieldMark",
                   "def": {
@@ -862,29 +931,29 @@
               ]
             },
             {
-              "active": true,
-              "data": {},
-              "input": {
+              "a": true,
+              "d": {},
+              "i": {
                 "ref": "object_ref01",
                 "suffix": "_rm0"
               },
-              "match": {
+              "m": {
                 "id": "object01"
               },
-              "op": "remove",
-              "spec": [],
-              "valid": []
+              "o": "remove",
+              "s": [],
+              "v": []
             },
             {
-              "active": true,
-              "data": {},
-              "input": {
+              "a": true,
+              "d": {},
+              "i": {
                 "suffix": "_rt0"
               },
-              "match": {},
-              "op": "list",
-              "spec": [],
-              "valid": [
+              "m": {},
+              "o": "list",
+              "s": [],
+              "v": [
                 {
                   "apply": "ItemNotExists",
                   "def": {

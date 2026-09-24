@@ -87,11 +87,14 @@ local function make_config()
         ["fields"] = {
           {
             ["name"] = "data",
-            ["short"] = "Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.)",
+            ["title"] = "Data",
             ["type"] = "`$OBJECT`",
+            ["short"] = "Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.)",
           },
           {
             ["name"] = "id",
+            ["title"] = "Id",
+            ["type"] = "`$STRING`",
             ["op"] = {
               ["list"] = {
                 ["req"] = true,
@@ -99,10 +102,11 @@ local function make_config()
               },
             },
             ["short"] = "Unique identifier for the object",
-            ["type"] = "`$STRING`",
           },
           {
             ["name"] = "name",
+            ["title"] = "Name",
+            ["type"] = "`$STRING`",
             ["op"] = {
               ["create"] = {
                 ["req"] = true,
@@ -122,7 +126,6 @@ local function make_config()
               },
             },
             ["short"] = "Name of the object",
-            ["type"] = "`$STRING`",
           },
         },
         ["id"] = {
@@ -136,7 +139,6 @@ local function make_config()
             ["name"] = "create",
             ["points"] = {
               {
-                ["args"] = {},
                 ["kind"] = "http",
                 ["method"] = "POST",
                 ["orig"] = "/objects",
@@ -145,14 +147,16 @@ local function make_config()
                     ["lit"] = "objects",
                   },
                 },
-                ["select"] = {},
+                ["parts"] = {
+                  "objects",
+                },
+                ["rename"] = {},
                 ["transform"] = {
                   ["req"] = "`reqdata`",
                   ["res"] = "`body`",
                 },
-                ["parts"] = {
-                  "objects",
-                },
+                ["args"] = {},
+                ["select"] = {},
               },
             },
           },
@@ -161,18 +165,6 @@ local function make_config()
             ["name"] = "list",
             ["points"] = {
               {
-                ["args"] = {
-                  ["query"] = {
-                    {
-                      ["example"] = "1,2,3",
-                      ["kind"] = "query",
-                      ["name"] = "id",
-                      ["orig"] = "id",
-                      ["reqd"] = true,
-                      ["type"] = "`$STRING`",
-                    },
-                  },
-                },
                 ["kind"] = "http",
                 ["method"] = "GET",
                 ["orig"] = "/objects?id={ids}",
@@ -181,21 +173,33 @@ local function make_config()
                     ["lit"] = "objects?id={ids}",
                   },
                 },
+                ["parts"] = {
+                  "objects?id={ids}",
+                },
+                ["rename"] = {},
+                ["transform"] = {
+                  ["req"] = "`reqdata`",
+                  ["res"] = "`body`",
+                },
+                ["args"] = {
+                  ["query"] = {
+                    {
+                      ["name"] = "id",
+                      ["orig"] = "id",
+                      ["type"] = "`$STRING`",
+                      ["kind"] = "query",
+                      ["reqd"] = true,
+                      ["example"] = "1,2,3",
+                    },
+                  },
+                },
                 ["select"] = {
                   ["exist"] = {
                     "id",
                   },
                 },
-                ["transform"] = {
-                  ["req"] = "`reqdata`",
-                  ["res"] = "`body`",
-                },
-                ["parts"] = {
-                  "objects?id={ids}",
-                },
               },
               {
-                ["args"] = {},
                 ["kind"] = "http",
                 ["method"] = "GET",
                 ["orig"] = "/objects",
@@ -204,14 +208,16 @@ local function make_config()
                     ["lit"] = "objects",
                   },
                 },
-                ["select"] = {},
+                ["parts"] = {
+                  "objects",
+                },
+                ["rename"] = {},
                 ["transform"] = {
                   ["req"] = "`reqdata`",
                   ["res"] = "`body`",
                 },
-                ["parts"] = {
-                  "objects",
-                },
+                ["args"] = {},
+                ["select"] = {},
               },
             },
           },
@@ -220,18 +226,6 @@ local function make_config()
             ["name"] = "load",
             ["points"] = {
               {
-                ["args"] = {
-                  ["params"] = {
-                    {
-                      ["example"] = "4",
-                      ["kind"] = "param",
-                      ["name"] = "id",
-                      ["orig"] = "id",
-                      ["reqd"] = true,
-                      ["type"] = "`$STRING`",
-                    },
-                  },
-                },
                 ["kind"] = "http",
                 ["method"] = "GET",
                 ["orig"] = "/objects/{id}",
@@ -243,18 +237,31 @@ local function make_config()
                     ["var"] = "id",
                   },
                 },
-                ["select"] = {
-                  ["exist"] = {
-                    "id",
-                  },
+                ["parts"] = {
+                  "objects",
+                  "{id}",
                 },
+                ["rename"] = {},
                 ["transform"] = {
                   ["req"] = "`reqdata`",
                   ["res"] = "`body.data`",
                 },
-                ["parts"] = {
-                  "objects",
-                  "{id}",
+                ["args"] = {
+                  ["params"] = {
+                    {
+                      ["name"] = "id",
+                      ["orig"] = "id",
+                      ["type"] = "`$STRING`",
+                      ["kind"] = "param",
+                      ["reqd"] = true,
+                      ["example"] = "4",
+                    },
+                  },
+                },
+                ["select"] = {
+                  ["exist"] = {
+                    "id",
+                  },
                 },
               },
             },
@@ -264,17 +271,6 @@ local function make_config()
             ["name"] = "patch",
             ["points"] = {
               {
-                ["args"] = {
-                  ["params"] = {
-                    {
-                      ["kind"] = "param",
-                      ["name"] = "id",
-                      ["orig"] = "id",
-                      ["reqd"] = true,
-                      ["type"] = "`$STRING`",
-                    },
-                  },
-                },
                 ["kind"] = "http",
                 ["method"] = "PATCH",
                 ["orig"] = "/objects/{id}",
@@ -286,18 +282,30 @@ local function make_config()
                     ["var"] = "id",
                   },
                 },
-                ["select"] = {
-                  ["exist"] = {
-                    "id",
-                  },
+                ["parts"] = {
+                  "objects",
+                  "{id}",
                 },
+                ["rename"] = {},
                 ["transform"] = {
                   ["req"] = "`reqdata`",
                   ["res"] = "`body`",
                 },
-                ["parts"] = {
-                  "objects",
-                  "{id}",
+                ["args"] = {
+                  ["params"] = {
+                    {
+                      ["name"] = "id",
+                      ["orig"] = "id",
+                      ["type"] = "`$STRING`",
+                      ["kind"] = "param",
+                      ["reqd"] = true,
+                    },
+                  },
+                },
+                ["select"] = {
+                  ["exist"] = {
+                    "id",
+                  },
                 },
               },
             },
@@ -307,17 +315,6 @@ local function make_config()
             ["name"] = "remove",
             ["points"] = {
               {
-                ["args"] = {
-                  ["params"] = {
-                    {
-                      ["kind"] = "param",
-                      ["name"] = "id",
-                      ["orig"] = "id",
-                      ["reqd"] = true,
-                      ["type"] = "`$STRING`",
-                    },
-                  },
-                },
                 ["kind"] = "http",
                 ["method"] = "DELETE",
                 ["orig"] = "/objects/{id}",
@@ -329,18 +326,30 @@ local function make_config()
                     ["var"] = "id",
                   },
                 },
-                ["select"] = {
-                  ["exist"] = {
-                    "id",
-                  },
+                ["parts"] = {
+                  "objects",
+                  "{id}",
                 },
+                ["rename"] = {},
                 ["transform"] = {
                   ["req"] = "`reqdata`",
                   ["res"] = "`body`",
                 },
-                ["parts"] = {
-                  "objects",
-                  "{id}",
+                ["args"] = {
+                  ["params"] = {
+                    {
+                      ["name"] = "id",
+                      ["orig"] = "id",
+                      ["type"] = "`$STRING`",
+                      ["kind"] = "param",
+                      ["reqd"] = true,
+                    },
+                  },
+                },
+                ["select"] = {
+                  ["exist"] = {
+                    "id",
+                  },
                 },
               },
             },
@@ -350,18 +359,6 @@ local function make_config()
             ["name"] = "update",
             ["points"] = {
               {
-                ["args"] = {
-                  ["params"] = {
-                    {
-                      ["example"] = "6",
-                      ["kind"] = "param",
-                      ["name"] = "id",
-                      ["orig"] = "id",
-                      ["reqd"] = true,
-                      ["type"] = "`$STRING`",
-                    },
-                  },
-                },
                 ["kind"] = "http",
                 ["method"] = "PUT",
                 ["orig"] = "/objects/{id}",
@@ -373,18 +370,31 @@ local function make_config()
                     ["var"] = "id",
                   },
                 },
-                ["select"] = {
-                  ["exist"] = {
-                    "id",
-                  },
+                ["parts"] = {
+                  "objects",
+                  "{id}",
                 },
+                ["rename"] = {},
                 ["transform"] = {
                   ["req"] = "`reqdata`",
                   ["res"] = "`body`",
                 },
-                ["parts"] = {
-                  "objects",
-                  "{id}",
+                ["args"] = {
+                  ["params"] = {
+                    {
+                      ["name"] = "id",
+                      ["orig"] = "id",
+                      ["type"] = "`$STRING`",
+                      ["kind"] = "param",
+                      ["reqd"] = true,
+                      ["example"] = "6",
+                    },
+                  },
+                },
+                ["select"] = {
+                  ["exist"] = {
+                    "id",
+                  },
                 },
               },
             },
