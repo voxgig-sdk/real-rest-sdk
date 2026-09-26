@@ -106,11 +106,11 @@ local results, err = client:Object():list()
 | Language | Package | Install |
 | --- | --- | --- |
 | TypeScript | `@voxgig-sdk/real-rest-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/tags) |
-| Python | `voxgig-sdk-real-rest` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/tags) |
-| PHP | `voxgig-sdk/real-rest` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/tags) |
+| Python | `voxgig-sdk-real-rest-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/tags) |
+| PHP | `voxgig-sdk/real-rest-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/tags) |
 | Golang | `github.com/voxgig-sdk/real-rest-sdk/go` | `go get github.com/voxgig-sdk/real-rest-sdk/go@latest` |
-| Ruby | `voxgig-sdk-real-rest` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/tags) |
-| Lua | `voxgig-sdk-real-rest` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/tags) |
+| Ruby | `voxgig-sdk-real-rest-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/tags) |
+| Lua | `voxgig-sdk-real-rest-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/tags) |
 | Go CLI | `github.com/voxgig-sdk/real-rest-sdk/go-cli` | `go install github.com/voxgig-sdk/real-rest-sdk/go-cli/cmd/real-rest@latest` |
 | Go MCP server | `github.com/voxgig-sdk/real-rest-sdk/go-mcp` | `go get github.com/voxgig-sdk/real-rest-sdk/go-mcp@latest` |
 
@@ -355,10 +355,10 @@ forking the SDK.
 
 | Feature | Purpose |
 | --- | --- |
-| **RatelimitFeature** | Client-side rate limiting via a token bucket |
-| **RetryFeature** | Automatic retry of transient failures with exponential backoff |
-| **TestFeature** | In-memory mock transport for testing without a live server |
-| **TimeoutFeature** | Per-request timeout with transport abort |
+| **RatelimitFeature** | Rate limiting |
+| **RetryFeature** | Retry |
+| **TestFeature** | Test transport |
+| **TimeoutFeature** | Timeout |
 
 Pass custom features via the `extend` option at construction time.
 
