@@ -67,7 +67,7 @@ func main() {
     fmt.Println(object)
 
     // Create a object.
-    created, err := client.Object(nil).Create(map[string]any{"data": map[string]any{}, "name": "example_name"}, nil)
+    created, err := client.Object(nil).Create(map[string]any{"id": "example_id", "name": "example_name"}, nil)
     if err != nil {
         panic(err)
     }
@@ -293,7 +293,7 @@ Only `Direct()` returns a response envelope — a `map[string]any` with
 
 | Field | Description |
 | --- | --- |
-| `"data"` | Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.) |
+| `"data"` | Flexible JSON object containing custom attributes of various types |
 | `"id"` | Unique identifier for the object |
 | `"name"` | Name of the object |
 
@@ -324,7 +324,7 @@ Create an instance: `object := client.Object(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `map[string]any` | Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.) |
+| `data` | `map[string]any` | Flexible JSON object containing custom attributes of various types |
 | `id` | `string` | Unique identifier for the object |
 | `name` | `string` | Name of the object |
 
@@ -352,6 +352,8 @@ fmt.Println(objects) // the array of records
 
 ```go
 result, err := client.Object(nil).Create(map[string]any{
+    "id": "example_id",
+    "name": "example_name",
 }, nil)
 if err != nil {
     panic(err)

@@ -93,17 +93,9 @@ object = client.Object
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `Hash` | No | Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.) |
-| `id` | `String` | No | Unique identifier for the object |
-| `name` | `String` | No | Name of the object |
-
-### Field Usage by Operation
-
-| Field | load | list | create | update | remove |
-| --- | --- | --- | --- | --- | --- |
-| `data` | - | - | - | - | - |
-| `id` | - | Yes | - | - | - |
-| `name` | - | Yes | Yes | Yes | - |
+| `data` | `Hash` | No | Flexible JSON object containing custom attributes of various types |
+| `id` | `String` | Yes | Unique identifier for the object |
+| `name` | `String` | Yes | Name of the object |
 
 ### Operations
 
@@ -113,6 +105,8 @@ Create a new entity with the given data. Raises on error.
 
 ```ruby
 result = client.Object.create({
+  "id" => "example_id", # String
+  "name" => "example_name", # String
 })
 ```
 

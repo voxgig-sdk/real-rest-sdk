@@ -4,17 +4,20 @@
       "OBJECT00": {
         "data": {},
         "id": "OBJECT00",
-        "name": "s20"
+        "name": "s20",
+        "ids": "IDS01"
       },
       "OBJECT01": {
         "data": {},
         "id": "OBJECT01",
-        "name": "s3e"
+        "name": "s3e",
+        "ids": "IDS01"
       },
       "OBJECT02": {
         "data": {},
         "id": "OBJECT02",
-        "name": "s5c"
+        "name": "s5c",
+        "ids": "IDS01"
       }
     }
   },

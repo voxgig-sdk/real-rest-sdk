@@ -16,10 +16,13 @@ from __future__ import annotations
 from typing import TypedDict, Any
 
 
-class Object(TypedDict, total=False):
-    data: dict
+class ObjectRequired(TypedDict):
     id: str
     name: str
+
+
+class Object(ObjectRequired, total=False):
+    data: dict
 
 
 class ObjectLoadMatch(TypedDict):
@@ -27,13 +30,17 @@ class ObjectLoadMatch(TypedDict):
 
 
 class ObjectListMatch(TypedDict):
+    ids: str
     id: str
 
 
-class ObjectCreateData(TypedDict, total=False):
-    data: dict
+class ObjectCreateDataRequired(TypedDict):
     id: str
     name: str
+
+
+class ObjectCreateData(ObjectCreateDataRequired, total=False):
+    data: dict
 
 
 class ObjectUpdateDataRequired(TypedDict):

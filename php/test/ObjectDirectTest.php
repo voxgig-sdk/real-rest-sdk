@@ -21,13 +21,27 @@ class ObjectDirectTest extends TestCase
             $this->markTestSkipped($_reason ?? "skipped via sdk-test-control.json");
             return;
         }
+        if ($setup["live"]) {
+            foreach (["ids01"] as $_liveKey) {
+                if (!isset($setup["idmap"][$_liveKey]) || $setup["idmap"][$_liveKey] === null) {
+                    $this->markTestSkipped("live test needs $_liveKey via *_ENTID env var (synthetic IDs only)");
+                    return;
+                }
+            }
+        }
         $client = $setup["client"];
 
+        $params = [];
+        if ($setup["live"]) {
+            $params["ids"] = $setup["idmap"]["ids01"];
+        } else {
+            $params["ids"] = "direct01";
+        }
 
         $result = $client->direct([
             "path" => "objects?id={ids}",
             "method" => "GET",
-            "params" => [],
+            "params" => $params,
         ]);
         if ($setup["live"]) {
             // Live mode is lenient: synthetic IDs frequently 4xx and the

@@ -82,9 +82,15 @@ class ObjectEntity extends RealRestEntityBase_1.RealRestEntityBase {
             return (ctx.result && ctx.result.ok) ? this : out;
         }
         catch (err) {
-            fres = featureHook(ctx, 'PreUnexpected');
-            if (fres instanceof Promise) {
-                await fres;
+            // What a hook throws here must not escape the cleaning below.
+            try {
+                fres = featureHook(ctx, 'PreUnexpected');
+                if (fres instanceof Promise) {
+                    await fres;
+                }
+            }
+            catch (hookerr) {
+                err = hookerr;
             }
             err = this._unexpected(ctx, err);
             if (err) {
@@ -163,9 +169,15 @@ class ObjectEntity extends RealRestEntityBase_1.RealRestEntityBase {
             return done(ctx);
         }
         catch (err) {
-            fres = featureHook(ctx, 'PreUnexpected');
-            if (fres instanceof Promise) {
-                await fres;
+            // What a hook throws here must not escape the cleaning below.
+            try {
+                fres = featureHook(ctx, 'PreUnexpected');
+                if (fres instanceof Promise) {
+                    await fres;
+                }
+            }
+            catch (hookerr) {
+                err = hookerr;
             }
             err = this._unexpected(ctx, err);
             if (err) {
@@ -245,9 +257,15 @@ class ObjectEntity extends RealRestEntityBase_1.RealRestEntityBase {
             return (ctx.result && ctx.result.ok) ? this : out;
         }
         catch (err) {
-            fres = featureHook(ctx, 'PreUnexpected');
-            if (fres instanceof Promise) {
-                await fres;
+            // What a hook throws here must not escape the cleaning below.
+            try {
+                fres = featureHook(ctx, 'PreUnexpected');
+                if (fres instanceof Promise) {
+                    await fres;
+                }
+            }
+            catch (hookerr) {
+                err = hookerr;
             }
             err = this._unexpected(ctx, err);
             if (err) {
@@ -330,9 +348,15 @@ class ObjectEntity extends RealRestEntityBase_1.RealRestEntityBase {
             return (ctx.result && ctx.result.ok) ? this : out;
         }
         catch (err) {
-            fres = featureHook(ctx, 'PreUnexpected');
-            if (fres instanceof Promise) {
-                await fres;
+            // What a hook throws here must not escape the cleaning below.
+            try {
+                fres = featureHook(ctx, 'PreUnexpected');
+                if (fres instanceof Promise) {
+                    await fres;
+                }
+            }
+            catch (hookerr) {
+                err = hookerr;
             }
             err = this._unexpected(ctx, err);
             if (err) {
@@ -419,9 +443,15 @@ class ObjectEntity extends RealRestEntityBase_1.RealRestEntityBase {
             return out;
         }
         catch (err) {
-            fres = featureHook(ctx, 'PreUnexpected');
-            if (fres instanceof Promise) {
-                await fres;
+            // What a hook throws here must not escape the cleaning below.
+            try {
+                fres = featureHook(ctx, 'PreUnexpected');
+                if (fres instanceof Promise) {
+                    await fres;
+                }
+            }
+            catch (hookerr) {
+                err = hookerr;
             }
             err = this._unexpected(ctx, err);
             if (err) {

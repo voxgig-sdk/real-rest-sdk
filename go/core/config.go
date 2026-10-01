@@ -93,42 +93,20 @@ func MakeConfig() map[string]any {
 						"name": "data",
 						"title": "Data",
 						"type": "`$OBJECT`",
-						"short": "Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.)",
+						"short": "Flexible JSON object containing custom attributes of various types",
 					},
 					map[string]any{
 						"name": "id",
 						"title": "Id",
 						"type": "`$STRING`",
-						"op": map[string]any{
-							"list": map[string]any{
-								"req": true,
-								"type": "`$STRING`",
-							},
-						},
+						"req": true,
 						"short": "Unique identifier for the object",
 					},
 					map[string]any{
 						"name": "name",
 						"title": "Name",
 						"type": "`$STRING`",
-						"op": map[string]any{
-							"create": map[string]any{
-								"req": true,
-								"type": "`$STRING`",
-							},
-							"list": map[string]any{
-								"req": true,
-								"type": "`$STRING`",
-							},
-							"patch": map[string]any{
-								"req": true,
-								"type": "`$STRING`",
-							},
-							"update": map[string]any{
-								"req": true,
-								"type": "`$STRING`",
-							},
-						},
+						"req": true,
 						"short": "Name of the object",
 					},
 				},
@@ -186,6 +164,15 @@ func MakeConfig() map[string]any {
 									"res": "`body`",
 								},
 								"args": map[string]any{
+									"params": []any{
+										map[string]any{
+											"name": "ids",
+											"orig": "ids",
+											"type": "`$STRING`",
+											"kind": "param",
+											"reqd": true,
+										},
+									},
 									"query": []any{
 										map[string]any{
 											"name": "id",
@@ -200,6 +187,7 @@ func MakeConfig() map[string]any {
 								"select": map[string]any{
 									"exist": []any{
 										"id",
+										"ids",
 									},
 								},
 							},
@@ -248,7 +236,7 @@ func MakeConfig() map[string]any {
 								"rename": map[string]any{},
 								"transform": map[string]any{
 									"req": "`reqdata`",
-									"res": "`body.data`",
+									"res": "`body`",
 								},
 								"args": map[string]any{
 									"params": []any{

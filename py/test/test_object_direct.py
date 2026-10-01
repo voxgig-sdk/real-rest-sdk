@@ -21,13 +21,25 @@ class TestObjectDirect:
             # pytest already imported at module scope
             pytest.skip(_reason or "skipped via sdk-test-control.json")
             return
+        if setup["live"]:
+            for _live_key in ["ids01"]:
+                if setup["idmap"].get(_live_key) is None:
+                    # pytest already imported at module scope
+                    pytest.skip(f"live test needs {_live_key} via *_ENTID env var (synthetic IDs only)")
+                    return
+
         client = setup["client"]
 
+        params = {}
+        if setup["live"]:
+            params["ids"] = setup["idmap"]["ids01"]
+        else:
+            params["ids"] = "direct01"
 
         result = client.direct({
             "path": "objects?id={ids}",
             "method": "GET",
-            "params": {},
+            "params": params,
         })
         if setup["live"]:
             # Live mode is lenient: synthetic IDs frequently 4xx and the

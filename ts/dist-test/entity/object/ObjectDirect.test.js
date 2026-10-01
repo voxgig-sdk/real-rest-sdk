@@ -75,11 +75,17 @@ const utility_1 = require("../../utility");
         const setup = directSetup([{ id: 'direct01' }, { id: 'direct02' }]);
         if ((0, utility_1.maybeSkipControl)(t, 'direct', 'direct-list-object', setup.live))
             return;
+        if ((0, utility_1.skipIfMissingIds)(t, setup, ["ids01"]))
+            return;
         const { client, calls } = setup;
         const params = {};
         const query = {};
         if (setup.live) {
             query.id = "1,2,3";
+            params.ids = setup.idmap['ids01'];
+        }
+        else {
+            params.ids = 'direct01';
         }
         const result = await client.direct({
             path: 'objects?id={ids}',
@@ -109,6 +115,7 @@ const utility_1 = require("../../utility");
             (0, node_assert_1.default)(listArr.length === 2);
             (0, node_assert_1.default)(calls.length === 1);
             (0, node_assert_1.default)(calls[0].init.method === 'GET');
+            (0, node_assert_1.default)(calls[0].url.includes('direct01'));
         }
     });
 });

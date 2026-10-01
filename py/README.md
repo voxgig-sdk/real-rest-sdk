@@ -43,7 +43,7 @@ error — iterate it directly.
 
 ```python
 try:
-    objects = client.Object().list({"id": "example_id"})
+    objects = client.Object().list({"ids": "example", "id": "example_id"})
     for object in objects:
         print(object)
 except Exception as err:
@@ -66,7 +66,7 @@ except Exception as err:
 
 ```python
 # Create — returns the ENTITY (call data_get() for the record)
-created = client.Object().create({"data": {}, "name": "example_name"})
+created = client.Object().create({"id": "example_id", "name": "example_name"})
 
 # Update — the created record's id is a plain dict key
 client.Object().update({"id": created.data_get()["id"], "data": {}, "name": "example_name"})
@@ -272,7 +272,7 @@ On error, `ok` is `False` and `err` contains the error value.
 
 | Field | Description |
 | --- | --- |
-| `data` | Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.) |
+| `data` | Flexible JSON object containing custom attributes of various types |
 | `id` | Unique identifier for the object |
 | `name` | Name of the object |
 
@@ -303,7 +303,7 @@ Create an instance: `object = client.Object()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `dict` | Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.) |
+| `data` | `dict` | Flexible JSON object containing custom attributes of various types |
 | `id` | `str` | Unique identifier for the object |
 | `name` | `str` | Name of the object |
 
@@ -316,13 +316,15 @@ object = client.Object().load({"id": "object_id"})
 #### Example: List
 
 ```python
-objects = client.Object().list({"id": "example_id"})
+objects = client.Object().list({"ids": "example", "id": "example_id"})
 ```
 
 #### Example: Create
 
 ```python
 object = client.Object().create({
+    "id": "example_id",  # str
+    "name": "example_name",  # str
 })
 ```
 

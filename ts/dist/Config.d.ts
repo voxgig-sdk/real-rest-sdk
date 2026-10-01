@@ -79,43 +79,12 @@ declare class Config {
                 title: string;
                 type: string;
                 short: string;
-                op?: undefined;
+                req?: undefined;
             } | {
                 name: string;
                 title: string;
                 type: string;
-                op: {
-                    list: {
-                        req: boolean;
-                        type: string;
-                    };
-                    create?: undefined;
-                    patch?: undefined;
-                    update?: undefined;
-                };
-                short: string;
-            } | {
-                name: string;
-                title: string;
-                type: string;
-                op: {
-                    create: {
-                        req: boolean;
-                        type: string;
-                    };
-                    list: {
-                        req: boolean;
-                        type: string;
-                    };
-                    patch: {
-                        req: boolean;
-                        type: string;
-                    };
-                    update: {
-                        req: boolean;
-                        type: string;
-                    };
-                };
+                req: boolean;
                 short: string;
             })[];
             id: {
@@ -161,6 +130,13 @@ declare class Config {
                             res: string;
                         };
                         args: {
+                            params: {
+                                name: string;
+                                orig: string;
+                                type: string;
+                                kind: string;
+                                reqd: boolean;
+                            }[];
                             query: {
                                 name: string;
                                 orig: string;
@@ -187,6 +163,7 @@ declare class Config {
                             res: string;
                         };
                         args: {
+                            params?: undefined;
                             query?: undefined;
                         };
                         select: {

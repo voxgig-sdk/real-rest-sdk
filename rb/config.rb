@@ -101,42 +101,20 @@ module RealRestConfig
               "name" => "data",
               "title" => "Data",
               "type" => "`$OBJECT`",
-              "short" => "Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.)",
+              "short" => "Flexible JSON object containing custom attributes of various types",
             },
             {
               "name" => "id",
               "title" => "Id",
               "type" => "`$STRING`",
-              "op" => {
-                "list" => {
-                  "req" => true,
-                  "type" => "`$STRING`",
-                },
-              },
+              "req" => true,
               "short" => "Unique identifier for the object",
             },
             {
               "name" => "name",
               "title" => "Name",
               "type" => "`$STRING`",
-              "op" => {
-                "create" => {
-                  "req" => true,
-                  "type" => "`$STRING`",
-                },
-                "list" => {
-                  "req" => true,
-                  "type" => "`$STRING`",
-                },
-                "patch" => {
-                  "req" => true,
-                  "type" => "`$STRING`",
-                },
-                "update" => {
-                  "req" => true,
-                  "type" => "`$STRING`",
-                },
-              },
+              "req" => true,
               "short" => "Name of the object",
             },
           ],
@@ -194,6 +172,15 @@ module RealRestConfig
                     "res" => "`body`",
                   },
                   "args" => {
+                    "params" => [
+                      {
+                        "name" => "ids",
+                        "orig" => "ids",
+                        "type" => "`$STRING`",
+                        "kind" => "param",
+                        "reqd" => true,
+                      },
+                    ],
                     "query" => [
                       {
                         "name" => "id",
@@ -208,6 +195,7 @@ module RealRestConfig
                   "select" => {
                     "exist" => [
                       "id",
+                      "ids",
                     ],
                   },
                 },
@@ -256,7 +244,7 @@ module RealRestConfig
                   "rename" => {},
                   "transform" => {
                     "req" => "`reqdata`",
-                    "res" => "`body.data`",
+                    "res" => "`body`",
                   },
                   "args" => {
                     "params" => [

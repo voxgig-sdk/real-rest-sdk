@@ -116,17 +116,9 @@ const object = client.Object()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `Record<string, any>` | No | Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.) |
-| `id` | `string` | No | Unique identifier for the object |
-| `name` | `string` | No | Name of the object |
-
-### Field Usage by Operation
-
-| Field | load | list | create | update | remove |
-| --- | --- | --- | --- | --- | --- |
-| `data` | - | - | - | - | - |
-| `id` | - | Yes | - | - | - |
-| `name` | - | Yes | Yes | Yes | - |
+| `data` | `Record<string, any>` | No | Flexible JSON object containing custom attributes of various types |
+| `id` | `string` | Yes | Unique identifier for the object |
+| `name` | `string` | Yes | Name of the object |
 
 ### Operations
 
@@ -136,6 +128,8 @@ Create a new entity with the given data.
 
 ```ts
 const result = await client.Object().create({
+  id: 'example_id',
+  name: 'example_name',
 })
 ```
 
@@ -144,7 +138,7 @@ const result = await client.Object().create({
 List entities matching the given criteria. Returns an array.
 
 ```ts
-const results = await client.Object().list({ id: "example_id" })
+const results = await client.Object().list({ ids: "example", id: "example_id" })
 ```
 
 #### `load(match: object, ctrl?: object)`

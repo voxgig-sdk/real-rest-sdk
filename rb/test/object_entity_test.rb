@@ -71,6 +71,7 @@ class ObjectEntityTest < Minitest::Test
     object_ref01_ent = client.Object(nil)
     object_ref01_data = Helpers.to_map(Vs.getprop(
       Vs.getpath(setup[:data], "new.object"), "object_ref01"))
+    object_ref01_data["ids"] = setup[:idmap]["ids01"]
 
     object_ref01_data_result = object_ref01_ent.create(object_ref01_data, nil)
     object_ref01_data = Helpers.to_map(object_ref01_data_result.respond_to?(:data_get) ? object_ref01_data_result.data_get : object_ref01_data_result)
@@ -146,7 +147,7 @@ def object_basic_setup(extra)
 
   # Generate idmap via transform.
   idmap = Vs.transform(
-    ["object01", "object02", "object03"],
+    ["object01", "object02", "object03", "ids01"],
     {
       "`$PACK`" => ["", {
         "`$KEY`" => "`$COPY`",

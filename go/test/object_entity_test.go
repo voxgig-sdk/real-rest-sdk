@@ -102,6 +102,7 @@ func TestObjectEntity(t *testing.T) {
 		objectRef01Ent := client.Object(nil)
 		objectRef01Data := core.ToMapAny(vs.GetProp(
 			vs.GetPath(setup.data, []any{"new", "object"}), "object_ref01"))
+		objectRef01Data["ids"] = setup.idmap["ids01"]
 
 		objectRef01DataResult, err := objectRef01Ent.Create(objectRef01Data, nil)
 		if err != nil {
@@ -226,7 +227,7 @@ func objectBasicSetup(extra map[string]any) *entityTestSetup {
 
 	// Generate idmap via transform, matching TS pattern.
 	idmap, _ := vs.Transform(
-		[]any{"object01", "object02", "object03"},
+		[]any{"object01", "object02", "object03", "ids01"},
 		map[string]any{
 			"`$PACK`": []any{"", map[string]any{
 				"`$KEY`": "`$COPY`",

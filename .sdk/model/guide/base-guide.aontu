@@ -15,7 +15,6 @@ guide: {
     }
     path: "/objects/{id}": {
       op: load: method: *GET
-      op: load: transform: res: *("`body.data`")|top
       op: patch: method: *PATCH
       op: remove: method: *DELETE
       op: update: method: *PUT

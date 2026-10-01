@@ -77,6 +77,7 @@ class TestObjectEntity:
         object_ref01_ent = client.Object(None)
         object_ref01_data = helpers.to_map(vs.getprop(
             vs.getpath(setup["data"], "new.object"), "object_ref01"))
+        object_ref01_data["ids"] = setup["idmap"]["ids01"]
 
         object_ref01_data = helpers.to_map(runner.entity_data(object_ref01_ent.create(object_ref01_data, None)))
         assert object_ref01_data is not None
@@ -151,7 +152,7 @@ def _object_basic_setup(extra):
 
     # Generate idmap via transform.
     idmap = vs.transform(
-        ["object01", "object02", "object03"],
+        ["object01", "object02", "object03", "ids01"],
         {
             "`$PACK`": ["", {
                 "`$KEY`": "`$COPY`",

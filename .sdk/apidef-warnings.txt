@@ -1,0 +1,7 @@
+{
+  point: "warning"
+  note: "Path placeholder {ids} on entity=object op=list path=/objects?id={ids} has no declared parameter, so it is taken as a required string."
+  entity: "object"
+  path: "/objects?id={ids}"
+  op: "list"
+}

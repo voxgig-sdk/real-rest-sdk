@@ -37,6 +37,8 @@ require_once __DIR__ . '/TransformResponse.php';
 
 RealRestUtility::setRegistrar(function (RealRestUtility $u): void {
     $u->clean = [RealRestClean::class, 'call'];
+    $u->clean_add = [RealRestClean::class, 'add'];
+    $u->clean_explain = [RealRestDone::class, 'clean_explain'];
     $u->done = [RealRestDone::class, 'call'];
     $u->make_error = [RealRestMakeError::class, 'call'];
     $u->feature_add = [RealRestFeatureAdd::class, 'call'];

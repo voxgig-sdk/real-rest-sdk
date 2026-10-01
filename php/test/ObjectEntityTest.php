@@ -81,6 +81,7 @@ class ObjectEntityTest extends TestCase
         $object_ref01_ent = $client->Object(null);
         $object_ref01_data = Helpers::to_map(Vs::getprop(
             Vs::getpath($setup["data"], "new.object"), "object_ref01"));
+        $object_ref01_data["ids"] = $setup["idmap"]["ids01"];
 
         $object_ref01_data_result = $object_ref01_ent->create($object_ref01_data, null);
         $object_ref01_data = Helpers::to_map(is_object($object_ref01_data_result) && method_exists($object_ref01_data_result, 'data_get') ? $object_ref01_data_result->data_get() : $object_ref01_data_result);
@@ -157,7 +158,7 @@ function object_basic_setup($extra)
 
     // Generate idmap.
     $idmap = [];
-    foreach (["object01", "object02", "object03"] as $k) {
+    foreach (["object01", "object02", "object03", "ids01"] as $k) {
         $idmap[$k] = strtoupper($k);
     }
 

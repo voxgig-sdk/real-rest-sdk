@@ -27,13 +27,27 @@ func TestObjectDirect(t *testing.T) {
 			t.Skip(_reason)
 			return
 		}
+		if setup.live {
+			for _, _liveKey := range []string{"ids01"} {
+				if v := setup.idmap[_liveKey]; v == nil {
+					t.Skipf("live test needs %s via *_ENTID env var (synthetic IDs only)", _liveKey)
+					return
+				}
+			}
+		}
 		client := setup.client
 
+		params := map[string]any{}
+		if setup.live {
+			params["ids"] = setup.idmap["ids01"]
+		} else {
+			params["ids"] = "direct01"
+		}
 
 		result, err := client.Direct(map[string]any{
 			"path":   "objects?id={ids}",
 			"method": "GET",
-			"params": map[string]any{},
+			"params": params,
 		})
 		if setup.live {
 			// Live-mode leniency is a model decision
@@ -73,6 +87,17 @@ func TestObjectDirect(t *testing.T) {
 
 			if len(*setup.calls) != 1 {
 				t.Fatalf("expected 1 call, got %d", len(*setup.calls))
+			}
+			call := (*setup.calls)[0]
+			if initMap, ok := call["init"].(map[string]any); ok {
+				if initMap["method"] != "GET" {
+					t.Fatalf("expected method GET, got %v", initMap["method"])
+				}
+			}
+			if url, ok := call["url"].(string); ok {
+				if !strings.Contains(url, "direct01") {
+					t.Fatalf("expected url to contain direct01, got %v", url)
+				}
 			}
 		}
 	})

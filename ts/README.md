@@ -15,9 +15,13 @@ predictable and low-friction for both humans and AI agents.
 
 ## Install
 This package is not yet published to npm. Install it from the GitHub
-release tag (`ts/vX.Y.Z`):
+release tag (`ts/vX.Y.Z`, see [Releases](https://github.com/voxgig-sdk/real-rest-sdk/releases)), or from a
+clone, which carries the compiled `dist/`:
 
-- Releases: [https://github.com/voxgig-sdk/real-rest-sdk/releases](https://github.com/voxgig-sdk/real-rest-sdk/releases)
+```bash
+git clone https://github.com/voxgig-sdk/real-rest-sdk
+npm install ./real-rest-sdk/ts
+```
 
 
 ## Tutorial: your first API call
@@ -40,7 +44,7 @@ resolves to entities, not raw records. Iterate them directly, and call
 `.data()` on one for the record it holds:
 
 ```ts
-const objects = await client.Object().list({ id: "example_id" })
+const objects = await client.Object().list({ ids: "example", id: "example_id" })
 
 for (const object of objects) {
   console.log(object)
@@ -65,7 +69,7 @@ try {
 ```ts
 // Create — returns the created Object ENTITY (.data() for the record)
 const created = await client.Object().create({
-  data: {},
+  id: 'example_id',
   name: 'example_name',
 })
 
@@ -333,7 +337,7 @@ The `prepare()` method returns:
 
 | Field | Description |
 | --- | --- |
-| `data` | Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.) |
+| `data` | Flexible JSON object containing custom attributes of various types |
 | `id` | Unique identifier for the object |
 | `name` | Name of the object |
 
@@ -364,7 +368,7 @@ Create an instance: `const object = client.Object()`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `Record<string, any>` | Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.) |
+| `data` | `Record<string, any>` | Flexible JSON object containing custom attributes of various types |
 | `id` | `string` | Unique identifier for the object |
 | `name` | `string` | Name of the object |
 
@@ -377,13 +381,15 @@ const object = await client.Object().load({ id: 'object_id' })
 #### Example: List
 
 ```ts
-const objects = await client.Object().list({ id: "example_id" })
+const objects = await client.Object().list({ ids: "example", id: "example_id" })
 ```
 
 #### Example: Create
 
 ```ts
 const object = await client.Object().create({
+  id: 'example_id',
+  name: 'example_name',
 })
 ```
 

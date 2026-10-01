@@ -92,17 +92,9 @@ $object = $client->Object();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
-| `data` | `array` | No | Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.) |
-| `id` | `string` | No | Unique identifier for the object |
-| `name` | `string` | No | Name of the object |
-
-### Field Usage by Operation
-
-| Field | load | list | create | update | remove |
-| --- | --- | --- | --- | --- | --- |
-| `data` | - | - | - | - | - |
-| `id` | - | Yes | - | - | - |
-| `name` | - | Yes | Yes | Yes | - |
+| `data` | `array` | No | Flexible JSON object containing custom attributes of various types |
+| `id` | `string` | Yes | Unique identifier for the object |
+| `name` | `string` | Yes | Name of the object |
 
 ### Operations
 
@@ -112,6 +104,8 @@ Create a new entity with the given data. Throws on error.
 
 ```php
 $result = $client->Object()->create([
+  "id" => null, // string
+  "name" => null, // string
 ]);
 ```
 

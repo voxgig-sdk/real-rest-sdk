@@ -12,9 +12,14 @@ The SDK exposes the API as capitalised, semantic **Entities** — for example `$
 
 ## Install
 This package is not yet published to Packagist. Install it from the
-GitHub release tag (`php/vX.Y.Z`):
+GitHub release tag (`php/vX.Y.Z`, see [Releases](https://github.com/voxgig-sdk/real-rest-sdk/releases)), or
+from a clone as a Composer path repository:
 
-- Releases: [https://github.com/voxgig-sdk/real-rest-sdk/releases](https://github.com/voxgig-sdk/real-rest-sdk/releases)
+```bash
+git clone https://github.com/voxgig-sdk/real-rest-sdk
+composer config repositories.real-rest-sdk path ./real-rest-sdk/php
+composer require voxgig-sdk/real-rest-sdk:@dev
+```
 
 
 ## Tutorial: your first API call
@@ -62,7 +67,7 @@ try {
 
 ```php
 // create() returns the ENTITY — call data_get() for the created Object record.
-$created = $client->Object()->create(["data" => [], "name" => "example_name"]);
+$created = $client->Object()->create(["id" => "example_id", "name" => "example_name"]);
 
 // Update — index the record via data_get() ($created->data_get()["id"]).
 $client->Object()->update(["id" => $created->data_get()["id"], "data" => [], "name" => "example_name"]);
@@ -280,7 +285,7 @@ On error, `ok` is `false` and `$err` contains the error value.
 
 | Field | Description |
 | --- | --- |
-| `data` | Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.) |
+| `data` | Flexible JSON object containing custom attributes of various types |
 | `id` | Unique identifier for the object |
 | `name` | Name of the object |
 
@@ -311,7 +316,7 @@ Create an instance: `$object = $client->Object();`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `array` | Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.) |
+| `data` | `array` | Flexible JSON object containing custom attributes of various types |
 | `id` | `string` | Unique identifier for the object |
 | `name` | `string` | Name of the object |
 
@@ -333,6 +338,8 @@ $objects = $client->Object()->list();
 
 ```php
 $object = $client->Object()->create([
+    "id" => null, // string
+    "name" => null, // string
 ]);
 ```
 

@@ -85,12 +85,16 @@ describe('ObjectDirect', async () => {
     if (liveScenariosActive()) { t.skip('Covered by live operation scenarios'); return }
     const setup = directSetup([{ id: 'direct01' }, { id: 'direct02' }])
     if (maybeSkipControl(t, 'direct', 'direct-list-object', setup.live)) return
+    if (skipIfMissingIds(t, setup, ["ids01"])) return
     const { client, calls } = setup
 
     const params: any = {}
     const query: any = {}
     if (setup.live) {
       query.id = "1,2,3"
+      params.ids = setup.idmap['ids01']
+    } else {
+      params.ids = 'direct01'
     }
 
     const result: any = await client.direct({
@@ -122,6 +126,7 @@ describe('ObjectDirect', async () => {
       assert(listArr!.length === 2)
       assert(calls.length === 1)
       assert(calls[0].init.method === 'GET')
+      assert(calls[0].url.includes('direct01'))
     }
   })
 

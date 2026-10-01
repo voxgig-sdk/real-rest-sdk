@@ -14,7 +14,7 @@ Metadata kindly supplied by [www.freepublicapis.com](https://www.freepublicapis.
 
 > TypeScript, Python, PHP, Golang, Ruby, Lua SDKs, a CLI with an interactive REPL, and an MCP server for AI agents — all generated from one OpenAPI spec by [@voxgig/sdkgen](https://github.com/voxgig/sdkgen).
 
-> **Features:** `undefined`, `undefined`, `undefined`, `undefined` — opt-in,
+> **Features:** `ratelimit`, `retry`, `test`, `timeout` — opt-in,
 > inactive until switched on, and configured per client. See the Features
 > section of any SDK README below for what each one does.
 
@@ -27,7 +27,7 @@ support (`list`, `load`, `create`, `update`, `remove`, `patch`):
 
 ```ts
 const client = new RealRestSDK()
-const items = await client.Object().list({ id: "example_id" })
+const items = await client.Object().list({ ids: "example", id: "example_id" })
 ```
 
 Thinking in entities keeps the mental model small — for people and AI agents alike —
@@ -47,7 +47,7 @@ network, and no credentials:
 const client = RealRestSDK.test({
   entity: {
     object: {
-      test01: { id: 'test01' },
+      test01: { id: 'test01', name: 'example_name' },
     },
   },
 })
@@ -105,12 +105,12 @@ local results, err = client:Object():list()
 
 | Language | Package | Install |
 | --- | --- | --- |
-| TypeScript | `@voxgig-sdk/real-rest-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/tags) |
-| Python | `voxgig-sdk-real-rest-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/tags) |
-| PHP | `voxgig-sdk/real-rest-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/tags) |
+| TypeScript | `@voxgig-sdk/real-rest-sdk` | publish pending — [install from source](ts/README.md#install) |
+| Python | `voxgig-sdk-real-rest-sdk` | publish pending — [install from source](py/README.md#install) |
+| PHP | `voxgig-sdk/real-rest-sdk` | publish pending — [install from source](php/README.md#install) |
 | Golang | `github.com/voxgig-sdk/real-rest-sdk/go` | `go get github.com/voxgig-sdk/real-rest-sdk/go@latest` |
-| Ruby | `voxgig-sdk-real-rest-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/tags) |
-| Lua | `voxgig-sdk-real-rest-sdk` | publish pending — [install from git tag](https://github.com/voxgig-sdk/real-rest-sdk/tags) |
+| Ruby | `voxgig-sdk-real-rest-sdk` | publish pending — [install from source](rb/README.md#install) |
+| Lua | `voxgig-sdk-real-rest-sdk` | publish pending — [install from source](lua/README.md#install) |
 | Go CLI | `github.com/voxgig-sdk/real-rest-sdk/go-cli` | `go install github.com/voxgig-sdk/real-rest-sdk/go-cli/cmd/real-rest@latest` |
 | Go MCP server | `github.com/voxgig-sdk/real-rest-sdk/go-mcp` | `go get github.com/voxgig-sdk/real-rest-sdk/go-mcp@latest` |
 
@@ -124,7 +124,7 @@ import { RealRestSDK } from '@voxgig-sdk/real-rest-sdk'
 const client = new RealRestSDK()
 
 // List all objects (returns ObjectEntity[] — .data() for the record)
-const objects = await client.Object().list({ id: "example_id" })
+const objects = await client.Object().list({ ids: "example", id: "example_id" })
 for (const object of objects) {
   console.log(object)
 }
@@ -183,7 +183,7 @@ from realrest_sdk import RealRestSDK
 client = RealRestSDK()
 
 # List all objects (returns a list, raises on error)
-objects = client.Object().list({"id": "example_id"})
+objects = client.Object().list({"ids": "example", "id": "example_id"})
 for object in objects:
     print(object)
 

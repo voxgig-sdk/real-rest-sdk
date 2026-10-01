@@ -11,6 +11,10 @@ main: kit: flow: BasicObjectFlow:
         ref: "object_ref01"
       }
 
+      m: {
+        ids: "ids01"
+      }
+
       o: "create"
     }
 

@@ -9,44 +9,20 @@ main: kit: entity: object: {
       h: "Data"
       n: "data"
       r: false
-      sh: "Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.)"
+      sh: "Flexible JSON object containing custom attributes of various types"
       t: "`$OBJECT`"
     }
     id: {
       h: "Id"
       n: "id"
-      op: {
-        list: {
-          req: true
-          type: "`$STRING`"
-        }
-      }
-      r: false
+      r: true
       sh: "Unique identifier for the object"
       t: "`$STRING`"
     }
     name: {
       h: "Name"
       n: "name"
-      op: {
-        create: {
-          req: true
-          type: "`$STRING`"
-        }
-        list: {
-          req: true
-          type: "`$STRING`"
-        }
-        patch: {
-          req: true
-          type: "`$STRING`"
-        }
-        update: {
-          req: true
-          type: "`$STRING`"
-        }
-      }
-      r: false
+      r: true
       sh: "Name of the object"
       t: "`$STRING`"
     }
@@ -92,6 +68,15 @@ main: kit: entity: object: {
             version: 2
           }
           g: {
+            params: [
+              {
+                k: "param"
+                n: "ids"
+                or: "ids"
+                r: true
+                t: "`$STRING`"
+              }
+            ]
             query: [
               {
                 ex: "1,2,3"
@@ -108,6 +93,7 @@ main: kit: entity: object: {
           q: {
             exist: [
               "id"
+              "ids"
             ]
           }
           s: [
@@ -178,7 +164,7 @@ main: kit: entity: object: {
           ]
           t: {
             req: "`reqdata`"
-            res: "`body.data`"
+            res: "`body`"
           }
         }
       ]

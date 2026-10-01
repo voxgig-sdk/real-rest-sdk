@@ -118,42 +118,20 @@ def make_config():
             "name": "data",
             "title": "Data",
             "type": "`$OBJECT`",
-            "short": "Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.)",
+            "short": "Flexible JSON object containing custom attributes of various types",
           },
           {
             "name": "id",
             "title": "Id",
             "type": "`$STRING`",
-            "op": {
-              "list": {
-                "req": True,
-                "type": "`$STRING`",
-              },
-            },
+            "req": True,
             "short": "Unique identifier for the object",
           },
           {
             "name": "name",
             "title": "Name",
             "type": "`$STRING`",
-            "op": {
-              "create": {
-                "req": True,
-                "type": "`$STRING`",
-              },
-              "list": {
-                "req": True,
-                "type": "`$STRING`",
-              },
-              "patch": {
-                "req": True,
-                "type": "`$STRING`",
-              },
-              "update": {
-                "req": True,
-                "type": "`$STRING`",
-              },
-            },
+            "req": True,
             "short": "Name of the object",
           },
         ],
@@ -211,6 +189,15 @@ def make_config():
                   "res": "`body`",
                 },
                 "args": {
+                  "params": [
+                    {
+                      "name": "ids",
+                      "orig": "ids",
+                      "type": "`$STRING`",
+                      "kind": "param",
+                      "reqd": True,
+                    },
+                  ],
                   "query": [
                     {
                       "name": "id",
@@ -225,6 +212,7 @@ def make_config():
                 "select": {
                   "exist": [
                     "id",
+                    "ids",
                   ],
                 },
               },
@@ -273,7 +261,7 @@ def make_config():
                 "rename": {},
                 "transform": {
                   "req": "`reqdata`",
-                  "res": "`body.data`",
+                  "res": "`body`",
                 },
                 "args": {
                   "params": [

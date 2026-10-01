@@ -12,9 +12,18 @@ The SDK exposes the API as capitalised, semantic **Entities** — for example `c
 
 ## Install
 This package is not yet published to RubyGems. Install it from the
-GitHub release tag (`rb/vX.Y.Z`):
+GitHub release tag (`rb/vX.Y.Z`, see [Releases](https://github.com/voxgig-sdk/real-rest-sdk/releases)), or
+from a clone:
 
-- Releases: [https://github.com/voxgig-sdk/real-rest-sdk/releases](https://github.com/voxgig-sdk/real-rest-sdk/releases)
+```bash
+git clone https://github.com/voxgig-sdk/real-rest-sdk
+```
+
+Then add it to your `Gemfile` by path, and run `bundle install`:
+
+```ruby
+gem "voxgig-sdk-real-rest-sdk", path: "./real-rest-sdk/rb"
+```
 
 
 ## Tutorial: your first API call
@@ -60,7 +69,7 @@ end
 
 ```ruby
 # create returns the ENTITY — call data_get for the created Object record.
-created = client.Object.create({ "data" => {}, "name" => "example_name" })
+created = client.Object.create({ "id" => "example_id", "name" => "example_name" })
 
 # Update — index the record via data_get (created.data_get["id"]).
 client.Object.update({ "id" => created.data_get["id"], "data" => {}, "name" => "example_name" })
@@ -269,7 +278,7 @@ returns a result `Hash` with these keys:
 
 | Field | Description |
 | --- | --- |
-| `data` | Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.) |
+| `data` | Flexible JSON object containing custom attributes of various types |
 | `id` | Unique identifier for the object |
 | `name` | Name of the object |
 
@@ -300,7 +309,7 @@ Create an instance: `object = client.Object`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `Hash` | Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.) |
+| `data` | `Hash` | Flexible JSON object containing custom attributes of various types |
 | `id` | `String` | Unique identifier for the object |
 | `name` | `String` | Name of the object |
 
@@ -322,6 +331,8 @@ objects = client.Object.list
 
 ```ruby
 object = client.Object.create({
+  "id" => "example_id", # String
+  "name" => "example_name", # String
 })
 ```
 

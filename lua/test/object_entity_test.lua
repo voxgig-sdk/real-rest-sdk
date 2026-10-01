@@ -79,6 +79,7 @@ describe("ObjectEntity", function()
     local object_ref01_ent = client:Object(nil)
     local object_ref01_data = helpers.to_map(vs.getprop(
       vs.getpath(setup.data, "new.object"), "object_ref01"))
+    object_ref01_data["ids"] = setup.idmap["ids01"]
 
     local object_ref01_data_result, err = object_ref01_ent:create(object_ref01_data, nil)
     assert.is_nil(err)
@@ -166,7 +167,7 @@ function object_basic_setup(extra)
 
   -- Generate idmap via transform.
   local idmap = vs.transform(
-    { "object01", "object02", "object03" },
+    { "object01", "object02", "object03", "ids01" },
     {
       ["`$PACK`"] = { "", {
         ["`$KEY`"] = "`$COPY`",

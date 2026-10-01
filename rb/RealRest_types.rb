@@ -14,10 +14,10 @@
 #   @return [Hash, nil]
 #
 # @!attribute [rw] id
-#   @return [String, nil]
+#   @return [String]
 #
 # @!attribute [rw] name
-#   @return [String, nil]
+#   @return [String]
 ObjectType = Struct.new(
   :data,
   :id,
@@ -36,9 +36,13 @@ ObjectLoadMatch = Struct.new(
 
 # Request payload for Object#list.
 #
+# @!attribute [rw] ids
+#   @return [String]
+#
 # @!attribute [rw] id
 #   @return [String]
 ObjectListMatch = Struct.new(
+  :ids,
   :id,
   keyword_init: true
 )
@@ -49,10 +53,10 @@ ObjectListMatch = Struct.new(
 #   @return [Hash, nil]
 #
 # @!attribute [rw] id
-#   @return [String, nil]
+#   @return [String]
 #
 # @!attribute [rw] name
-#   @return [String, nil]
+#   @return [String]
 ObjectCreateData = Struct.new(
   :data,
   :id,

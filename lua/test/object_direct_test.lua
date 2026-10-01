@@ -17,13 +17,27 @@ describe("ObjectDirect", function()
       pending(_reason or "skipped via sdk-test-control.json")
       return
     end
+    if setup.live then
+      for _, _live_key in ipairs({"ids01"}) do
+        if setup.idmap[_live_key] == nil then
+          pending("live test needs " .. _live_key .. " via *_ENTID env var (synthetic IDs only)")
+          return
+        end
+      end
+    end
     local client = setup.client
 
+    local params = {}
+    if setup.live then
+      params["ids"] = setup.idmap["ids01"]
+    else
+      params["ids"] = "direct01"
+    end
 
     local result, err = client:direct({
       path = "objects?id={ids}",
       method = "GET",
-      params = {},
+      params = params,
     })
     if setup.live then
       -- Live mode is lenient: synthetic IDs frequently 4xx and the list-

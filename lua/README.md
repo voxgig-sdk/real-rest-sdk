@@ -59,7 +59,7 @@ print(object)
 
 ```lua
 -- Create
-local created, err = client:Object():create({ data = {}, name = "example_name" })
+local created, err = client:Object():create({ id = "example_id", name = "example_name" })
 if err then error(err) end
 
 -- Update
@@ -258,7 +258,7 @@ Only `direct()` returns a response envelope — a `table` with `ok`,
 
 | Field | Description |
 | --- | --- |
-| `data` | Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.) |
+| `data` | Flexible JSON object containing custom attributes of various types |
 | `id` | Unique identifier for the object |
 | `name` | Name of the object |
 
@@ -289,7 +289,7 @@ Create an instance: `local object = client:Object(nil)`
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `data` | `table` | Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.) |
+| `data` | `table` | Flexible JSON object containing custom attributes of various types |
 | `id` | `string` | Unique identifier for the object |
 | `name` | `string` | Name of the object |
 
@@ -309,6 +309,8 @@ local objects, err = client:Object():list()
 
 ```lua
 local object, err = client:Object():create({
+  id = "example_id", -- string
+  name = "example_name", -- string
 })
 ```
 

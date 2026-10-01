@@ -102,20 +102,14 @@
               "h": "Data",
               "n": "data",
               "r": false,
-              "sh": "Flexible JSON object containing custom attributes of various types (prices, dates, image URLs, text fields, etc.)",
+              "sh": "Flexible JSON object containing custom attributes of various types",
               "t": "`$OBJECT`"
             },
             "id": {
               "a": true,
               "h": "Id",
               "n": "id",
-              "op": {
-                "list": {
-                  "req": true,
-                  "type": "`$STRING`"
-                }
-              },
-              "r": false,
+              "r": true,
               "sh": "Unique identifier for the object",
               "t": "`$STRING`"
             },
@@ -123,25 +117,7 @@
               "a": true,
               "h": "Name",
               "n": "name",
-              "op": {
-                "create": {
-                  "req": true,
-                  "type": "`$STRING`"
-                },
-                "list": {
-                  "req": true,
-                  "type": "`$STRING`"
-                },
-                "patch": {
-                  "req": true,
-                  "type": "`$STRING`"
-                },
-                "update": {
-                  "req": true,
-                  "type": "`$STRING`"
-                }
-              },
-              "r": false,
+              "r": true,
               "sh": "Name of the object",
               "t": "`$STRING`"
             }
@@ -193,6 +169,16 @@
                     "version": 2
                   },
                   "g": {
+                    "params": [
+                      {
+                        "a": true,
+                        "k": "param",
+                        "n": "ids",
+                        "or": "ids",
+                        "r": true,
+                        "t": "`$STRING`"
+                      }
+                    ],
                     "query": [
                       {
                         "a": true,
@@ -210,7 +196,8 @@
                   "o": "/objects?id={ids}",
                   "q": {
                     "exist": [
-                      "id"
+                      "id",
+                      "ids"
                     ]
                   },
                   "r": {},
@@ -292,7 +279,7 @@
                   ],
                   "t": {
                     "req": "`reqdata`",
-                    "res": "`body.data`"
+                    "res": "`body`"
                   }
                 }
               ]
@@ -870,7 +857,9 @@
               "i": {
                 "ref": "object_ref01"
               },
-              "m": {},
+              "m": {
+                "ids": "ids01"
+              },
               "o": "create",
               "s": [],
               "v": []
@@ -1002,7 +991,12 @@
         },
         "base": "http://localhost:8000",
         "clean": {
-          "keys": "key,token,id"
+          "active": true,
+          "hint": "0",
+          "keys": "key,secret,token,password,passwd,authorization,cookie,credential,signature",
+          "mask": "[redacted]",
+          "min": "4",
+          "values": ""
         },
         "entity": {
           "`$CHILD`": {

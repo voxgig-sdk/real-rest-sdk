@@ -1,18 +1,19 @@
 export interface ObjectType {
     data?: Record<string, any>;
-    id?: string;
-    name?: string;
+    id: string;
+    name: string;
 }
 export interface ObjectLoadMatch {
     id: string;
 }
 export interface ObjectListMatch {
+    ids: string;
     id: string;
 }
 export interface ObjectCreateData {
     data?: Record<string, any>;
-    id?: string;
-    name?: string;
+    id: string;
+    name: string;
 }
 export interface ObjectUpdateData {
     id: string;
