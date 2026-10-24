@@ -96,6 +96,7 @@ def make_config():
         },
         "optspec": {
           "clearTimer": "`$FUNCTION`",
+          "now": "`$FUNCTION`",
           "setTimer": "`$FUNCTION`",
         },
         "strict": False,
@@ -115,6 +116,13 @@ def make_config():
       "object": {
         "fields": [
           {
+            "name": "createdAt",
+            "title": "Created At",
+            "type": "`$STRING`",
+            "short": "Timestamp when the object was created",
+            "format": "date-time",
+          },
+          {
             "name": "data",
             "title": "Data",
             "type": "`$OBJECT`",
@@ -133,6 +141,13 @@ def make_config():
             "type": "`$STRING`",
             "req": True,
             "short": "Name of the object",
+          },
+          {
+            "name": "updatedAt",
+            "title": "Updated At",
+            "type": "`$STRING`",
+            "short": "Timestamp when the object was last updated",
+            "format": "date-time",
           },
         ],
         "id": {
@@ -164,6 +179,10 @@ def make_config():
                 },
                 "args": {},
                 "select": {},
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
+                },
               },
             ],
           },
@@ -206,6 +225,7 @@ def make_config():
                       "kind": "query",
                       "reqd": True,
                       "example": "1,2,3",
+                      "field": True,
                     },
                   ],
                 },
@@ -214,6 +234,10 @@ def make_config():
                     "id",
                     "ids",
                   ],
+                },
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
                 },
               },
               {
@@ -235,6 +259,10 @@ def make_config():
                 },
                 "args": {},
                 "select": {},
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
+                },
               },
             ],
           },
@@ -280,6 +308,10 @@ def make_config():
                     "id",
                   ],
                 },
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
+                },
               },
             ],
           },
@@ -323,6 +355,10 @@ def make_config():
                   "exist": [
                     "id",
                   ],
+                },
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
                 },
               },
             ],
@@ -368,6 +404,10 @@ def make_config():
                     "id",
                   ],
                 },
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
+                },
               },
             ],
           },
@@ -412,6 +452,10 @@ def make_config():
                   "exist": [
                     "id",
                   ],
+                },
+                "response": {
+                  "kind": "json",
+                  "media": "application/json",
                 },
               },
             ],

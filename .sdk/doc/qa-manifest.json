@@ -3,5 +3,23 @@
     "SUMMARY.md"
   ],
   "config": ".sdk/doc/qa/vale.ini",
-  "routes": {}
+  "routes": {},
+  "quoted": {
+    "SUMMARY.md": [
+      "Flexible JSON object containing custom attributes of various types",
+      "Name of the object",
+      "Object created successfully",
+      "Object deleted successfully",
+      "Object partially updated successfully",
+      "Object updated successfully",
+      "Production server",
+      "Successful response with list of objects",
+      "Successful response with list of requested objects",
+      "Successful response with object data",
+      "This API is designed to handle your HTTP requests 24/7 for free, supporting various methods like GET, POST, PUT, DELETE, and PATCH. It is ideal for demo projects, testing, learning, or educational purposes, providing a reliable backend to store and retrieve data. Your data is securely stored in a real database, ensuring that your created data will be preserved and not lost.",
+      "Timestamp when the object was created",
+      "Timestamp when the object was last updated",
+      "Unique identifier for the object"
+    ]
+  }
 }

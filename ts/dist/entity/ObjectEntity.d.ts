@@ -1,7 +1,7 @@
 import { RealRestEntityBase } from '../RealRestEntityBase';
 import type { RealRestSDK } from '../RealRestSDK';
 import type { Control } from '../types';
-import type { ObjectType, ObjectLoadMatch, ObjectListMatch, ObjectCreateData, ObjectUpdateData, ObjectRemoveMatch } from '../RealRestTypes';
+import type { ObjectType, ObjectLoadMatch, ObjectListMatch, ObjectCreateData, ObjectUpdateData, ObjectPatchData, ObjectRemoveMatch } from '../RealRestTypes';
 declare class ObjectEntity extends RealRestEntityBase<ObjectType> {
     constructor(client: RealRestSDK, entopts: any);
     make(this: ObjectEntity): ObjectEntity;
@@ -9,6 +9,7 @@ declare class ObjectEntity extends RealRestEntityBase<ObjectType> {
     list(this: any, reqmatch?: ObjectListMatch, ctrl?: Control): Promise<ObjectEntity[]>;
     create(this: any, reqdata?: ObjectCreateData, ctrl?: Control): Promise<ObjectEntity>;
     update(this: any, reqdata?: ObjectUpdateData, ctrl?: Control): Promise<ObjectEntity>;
+    patch(this: any, reqdata?: ObjectPatchData, ctrl?: Control): Promise<ObjectEntity>;
     remove(this: any, reqmatch?: ObjectRemoveMatch, ctrl?: Control): Promise<ObjectEntity>;
 }
 export { ObjectEntity };

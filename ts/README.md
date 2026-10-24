@@ -5,7 +5,7 @@
 The TypeScript SDK for the RealRest API — a type-safe, entity-oriented client with full async/await support.
 
 The API is exposed as capitalised, semantic **Entities** — e.g.
-`client.Object()` — each with a small set of operations (`list`, `load`, `create`, `update`, `remove`, `patch`)
+`client.Object()` — each with a small set of operations (`list`, `load`, `create`, `update`, `patch`, `remove`)
 instead of raw URL paths and query parameters. This keeps the surface
 predictable and low-friction for both humans and AI agents.
 
@@ -15,7 +15,7 @@ predictable and low-friction for both humans and AI agents.
 
 ## Install
 This package is not yet published to npm. Install it from the GitHub
-release tag (`ts/vX.Y.Z`, see [Releases](https://github.com/voxgig-sdk/real-rest-sdk/releases)), or from a
+release tag (`ts/vX.Y.Z`, see [Tags](https://github.com/voxgig-sdk/real-rest-sdk/tags)), or from a
 clone, which carries the compiled `dist/`:
 
 ```bash
@@ -44,21 +44,21 @@ resolves to entities, not raw records. Iterate them directly, and call
 `.data()` on one for the record it holds:
 
 ```ts
-const objects = await client.Object().list({ ids: "example", id: "example_id" })
+const objects = await client.Object().list({ ids: "example", id: "example" })
 
 for (const object of objects) {
-  console.log(object)
+  console.log(object.data())
 }
 ```
 
 ### 3. Load an object
 
-`load()` returns the entity directly and throws on failure:
+`load()` returns the entity and throws on failure; `.data()` reads its record:
 
 ```ts
 try {
   const object = await client.Object().load({ id: 'example_id' })
-  console.log(object)
+  console.log(object.data())
 } catch (err) {
   console.error('load failed:', err)
 }
@@ -69,12 +69,18 @@ try {
 ```ts
 // Create — returns the created Object ENTITY (.data() for the record)
 const created = await client.Object().create({
-  id: 'example_id',
   name: 'example_name',
 })
 
 // Update — the id comes off the returned entity's data()
 const updated = await client.Object().update({
+  id: created.data().id!,
+  data: {},
+  name: 'example_name',
+})
+
+// Patch — sends only the fields given; the id comes off the returned entity's data()
+const patched = await client.Object().patch({
   id: created.data().id!,
   data: {},
   name: 'example_name',
@@ -93,15 +99,16 @@ Entity operations reject on failure, so wrap them in `try` / `catch`:
 
 ```ts
 try {
-  const objects = await client.Object().list()
-  console.log(objects)
+  const objects = await client.Object().list({ ids: "example", id: "example" })
+  console.log(objects.map((item) => item.data()))
 } catch (err) {
   console.error('list failed:', err)
 }
 ```
 
 The low-level `direct()` method does **not** throw — it returns the
-value or an `Error`, so check the result before using it:
+result envelope. Branch on `ok`; on failure `status` holds the HTTP status
+(for error responses) and `err` holds the error:
 
 ```ts
 const result = await client.direct({
@@ -110,8 +117,8 @@ const result = await client.direct({
   params: { id: 'example_id' },
 })
 
-if (result instanceof Error) {
-  throw result
+if (!result.ok) {
+  console.error('request failed:', result.status, result.err)
 }
 ```
 
@@ -129,9 +136,6 @@ const result = await client.direct({
   params: { id: 'example' },
 })
 
-if (result instanceof Error) {
-  throw result
-}
 if (result.ok) {
   console.log(result.status)  // 200
   console.log(result.data)    // response body
@@ -160,10 +164,9 @@ Create a mock client for unit testing — no server required:
 ```ts
 const client = RealRestSDK.test()
 
-const object = await client.Object().list()
-// object is the entity, populated with mock response data
-// — call object.data() for the record itself
-console.log(object)
+const objects = await client.Object().list({ id: 'test01', ids: 'example_ids' })
+// objects is an array of Object entities, one per mock record
+console.log(objects.map((object) => object.data()))
 ```
 
 You can also use the instance method:
@@ -181,7 +184,7 @@ Entity instances remember their last match and data:
 const entity = client.Object()
 
 // First call runs the operation and stores its result
-await entity.list()
+await entity.list({ id: 'example', ids: 'example_ids' })
 
 // Subsequent calls reuse the stored state
 const data = entity.data()
@@ -278,11 +281,12 @@ All entities share the same interface.
 
 | Method | Signature | Description |
 | --- | --- | --- |
-| `load` | `load(reqmatch?, ctrl?): Promise<Entity>` | Load a single entity by match criteria. |
-| `list` | `list(reqmatch?, ctrl?): Promise<Entity[]>` | List entities matching the criteria. |
-| `create` | `create(reqdata?, ctrl?): Promise<Entity>` | Create a new entity. |
-| `update` | `update(reqdata?, ctrl?): Promise<Entity>` | Update an existing entity. |
-| `remove` | `remove(reqmatch?, ctrl?): Promise<void>` | Remove an entity. |
+| `load` | `load(reqmatch?, ctrl?): Promise<Entity>` | Load a single entity by match criteria, and return it. |
+| `list` | `list(reqmatch?, ctrl?): Promise<Entity[]>` | List entities matching the criteria, one per record. |
+| `create` | `create(reqdata?, ctrl?): Promise<Entity>` | Create a new entity, and return it. |
+| `update` | `update(reqdata?, ctrl?): Promise<Entity>` | Update an existing entity, and return it. |
+| `patch` | `patch(reqdata?, ctrl?): Promise<Entity>` | Change part of an existing entity, and return it. |
+| `remove` | `remove(reqmatch?, ctrl?): Promise<Entity>` | Remove an entity, and return it marked as deleted. |
 | `data` | `data(data?: Partial<Entity>): Entity` | Get or set entity data. |
 | `match` | `match(match?: Partial<Entity>): Partial<Entity>` | Get or set entity match criteria. |
 | `make` | `make(): Entity` | Create a new instance with the same options. |
@@ -291,13 +295,13 @@ All entities share the same interface.
 
 #### Return values
 
-Entity operations resolve to the entity data directly — there is no
-result envelope:
+Entity operations resolve to the entity itself — there is no result
+envelope, and an entity's `data()` reads its record:
 
-- `load`, `create` and `update` resolve to a single entity object.
+- `load`, `create`, `update` and `patch` resolve to a single entity object.
 - `list` resolves to an **array** of entity objects (iterate it directly;
   there is no `.data` and no `.ok`).
-- `remove` resolves to `void`.
+- `remove` resolves to the entity, marked as deleted.
 
 On a failed request these methods **throw**, so wrap calls in
 `try`/`catch` to handle errors. Only `direct()` returns the result
@@ -337,9 +341,11 @@ The `prepare()` method returns:
 
 | Field | Description |
 | --- | --- |
+| `createdAt` | Timestamp when the object was created |
 | `data` | Flexible JSON object containing custom attributes of various types |
 | `id` | Unique identifier for the object |
 | `name` | Name of the object |
+| `updatedAt` | Timestamp when the object was last updated |
 
 Operations: create, list, load, patch, remove, update.
 
@@ -361,6 +367,7 @@ Create an instance: `const object = client.Object()`
 | `create(data)` | Create a new entity with the given data. |
 | `list(match)` | List entities matching the criteria. |
 | `load(match)` | Load a single entity by match criteria. |
+| `patch(data)` | Change part of an existing entity. |
 | `remove(match)` | Remove the matching entity. |
 | `update(data)` | Update an existing entity. |
 
@@ -368,9 +375,11 @@ Create an instance: `const object = client.Object()`
 
 | Field | Type | Description |
 | --- | --- | --- |
+| `createdAt` | `string` | Timestamp when the object was created |
 | `data` | `Record<string, any>` | Flexible JSON object containing custom attributes of various types |
 | `id` | `string` | Unique identifier for the object |
 | `name` | `string` | Name of the object |
+| `updatedAt` | `string` | Timestamp when the object was last updated |
 
 #### Example: Load
 
@@ -381,14 +390,13 @@ const object = await client.Object().load({ id: 'object_id' })
 #### Example: List
 
 ```ts
-const objects = await client.Object().list({ ids: "example", id: "example_id" })
+const objects = await client.Object().list({ ids: "example", id: "example" })
 ```
 
 #### Example: Create
 
 ```ts
 const object = await client.Object().create({
-  id: 'example_id',
   name: 'example_name',
 })
 ```
@@ -548,7 +556,7 @@ calls on the same instance can rely on this state.
 
 ```ts
 const object = client.Object()
-await object.list()
+await object.list({ ids: "example", id: "example" })
 
 // object.data() now returns the object data from the last `list`
 // object.match() returns the last match criteria

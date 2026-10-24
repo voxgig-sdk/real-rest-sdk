@@ -5,6 +5,14 @@ main: kit: entity: object: {
   alias: field: {}
 
   fields: {
+    createdAt: {
+      fo: "date-time"
+      h: "Created At"
+      n: "createdAt"
+      r: false
+      sh: "Timestamp when the object was created"
+      t: "`$STRING`"
+    }
     data: {
       h: "Data"
       n: "data"
@@ -26,6 +34,14 @@ main: kit: entity: object: {
       sh: "Name of the object"
       t: "`$STRING`"
     }
+    updatedAt: {
+      fo: "date-time"
+      h: "Updated At"
+      n: "updatedAt"
+      r: false
+      sh: "Timestamp when the object was last updated"
+      t: "`$STRING`"
+    }
   }
 
   id: {
@@ -39,6 +55,10 @@ main: kit: entity: object: {
       name: "create"
       points: [
         {
+          bf: [
+            "data"
+            "name"
+          ]
           co: {
             id: "POST /objects"
             source: "openapi3"
@@ -46,6 +66,10 @@ main: kit: entity: object: {
           }
           m: "POST"
           o: "/objects"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "objects"
@@ -96,6 +120,10 @@ main: kit: entity: object: {
               "ids"
             ]
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "objects?id={ids}"
@@ -114,6 +142,10 @@ main: kit: entity: object: {
           }
           m: "GET"
           o: "/objects"
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "objects"
@@ -154,6 +186,10 @@ main: kit: entity: object: {
               "id"
             ]
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "objects"
@@ -173,6 +209,10 @@ main: kit: entity: object: {
       name: "patch"
       points: [
         {
+          bf: [
+            "data"
+            "name"
+          ]
           co: {
             id: "PATCH /objects/{id}"
             source: "openapi3"
@@ -195,6 +235,10 @@ main: kit: entity: object: {
             exist: [
               "id"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {
@@ -238,6 +282,10 @@ main: kit: entity: object: {
               "id"
             ]
           }
+          rs: {
+            kind: "json"
+            media: "application/json"
+          }
           s: [
             {
               lit: "objects"
@@ -257,6 +305,10 @@ main: kit: entity: object: {
       name: "update"
       points: [
         {
+          bf: [
+            "data"
+            "name"
+          ]
           co: {
             id: "PUT /objects/{id}"
             source: "openapi3"
@@ -280,6 +332,10 @@ main: kit: entity: object: {
             exist: [
               "id"
             ]
+          }
+          rs: {
+            kind: "json"
+            media: "application/json"
           }
           s: [
             {

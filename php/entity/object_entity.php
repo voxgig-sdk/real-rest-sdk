@@ -14,7 +14,7 @@ class ObjectEntity
     private $_client;
     private $_utility;
     private array $_entopts;
-    private array $_data;
+    private mixed $_data;
     private array $_match;
     private $_entctx;
     private bool $_deleted = false;
@@ -98,8 +98,9 @@ class ObjectEntity
      */
     public function data_set($args): void
     {
-        if ($args) {
-            $this->_data = RealRestHelpers::to_map(Struct::clone($args)) ?? [];
+        if ($args !== null) {
+            $data = Struct::clone($args);
+            $this->_data = $data instanceof \stdClass ? (array)$data : $data;
             ($this->_utility->feature_hook)($this->_entctx, "SetData");
         }
     }
@@ -191,49 +192,13 @@ class ObjectEntity
         // The pipeline runs as the caller iterates, so its errors leave
         // through the same catch path as an operation's.
         try {
-            ($utility->feature_hook)($ctx, "PrePoint");
-            [$point, $err] = ($utility->make_point)($ctx);
-            $ctx->out["point"] = $point;
-            if ($err) {
-                return;
-            }
-
-            ($utility->feature_hook)($ctx, "PreSpec");
-            [$spec, $err] = ($utility->make_spec)($ctx);
-            $ctx->out["spec"] = $spec;
-            if ($err) {
-                return;
-            }
-
-            ($utility->feature_hook)($ctx, "PreRequest");
-            [$resp, $err] = ($utility->make_request)($ctx);
-            $ctx->out["request"] = $resp;
-            if ($err) {
-                return;
-            }
-
-            ($utility->feature_hook)($ctx, "PreResponse");
-            [$resp2, $err] = ($utility->make_response)($ctx);
-            $ctx->out["response"] = $resp2;
-            if ($err) {
-                return;
-            }
-
-            ($utility->feature_hook)($ctx, "PreResult");
-            [$result, $err] = ($utility->make_result)($ctx);
-            $ctx->out["result"] = $result;
-            if ($err) {
-                return;
-            }
-
-            ($utility->feature_hook)($ctx, "PreDone");
-
+            $failed = $this->_stream_steps($ctx);
             $result = $ctx->result;
 
             // Inbound: prefer the streaming feature's incremental generator;
             // else fall back to the materialised items so stream always yields.
-            $streamfn = ($result !== null && isset($result->stream) && is_callable($result->stream))
-                ? $result->stream : null;
+            $streamfn = ($failed === null && $result !== null && isset($result->stream)
+                && is_callable($result->stream)) ? $result->stream : null;
             if ($streamfn !== null) {
                 // done() does not run on this path, so its record is cleaned here.
                 ($utility->clean_explain)($ctx);
@@ -246,7 +211,10 @@ class ObjectEntity
                 return;
             }
 
-            $data = ($utility->done)($ctx);
+            // A failed step leaves through make_error, as an operation's does.
+            $data = $failed === null
+                ? ($utility->done)($ctx)
+                : ($utility->make_error)($ctx, $failed);
             if (is_array($data) && array_is_list($data)) {
                 $items = $data;
             } elseif ($data === null) {
@@ -261,8 +229,64 @@ class ObjectEntity
                 yield $item;
             }
         } catch (\Throwable $err) {
-            throw $this->_unexpected($ctx, $err);
+            // What a hook throws here must not escape the cleaning below.
+            try {
+                if (!$ctx->unexpected_fired) {
+                    ($utility->feature_hook)($ctx, "PreUnexpected");
+                }
+            } catch (\Throwable $hookerr) {
+                $err = $hookerr;
+            }
+            $err = $this->_unexpected($ctx, $err);
+            if ($err !== null) {
+                throw $err;
+            }
         }
+    }
+
+    // The steps an operation runs, with their hooks; the first that fails
+    // hands back its error.
+    private function _stream_steps($ctx): mixed
+    {
+        $utility = $this->_utility;
+
+        ($utility->feature_hook)($ctx, "PrePoint");
+        [$point, $err] = ($utility->make_point)($ctx);
+        $ctx->out["point"] = $point;
+        if ($err) {
+            return $err;
+        }
+
+        ($utility->feature_hook)($ctx, "PreSpec");
+        [$spec, $err] = ($utility->make_spec)($ctx);
+        $ctx->out["spec"] = $spec;
+        if ($err) {
+            return $err;
+        }
+
+        ($utility->feature_hook)($ctx, "PreRequest");
+        [$resp, $err] = ($utility->make_request)($ctx);
+        $ctx->out["request"] = $resp;
+        if ($err) {
+            return $err;
+        }
+
+        ($utility->feature_hook)($ctx, "PreResponse");
+        [$resp2, $err] = ($utility->make_response)($ctx);
+        $ctx->out["response"] = $resp2;
+        if ($err) {
+            return $err;
+        }
+
+        ($utility->feature_hook)($ctx, "PreResult");
+        [$result, $err] = ($utility->make_result)($ctx);
+        $ctx->out["result"] = $result;
+        if ($err) {
+            return $err;
+        }
+
+        ($utility->feature_hook)($ctx, "PreDone");
+        return null;
     }
 
     
@@ -272,8 +296,8 @@ class ObjectEntity
      * @param ObjectLoadMatch|array|null $reqmatch Match criteria (id/query
      *   fields) as an assoc-array; a typed ObjectLoadMatch names the shape.
      * @param mixed $ctrl Optional per-call control overrides.
-     * @return Object|array The loaded Object as an assoc-array at the
-     *   SDK boundary; throws RealRestError on failure (item-5 convention).
+     * @return ObjectEntity The loaded Object entity, whose data_get() reads
+     *   its record; throws RealRestError on failure (item-5 convention).
      */
     public function load(?array $reqmatch = null, $ctrl = null): mixed
     {
@@ -307,8 +331,8 @@ class ObjectEntity
      * @param ObjectListMatch|array|null $reqmatch Match filter (any subset
      *   of Object fields) as an assoc-array; ObjectListMatch names the shape.
      * @param mixed $ctrl Optional per-call control overrides.
-     * @return Object[]|array A list of Object items as assoc-arrays at
-     *   the SDK boundary; throws RealRestError on failure (item-5 convention).
+     * @return ObjectEntity[] The Object entities, one per record, each read
+     *   with data_get(); throws RealRestError on failure (item-5 convention).
      */
     public function list(?array $reqmatch = null, $ctrl = null): mixed
     {
@@ -339,8 +363,8 @@ class ObjectEntity
      * @param ObjectCreateData|array|null $reqdata Body data as an assoc-array;
      *   a typed ObjectCreateData names the shape.
      * @param mixed $ctrl Optional per-call control overrides.
-     * @return Object|array The created Object as an assoc-array at the
-     *   SDK boundary; throws RealRestError on failure (item-5 convention).
+     * @return ObjectEntity The created Object entity, whose data_get() reads
+     *   its record; throws RealRestError on failure (item-5 convention).
      */
     public function create(?array $reqdata = null, $ctrl = null): mixed
     {
@@ -371,8 +395,8 @@ class ObjectEntity
      * @param ObjectUpdateData|array|null $reqdata Body data as an assoc-array;
      *   a typed ObjectUpdateData names the shape.
      * @param mixed $ctrl Optional per-call control overrides.
-     * @return Object|array The updated Object as an assoc-array at the
-     *   SDK boundary; throws RealRestError on failure (item-5 convention).
+     * @return ObjectEntity The updated Object entity, whose data_get() reads
+     *   its record; throws RealRestError on failure (item-5 convention).
      */
     public function update(?array $reqdata = null, $ctrl = null): mixed
     {
@@ -401,13 +425,48 @@ class ObjectEntity
 
     
     /**
+     * Change part of an existing Object: only the fields given are sent.
+     *
+     * @param ObjectPatchData|array|null $reqdata Body data as an assoc-array;
+     *   a typed ObjectPatchData names the shape.
+     * @param mixed $ctrl Optional per-call control overrides.
+     * @return ObjectEntity The patched Object entity, whose data_get() reads
+     *   its record; throws RealRestError on failure (item-5 convention).
+     */
+    public function patch(?array $reqdata = null, $ctrl = null): mixed
+    {
+        $utility = $this->_utility;
+        $ctx = ($utility->make_context)([
+            "opname" => "patch",
+            "ctrl" => $ctrl,
+            "match" => $this->_match,
+            "data" => $this->_data,
+            "reqdata" => $reqdata,
+        ], $this->_entctx);
+
+        return $this->_run_op($ctx, function () use ($ctx) {
+            if ($ctx->result) {
+                if ($ctx->result->resmatch) {
+                    $this->_match = $ctx->result->resmatch;
+                }
+                if ($ctx->result->resdata) {
+                    $this->_data = RealRestHelpers::to_map(Struct::clone($ctx->result->resdata)) ?? [];
+                }
+            }
+        });
+    }
+
+
+
+    
+    /**
      * Remove an Object matching the given criteria.
      *
      * @param ObjectRemoveMatch|array|null $reqmatch Match criteria (id/query
      *   fields) as an assoc-array; ObjectRemoveMatch names the shape.
      * @param mixed $ctrl Optional per-call control overrides.
-     * @return Object|array The removed Object as an assoc-array at the
-     *   SDK boundary; throws RealRestError on failure (item-5 convention).
+     * @return ObjectEntity The removed Object entity, marked as deleted; throws
+     *   RealRestError on failure (item-5 convention).
      */
     public function remove(?array $reqmatch = null, $ctrl = null): mixed
     {
@@ -436,19 +495,35 @@ class ObjectEntity
 
     private function _run_op($ctx, callable $post_done): mixed
     {
+        $utility = $this->_utility;
+
         try {
             return $this->_run_steps($ctx, $post_done);
         } catch (\Throwable $err) {
-            throw $this->_unexpected($ctx, $err);
+            // What a hook throws here must not escape the cleaning below.
+            try {
+                // Once per operation: make_error fires it for its own error.
+                if (!$ctx->unexpected_fired) {
+                    ($utility->feature_hook)($ctx, "PreUnexpected");                }
+            } catch (\Throwable $hookerr) {
+                $err = $hookerr;
+            }
+            $err = $this->_unexpected($ctx, $err);
+            if ($err !== null) {
+                throw $err;
+            }
+            return null;
         }
     }
 
-    // A hook, fetcher or parser threw: make_error never saw it.
-    private function _unexpected($ctx, \Throwable $err): \Throwable
+    // A hook, fetcher or parser threw: make_error never saw it. Null when
+    // the caller switched throwing off.
+    private function _unexpected($ctx, \Throwable $err): ?\Throwable
     {
         $ctx->ctrl->err = $err;
         ($this->_utility->clean_explain)($ctx);
-        return ($this->_utility->clean)($ctx, $err);
+        $cleaned = ($this->_utility->clean)($ctx, $err);
+        return $ctx->ctrl->throw_err === false ? null : $cleaned;
     }
 
     private function _run_steps($ctx, callable $post_done): mixed

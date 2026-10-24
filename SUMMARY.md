@@ -20,9 +20,11 @@ SDK operations: `create`, `list`, `load`, `patch`, `remove`, `update`.
 
 Key fields to recognise:
 
+- `createdAt`: Timestamp when the object was created
 - `data`: Flexible JSON object containing custom attributes of various types
 - `id`: Unique identifier for the object
 - `name`: Name of the object
+- `updatedAt`: Timestamp when the object was last updated
 
 ### Route map
 

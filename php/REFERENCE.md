@@ -92,42 +92,54 @@ $object = $client->Object();
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
+| `createdAt` | `string` | No | Timestamp when the object was created |
 | `data` | `array` | No | Flexible JSON object containing custom attributes of various types |
 | `id` | `string` | Yes | Unique identifier for the object |
 | `name` | `string` | Yes | Name of the object |
+| `updatedAt` | `string` | No | Timestamp when the object was last updated |
 
 ### Operations
 
 #### `create(array $reqdata, ?array $ctrl = null): mixed`
 
-Create a new entity with the given data. Throws on error.
+Create a new entity with the given data. Returns the created entity and throws on error.
 
 ```php
 $result = $client->Object()->create([
-  "id" => null, // string
   "name" => null, // string
 ]);
 ```
 
 #### `list(?array $reqmatch = null, ?array $ctrl = null): mixed`
 
-List entities matching the given criteria (call with no argument to list all). Returns an array. Throws on error.
+List entities matching the given criteria (call with no argument to list all). Returns an array of entities, one per record, and throws on error.
 
 ```php
-$results = $client->Object()->list();
+$results = $client->Object()->list(["ids" => "example", "id" => "example"]);
 ```
 
 #### `load(array $reqmatch, ?array $ctrl = null): mixed`
 
-Load a single entity matching the given criteria. Throws on error.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, and throws on error.
 
 ```php
 $result = $client->Object()->load(["id" => "object_id"]);
 ```
 
+#### `patch(array $reqdata, ?array $ctrl = null): mixed`
+
+Change part of an existing entity: only the fields given are sent. The data must include the entity `id`. Returns the patched entity and throws on error.
+
+```php
+$result = $client->Object()->patch([
+  "id" => "object_id",
+  // Only the fields to change
+]);
+```
+
 #### `remove(array $reqmatch, ?array $ctrl = null): mixed`
 
-Remove the entity matching the given criteria. Throws on error.
+Remove the entity matching the given criteria. Returns the entity, marked as deleted, and throws on error.
 
 ```php
 $result = $client->Object()->remove(["id" => "object_id"]);
@@ -135,7 +147,7 @@ $result = $client->Object()->remove(["id" => "object_id"]);
 
 #### `update(array $reqdata, ?array $ctrl = null): mixed`
 
-Update an existing entity. The data must include the entity `id`. Throws on error.
+Update an existing entity. The data must include the entity `id`. Returns the updated entity and throws on error.
 
 ```php
 $result = $client->Object()->update([
@@ -331,6 +343,7 @@ Timeout.
 | Option | Type |
 |---|---|
 | `clearTimer` | function |
+| `now` | function |
 | `setTimer` | function |
 
 These take no default: the feature behaves one way when you supply them and

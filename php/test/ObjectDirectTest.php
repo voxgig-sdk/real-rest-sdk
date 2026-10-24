@@ -10,6 +10,18 @@ use PHPUnit\Framework\TestCase;
 
 class ObjectDirectTest extends TestCase
 {
+    // main.kit.test.live.strict is true (the default is true): a live
+    // request that fails, or a live test missing an input it needs,
+    // fails the test.
+    // An account with no record for a test to read skips it either way.
+    private const LIVE_STRICT = true;
+
+    private static function liveOk(array $result): bool
+    {
+        $status = Helpers::to_int($result["status"] ?? 0);
+        return empty($result["err"]) && !empty($result["ok"]) && $status >= 200 && $status < 300;
+    }
+
     public function test_direct_list_object(): void
     {
         $setup = object_direct_setup([
@@ -23,20 +35,15 @@ class ObjectDirectTest extends TestCase
         }
         if ($setup["live"]) {
             foreach (["ids01"] as $_liveKey) {
-                if (!isset($setup["idmap"][$_liveKey]) || $setup["idmap"][$_liveKey] === null) {
-                    $this->markTestSkipped("live test needs $_liveKey via *_ENTID env var (synthetic IDs only)");
-                    return;
+                if (null === ($setup["idmap"][$_liveKey] ?? null)) {
+                    Runner::live_miss(self::LIVE_STRICT, "Live test blocked: needs " . $_liveKey . " via REAL_REST_TEST_OBJECT_ENTID");
                 }
             }
         }
         $client = $setup["client"];
 
         $params = [];
-        if ($setup["live"]) {
-            $params["ids"] = $setup["idmap"]["ids01"];
-        } else {
-            $params["ids"] = "direct01";
-        }
+        $params["ids"] = $setup["live"] ? ($setup["idmap"]["ids01"] ?? null) : "direct01";
 
         $result = $client->direct([
             "path" => "objects?id={ids}",
@@ -44,22 +51,13 @@ class ObjectDirectTest extends TestCase
             "params" => $params,
         ]);
         if ($setup["live"]) {
-            // Live mode is lenient: synthetic IDs frequently 4xx and the
-            // list-response shape varies wildly across public APIs. Skip
-            // rather than fail when the call doesn't return a usable list.
-            if (!empty($result["err"])) {
-                $this->markTestSkipped("list call failed (likely synthetic IDs against live API): " . (string)$result["err"]);
-                return;
+            if (!self::liveOk($result)) {
+                Runner::live_miss(self::LIVE_STRICT, "Live list failed: " . Runner::live_describe($result));
             }
-            if (empty($result["ok"])) {
-                $this->markTestSkipped("list call not ok (likely synthetic IDs against live API)");
-                return;
+            if (null === Runner::live_list($result["data"] ?? null)) {
+                Runner::live_miss(self::LIVE_STRICT, "Live list returned no list: " . Runner::live_describe($result));
             }
-            $status = Helpers::to_int($result["status"]);
-            if ($status < 200 || $status >= 300) {
-                $this->markTestSkipped("expected 2xx status, got " . $status);
-                return;
-            }
+            $this->assertIsArray(Runner::live_list($result["data"]));
         } else {
             $this->assertArrayNotHasKey("err", $result);
             $this->assertTrue($result["ok"]);
@@ -95,22 +93,13 @@ class ObjectDirectTest extends TestCase
             "query" => $query,
         ]);
         if ($setup["live"]) {
-            // Live mode is lenient: synthetic IDs frequently 4xx. Skip
-            // rather than fail when the load endpoint isn't reachable
-            // with the IDs we can construct from setup.idmap.
-            if (!empty($result["err"])) {
-                $this->markTestSkipped("load call failed (likely synthetic IDs against live API): " . (string)$result["err"]);
-                return;
+            if (!self::liveOk($result)) {
+                Runner::live_miss(self::LIVE_STRICT, "Live load failed: " . Runner::live_describe($result));
             }
-            if (empty($result["ok"])) {
-                $this->markTestSkipped("load call not ok (likely synthetic IDs against live API)");
-                return;
+            if (null === ($result["data"] ?? null)) {
+                Runner::live_miss(self::LIVE_STRICT, "Live load returned no data: " . Runner::live_describe($result));
             }
-            $status = Helpers::to_int($result["status"]);
-            if ($status < 200 || $status >= 300) {
-                $this->markTestSkipped("expected 2xx status, got " . $status);
-                return;
-            }
+            $this->assertNotNull($result["data"]);
         } else {
             $this->assertArrayNotHasKey("err", $result);
             $this->assertTrue($result["ok"]);
@@ -145,11 +134,12 @@ function object_direct_setup($mockres)
         $merged_opts = array_merge(Runner::live_client_options(), [
         ]);
         $client = new RealRestSDK($merged_opts);
+        $idmap = $env["REAL_REST_TEST_OBJECT_ENTID"] ?? [];
         return [
             "client" => $client,
             "calls" => $calls,
             "live" => true,
-            "idmap" => [],
+            "idmap" => is_array($idmap) ? $idmap : [],
         ];
     }
 

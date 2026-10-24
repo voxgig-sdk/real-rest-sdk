@@ -90,42 +90,54 @@ local object = client:Object(nil)
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
+| `createdAt` | `string` | No | Timestamp when the object was created |
 | `data` | `table` | No | Flexible JSON object containing custom attributes of various types |
 | `id` | `string` | Yes | Unique identifier for the object |
 | `name` | `string` | Yes | Name of the object |
+| `updatedAt` | `string` | No | Timestamp when the object was last updated |
 
 ### Operations
 
 #### `create(reqdata, ctrl) -> any, err`
 
-Create a new entity with the given data.
+Create a new entity with the given data. Returns the created entity, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:Object():create({
-  id = --[[ string ]],
   name = --[[ string ]],
 })
 ```
 
 #### `list(reqmatch, ctrl) -> any, err`
 
-List entities matching the given criteria. Returns an array.
+List entities matching the given criteria. Returns an array of entities, one per record, or `nil` and an error on failure.
 
 ```lua
-local results, err = client:Object():list()
+local results, err = client:Object():list({ ids = "example", id = "example" })
 ```
 
 #### `load(reqmatch, ctrl) -> any, err`
 
-Load a single entity matching the given criteria.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:Object():load({ id = "object_id" })
 ```
 
+#### `patch(reqdata, ctrl) -> any, err`
+
+Change part of an existing entity: only the fields given are sent. The data must include the entity `id`. Returns the patched entity, or `nil` and an error on failure.
+
+```lua
+local result, err = client:Object():patch({
+  id = "object_id",
+  -- Only the fields to change
+})
+```
+
 #### `remove(reqmatch, ctrl) -> any, err`
 
-Remove the entity matching the given criteria.
+Remove the entity matching the given criteria. Returns the entity, marked as deleted, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:Object():remove({ id = "object_id" })
@@ -133,7 +145,7 @@ local result, err = client:Object():remove({ id = "object_id" })
 
 #### `update(reqdata, ctrl) -> any, err`
 
-Update an existing entity. The data must include the entity `id`.
+Update an existing entity. The data must include the entity `id`. Returns the updated entity, or `nil` and an error on failure.
 
 ```lua
 local result, err = client:Object():update({
@@ -329,6 +341,7 @@ Timeout.
 | Option | Type |
 |---|---|
 | `clearTimer` | function |
+| `now` | function |
 | `setTimer` | function |
 
 These take no default: the feature behaves one way when you supply them and

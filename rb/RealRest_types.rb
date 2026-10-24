@@ -10,6 +10,9 @@
 
 # Object entity data model.
 #
+# @!attribute [rw] createdAt
+#   @return [String, nil]
+#
 # @!attribute [rw] data
 #   @return [Hash, nil]
 #
@@ -18,10 +21,15 @@
 #
 # @!attribute [rw] name
 #   @return [String]
+#
+# @!attribute [rw] updatedAt
+#   @return [String, nil]
 ObjectType = Struct.new(
+  :createdAt,
   :data,
   :id,
   :name,
+  :updatedAt,
   keyword_init: true
 )
 
@@ -52,14 +60,10 @@ ObjectListMatch = Struct.new(
 # @!attribute [rw] data
 #   @return [Hash, nil]
 #
-# @!attribute [rw] id
-#   @return [String]
-#
 # @!attribute [rw] name
 #   @return [String]
 ObjectCreateData = Struct.new(
   :data,
-  :id,
   :name,
   keyword_init: true
 )
@@ -75,6 +79,23 @@ ObjectCreateData = Struct.new(
 # @!attribute [rw] name
 #   @return [String, nil]
 ObjectUpdateData = Struct.new(
+  :id,
+  :data,
+  :name,
+  keyword_init: true
+)
+
+# Request payload for Object#patch.
+#
+# @!attribute [rw] id
+#   @return [String]
+#
+# @!attribute [rw] data
+#   @return [Hash, nil]
+#
+# @!attribute [rw] name
+#   @return [String, nil]
+ObjectPatchData = Struct.new(
   :id,
   :data,
   :name,

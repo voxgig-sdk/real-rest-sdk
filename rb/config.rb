@@ -79,6 +79,7 @@ module RealRestConfig
           },
           "optspec" => {
             "clearTimer" => "`$FUNCTION`",
+            "now" => "`$FUNCTION`",
             "setTimer" => "`$FUNCTION`",
           },
           "strict" => false,
@@ -98,6 +99,13 @@ module RealRestConfig
         "object" => {
           "fields" => [
             {
+              "name" => "createdAt",
+              "title" => "Created At",
+              "type" => "`$STRING`",
+              "short" => "Timestamp when the object was created",
+              "format" => "date-time",
+            },
+            {
               "name" => "data",
               "title" => "Data",
               "type" => "`$OBJECT`",
@@ -116,6 +124,13 @@ module RealRestConfig
               "type" => "`$STRING`",
               "req" => true,
               "short" => "Name of the object",
+            },
+            {
+              "name" => "updatedAt",
+              "title" => "Updated At",
+              "type" => "`$STRING`",
+              "short" => "Timestamp when the object was last updated",
+              "format" => "date-time",
             },
           ],
           "id" => {
@@ -147,6 +162,10 @@ module RealRestConfig
                   },
                   "args" => {},
                   "select" => {},
+                  "response" => {
+                    "kind" => "json",
+                    "media" => "application/json",
+                  },
                 },
               ],
             },
@@ -189,6 +208,7 @@ module RealRestConfig
                         "kind" => "query",
                         "reqd" => true,
                         "example" => "1,2,3",
+                        "field" => true,
                       },
                     ],
                   },
@@ -197,6 +217,10 @@ module RealRestConfig
                       "id",
                       "ids",
                     ],
+                  },
+                  "response" => {
+                    "kind" => "json",
+                    "media" => "application/json",
                   },
                 },
                 {
@@ -218,6 +242,10 @@ module RealRestConfig
                   },
                   "args" => {},
                   "select" => {},
+                  "response" => {
+                    "kind" => "json",
+                    "media" => "application/json",
+                  },
                 },
               ],
             },
@@ -263,6 +291,10 @@ module RealRestConfig
                       "id",
                     ],
                   },
+                  "response" => {
+                    "kind" => "json",
+                    "media" => "application/json",
+                  },
                 },
               ],
             },
@@ -306,6 +338,10 @@ module RealRestConfig
                     "exist" => [
                       "id",
                     ],
+                  },
+                  "response" => {
+                    "kind" => "json",
+                    "media" => "application/json",
                   },
                 },
               ],
@@ -351,6 +387,10 @@ module RealRestConfig
                       "id",
                     ],
                   },
+                  "response" => {
+                    "kind" => "json",
+                    "media" => "application/json",
+                  },
                 },
               ],
             },
@@ -395,6 +435,10 @@ module RealRestConfig
                     "exist" => [
                       "id",
                     ],
+                  },
+                  "response" => {
+                    "kind" => "json",
+                    "media" => "application/json",
                   },
                 },
               ],

@@ -7,9 +7,11 @@
 -- edit by hand.
 
 ---@class Object
+---@field createdAt? string
 ---@field data? table
 ---@field id string
 ---@field name string
+---@field updatedAt? string
 
 ---@class ObjectLoadMatch
 ---@field id string
@@ -20,10 +22,14 @@
 
 ---@class ObjectCreateData
 ---@field data? table
----@field id string
 ---@field name string
 
 ---@class ObjectUpdateData
+---@field id string
+---@field data? table
+---@field name? string
+
+---@class ObjectPatchData
 ---@field id string
 ---@field data? table
 ---@field name? string

@@ -67,8 +67,8 @@ class ObjectEntity
   end
 
   def data_set(args)
-    if args
-      @_data = RealRestHelpers.to_map(VoxgigStruct.clone(args)) || {}
+    unless args.nil?
+      @_data = VoxgigStruct.clone(args)
       @_utility.feature_hook.call(@_entctx, "SetData")
     end
   end
@@ -146,38 +146,12 @@ class ObjectEntity
       end
       begin
         catch(:stream_stop) do
-          utility.feature_hook.call(ctx, "PrePoint")
-          point, err = utility.make_point.call(ctx)
-          ctx.out["point"] = point
-          throw :stream_stop if err
-
-          utility.feature_hook.call(ctx, "PreSpec")
-          spec, err = utility.make_spec.call(ctx)
-          ctx.out["spec"] = spec
-          throw :stream_stop if err
-
-          utility.feature_hook.call(ctx, "PreRequest")
-          resp, err = utility.make_request.call(ctx)
-          ctx.out["request"] = resp
-          throw :stream_stop if err
-
-          utility.feature_hook.call(ctx, "PreResponse")
-          resp2, err = utility.make_response.call(ctx)
-          ctx.out["response"] = resp2
-          throw :stream_stop if err
-
-          utility.feature_hook.call(ctx, "PreResult")
-          result, err = utility.make_result.call(ctx)
-          ctx.out["result"] = result
-          throw :stream_stop if err
-
-          utility.feature_hook.call(ctx, "PreDone")
-
+          failed = _stream_steps(ctx)
           result = ctx.result
 
           # Inbound: prefer the streaming feature's incremental Enumerator;
           # else fall back to the materialised items so stream always yields.
-          stream_enum = result ? result.stream : nil
+          stream_enum = failed.nil? && result ? result.stream : nil
           if stream_enum
             # done does not run on this path, so its record is cleaned here.
             utility.clean_explain.call(ctx)
@@ -186,7 +160,8 @@ class ObjectEntity
               give.call(item)
             end
           else
-            data = utility.done.call(ctx)
+            # A failed step leaves through make_error, as an operation's does.
+            data = failed.nil? ? utility.done.call(ctx) : utility.make_error.call(ctx, failed)
             items = data.is_a?(Array) ? data : (data.nil? ? [] : [data])
             items.each do |item|
               throw :stream_stop if aborted.call
@@ -197,10 +172,53 @@ class ObjectEntity
       rescue StandardError => operr
         raise if inblock
         ctx.ctrl.err = operr
+
+        # What a hook raises here must not escape the cleaning below.
+        begin
+          utility.feature_hook.call(ctx, "PreUnexpected") unless ctx.unexpected_fired
+        rescue StandardError => hookerr
+          operr = hookerr
+          ctx.ctrl.err = operr
+        end
+
         e = _unexpected(ctx, operr)
         raise e, cause: nil unless e.nil?
       end
     end
+  end
+
+  # The steps an operation runs, with their hooks; the first that fails hands
+  # back its error.
+  private def _stream_steps(ctx)
+    utility = @_utility
+
+    utility.feature_hook.call(ctx, "PrePoint")
+    point, err = utility.make_point.call(ctx)
+    ctx.out["point"] = point
+    return err if err
+
+    utility.feature_hook.call(ctx, "PreSpec")
+    spec, err = utility.make_spec.call(ctx)
+    ctx.out["spec"] = spec
+    return err if err
+
+    utility.feature_hook.call(ctx, "PreRequest")
+    resp, err = utility.make_request.call(ctx)
+    ctx.out["request"] = resp
+    return err if err
+
+    utility.feature_hook.call(ctx, "PreResponse")
+    resp2, err = utility.make_response.call(ctx)
+    ctx.out["response"] = resp2
+    return err if err
+
+    utility.feature_hook.call(ctx, "PreResult")
+    result, err = utility.make_result.call(ctx)
+    ctx.out["result"] = result
+    return err if err
+
+    utility.feature_hook.call(ctx, "PreDone")
+    nil
   end
 
   
@@ -210,7 +228,8 @@ class ObjectEntity
   #   optional — an entity with no id-like key loads with no match (nil is treated
   #   as an empty match, so client.Object.load works with no args).
   # @param ctrl [Object, nil] optional per-call control
-  # @return [Object, Hash] the loaded Object; raises RealRestError on failure
+  # @return [ObjectEntity] the loaded Object entity (data_get reads its record);
+  #   raises RealRestError on failure
   def load(reqmatch = nil, ctrl = nil)
     utility = @_utility
     ctx = utility.make_context.call({
@@ -239,7 +258,8 @@ class ObjectEntity
   # @param reqmatch [ObjectListMatch, Hash, nil] match filter (any subset of
   #   Object fields); defaults to nil, treated as an empty match that lists all.
   # @param ctrl [Object, nil] optional per-call control
-  # @return [Array<Object>, Array] the matching Object items; raises RealRestError on failure
+  # @return [Array<ObjectEntity>] the matching Object items, one entity per
+  #   record (data_get reads the record); raises RealRestError on failure
   def list(reqmatch = nil, ctrl = nil)
     utility = @_utility
     ctx = utility.make_context.call({
@@ -256,16 +276,6 @@ class ObjectEntity
       end
     end
 
-    # list yields the BARE Array of records — each an accessible Hash — so
-    # callers can index item["id"] directly, matching py/lua/go. make_result
-    # wraps each entry as an Entity instance for internal use; unwrap those
-    # back to their bare record Hashes here (load/create/etc. are unaffected).
-    if records.is_a?(Array)
-      records = records.map do |item|
-        item.respond_to?(:data_get) ? item.data_get : item
-      end
-    end
-
     records
   end
 
@@ -276,7 +286,8 @@ class ObjectEntity
   #
   # @param reqdata [ObjectCreateData, Hash, nil] body data
   # @param ctrl [Object, nil] optional per-call control
-  # @return [Object, Hash] the created Object; raises RealRestError on failure
+  # @return [ObjectEntity] the created Object entity (data_get reads its record);
+  #   raises RealRestError on failure
   def create(reqdata, ctrl = nil)
     utility = @_utility
     ctx = utility.make_context.call({
@@ -303,7 +314,8 @@ class ObjectEntity
   #
   # @param reqdata [ObjectUpdateData, Hash, nil] body data
   # @param ctrl [Object, nil] optional per-call control
-  # @return [Object, Hash] the updated Object; raises RealRestError on failure
+  # @return [ObjectEntity] the updated Object entity (data_get reads its record);
+  #   raises RealRestError on failure
   def update(reqdata, ctrl = nil)
     utility = @_utility
     ctx = utility.make_context.call({
@@ -327,11 +339,41 @@ class ObjectEntity
 
 
   
+  # Change part of an existing Object: only the fields given are sent.
+  #
+  # @param reqdata [ObjectPatchData, Hash, nil] body data
+  # @param ctrl [Object, nil] optional per-call control
+  # @return [ObjectEntity] the patched Object entity (data_get reads its record);
+  #   raises RealRestError on failure
+  def patch(reqdata, ctrl = nil)
+    utility = @_utility
+    ctx = utility.make_context.call({
+      "opname" => "patch",
+      "ctrl" => ctrl,
+      "match" => @_match,
+      "data" => @_data,
+      "reqdata" => reqdata,
+    }, @_entctx)
+
+    _run_op(ctx) do
+      if ctx.result
+        @_match = ctx.result.resmatch if ctx.result.resmatch
+        if ctx.result.resdata
+          @_data = RealRestHelpers.to_map(VoxgigStruct.clone(ctx.result.resdata)) || {}
+        end
+      end
+    end
+  end
+
+
+
+  
   # Remove an Object matching the given criteria.
   #
   # @param reqmatch [ObjectRemoveMatch, Hash, nil] match criteria (id/query fields)
   # @param ctrl [Object, nil] optional per-call control
-  # @return [Object, Hash] the removed Object; raises RealRestError on failure
+  # @return [ObjectEntity] the removed Object entity, marked as deleted; raises
+  #   RealRestError on failure
   def remove(reqmatch = nil, ctrl = nil)
     utility = @_utility
     ctx = utility.make_context.call({
@@ -417,7 +459,10 @@ class ObjectEntity
 
       # What a hook raises here must not escape the cleaning below.
       begin
-        utility.feature_hook.call(ctx, "PreUnexpected")
+        # Once per operation: make_error fires it for its own error.
+        unless ctx.unexpected_fired
+          utility.feature_hook.call(ctx, "PreUnexpected")
+        end
       rescue StandardError => hookerr
         operr = hookerr
         ctx.ctrl.err = operr

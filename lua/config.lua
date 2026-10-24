@@ -67,6 +67,7 @@ local function make_config()
         },
         ["optspec"] = {
           ["clearTimer"] = "`$FUNCTION`",
+          ["now"] = "`$FUNCTION`",
           ["setTimer"] = "`$FUNCTION`",
         },
         ["strict"] = false,
@@ -86,6 +87,13 @@ local function make_config()
       ["object"] = {
         ["fields"] = {
           {
+            ["name"] = "createdAt",
+            ["title"] = "Created At",
+            ["type"] = "`$STRING`",
+            ["short"] = "Timestamp when the object was created",
+            ["format"] = "date-time",
+          },
+          {
             ["name"] = "data",
             ["title"] = "Data",
             ["type"] = "`$OBJECT`",
@@ -104,6 +112,13 @@ local function make_config()
             ["type"] = "`$STRING`",
             ["req"] = true,
             ["short"] = "Name of the object",
+          },
+          {
+            ["name"] = "updatedAt",
+            ["title"] = "Updated At",
+            ["type"] = "`$STRING`",
+            ["short"] = "Timestamp when the object was last updated",
+            ["format"] = "date-time",
           },
         },
         ["id"] = {
@@ -135,6 +150,10 @@ local function make_config()
                 },
                 ["args"] = {},
                 ["select"] = {},
+                ["response"] = {
+                  ["kind"] = "json",
+                  ["media"] = "application/json",
+                },
               },
             },
           },
@@ -177,6 +196,7 @@ local function make_config()
                       ["kind"] = "query",
                       ["reqd"] = true,
                       ["example"] = "1,2,3",
+                      ["field"] = true,
                     },
                   },
                 },
@@ -185,6 +205,10 @@ local function make_config()
                     "id",
                     "ids",
                   },
+                },
+                ["response"] = {
+                  ["kind"] = "json",
+                  ["media"] = "application/json",
                 },
               },
               {
@@ -206,6 +230,10 @@ local function make_config()
                 },
                 ["args"] = {},
                 ["select"] = {},
+                ["response"] = {
+                  ["kind"] = "json",
+                  ["media"] = "application/json",
+                },
               },
             },
           },
@@ -251,6 +279,10 @@ local function make_config()
                     "id",
                   },
                 },
+                ["response"] = {
+                  ["kind"] = "json",
+                  ["media"] = "application/json",
+                },
               },
             },
           },
@@ -294,6 +326,10 @@ local function make_config()
                   ["exist"] = {
                     "id",
                   },
+                },
+                ["response"] = {
+                  ["kind"] = "json",
+                  ["media"] = "application/json",
                 },
               },
             },
@@ -339,6 +375,10 @@ local function make_config()
                     "id",
                   },
                 },
+                ["response"] = {
+                  ["kind"] = "json",
+                  ["media"] = "application/json",
+                },
               },
             },
           },
@@ -383,6 +423,10 @@ local function make_config()
                   ["exist"] = {
                     "id",
                   },
+                },
+                ["response"] = {
+                  ["kind"] = "json",
+                  ["media"] = "application/json",
                 },
               },
             },

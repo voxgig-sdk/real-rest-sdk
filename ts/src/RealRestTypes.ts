@@ -6,9 +6,11 @@
 // @voxgig/apidef VALID_CANON). Do not edit by hand.
 
 export interface ObjectType {
+  createdAt?: string
   data?: Record<string, any>
   id: string
   name: string
+  updatedAt?: string
 }
 
 export interface ObjectLoadMatch {
@@ -22,11 +24,16 @@ export interface ObjectListMatch {
 
 export interface ObjectCreateData {
   data?: Record<string, any>
-  id: string
   name: string
 }
 
 export interface ObjectUpdateData {
+  id: string
+  data?: Record<string, any>
+  name?: string
+}
+
+export interface ObjectPatchData {
   id: string
   data?: Record<string, any>
   name?: string

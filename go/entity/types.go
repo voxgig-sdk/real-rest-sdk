@@ -30,12 +30,18 @@ type ObjectListMatch struct {
 // ObjectCreateData is the typed request payload for Object.CreateTyped.
 type ObjectCreateData struct {
 	Data *map[string]any `json:"data,omitempty"`
-	Id string `json:"id"`
 	Name string `json:"name"`
 }
 
 // ObjectUpdateData is the typed request payload for Object.UpdateTyped.
 type ObjectUpdateData struct {
+	Id string `json:"id"`
+	Data *map[string]any `json:"data,omitempty"`
+	Name *string `json:"name,omitempty"`
+}
+
+// ObjectPatchData is the typed request payload for Object.PatchTyped.
+type ObjectPatchData struct {
 	Id string `json:"id"`
 	Data *map[string]any `json:"data,omitempty"`
 	Name *string `json:"name,omitempty"`

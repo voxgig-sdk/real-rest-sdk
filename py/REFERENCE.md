@@ -87,52 +87,64 @@ object = client.Object()
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
+| `createdAt` | `str` | No | Timestamp when the object was created |
 | `data` | `dict` | No | Flexible JSON object containing custom attributes of various types |
 | `id` | `str` | Yes | Unique identifier for the object |
 | `name` | `str` | Yes | Name of the object |
+| `updatedAt` | `str` | No | Timestamp when the object was last updated |
 
 ### Operations
 
-#### `create(reqdata, ctrl=None) -> dict`
+#### `create(reqdata, ctrl=None) -> ObjectEntity`
 
-Create a new entity with the given data. Returns the created entity data and raises on error.
+Create a new entity with the given data. Returns the created entity and raises on error.
 
 ```python
 result = client.Object().create({
-    "id": "example_id",  # str
     "name": "example_name",  # str
 })
 ```
 
-#### `list(reqmatch=None, ctrl=None) -> list`
+#### `list(reqmatch=None, ctrl=None) -> list[ObjectEntity]`
 
-List entities matching the given criteria. The match is optional — call `list()` with no argument to list all records. Returns a list and raises on error.
+List entities matching the given criteria. The match is optional — call `list()` with no argument to list all records. Returns a list of entities, one per record, and raises on error.
 
 ```python
-results = client.Object().list({"ids": "example", "id": "example_id"})
+results = client.Object().list({"ids": "example", "id": "example"})
 for object in results:
-    print(object)
+    print(object.data_get())
 ```
 
-#### `load(reqmatch, ctrl=None) -> dict`
+#### `load(reqmatch, ctrl=None) -> ObjectEntity`
 
-Load a single entity matching the given criteria. Returns the entity data and raises on error.
+Load a single entity matching the given criteria. Returns the entity, whose record `data_get()` reads, and raises on error.
 
 ```python
 result = client.Object().load({"id": "object_id"})
 ```
 
-#### `remove(reqmatch, ctrl=None) -> dict`
+#### `patch(reqdata, ctrl=None) -> ObjectEntity`
 
-Remove the entity matching the given criteria. Raises on error.
+Change part of an existing entity: only the fields given are sent. The data must include the entity `id`. Returns the patched entity and raises on error.
+
+```python
+result = client.Object().patch({
+    "id": "object_id",
+    # Only the fields to change
+})
+```
+
+#### `remove(reqmatch, ctrl=None) -> ObjectEntity`
+
+Remove the entity matching the given criteria. Returns the entity, marked as deleted, and raises on error.
 
 ```python
 result = client.Object().remove({"id": "object_id"})
 ```
 
-#### `update(reqdata, ctrl=None) -> dict`
+#### `update(reqdata, ctrl=None) -> ObjectEntity`
 
-Update an existing entity. The data must include the entity `id`. Returns the updated entity data and raises on error.
+Update an existing entity. The data must include the entity `id`. Returns the updated entity and raises on error.
 
 ```python
 result = client.Object().update({
@@ -327,6 +339,7 @@ Timeout.
 | Option | Type |
 |---|---|
 | `clearTimer` | function |
+| `now` | function |
 | `setTimer` | function |
 
 These take no default: the feature behaves one way when you supply them and

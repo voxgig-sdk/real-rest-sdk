@@ -10,6 +10,7 @@ from realrest_sdk.realrest_types import (
     ObjectListMatch,
     ObjectCreateData,
     ObjectUpdateData,
+    ObjectPatchData,
     ObjectRemoveMatch,
 )
 
@@ -62,7 +63,7 @@ class ObjectEntity:
 
     def data_set(self, args=None):
         if args is not None:
-            self._data = helpers.to_map(vs.clone(args)) or {}
+            self._data = vs.clone(args)
             self._utility.feature_hook(self._entctx, "SetData")
 
     def data_get(self) -> Object:
@@ -127,43 +128,13 @@ class ObjectEntity:
         # The pipeline runs as the caller iterates, so its errors leave
         # through the same catch path as an operation's.
         try:
-            utility.feature_hook(ctx, "PrePoint")
-            point, err = utility.make_point(ctx)
-            ctx.out["point"] = point
-            if err is not None:
-                return
-
-            utility.feature_hook(ctx, "PreSpec")
-            spec, err = utility.make_spec(ctx)
-            ctx.out["spec"] = spec
-            if err is not None:
-                return
-
-            utility.feature_hook(ctx, "PreRequest")
-            resp, err = utility.make_request(ctx)
-            ctx.out["request"] = resp
-            if err is not None:
-                return
-
-            utility.feature_hook(ctx, "PreResponse")
-            resp2, err = utility.make_response(ctx)
-            ctx.out["response"] = resp2
-            if err is not None:
-                return
-
-            utility.feature_hook(ctx, "PreResult")
-            result, err = utility.make_result(ctx)
-            ctx.out["result"] = result
-            if err is not None:
-                return
-
-            utility.feature_hook(ctx, "PreDone")
-
+            failed = self._stream_steps(ctx)
             result = ctx.result
 
             # Inbound: prefer the streaming feature's incremental generator;
             # else fall back to the materialised items so stream always yields.
-            stream_fn = getattr(result, "stream", None) if result is not None else None
+            stream_fn = getattr(result, "stream", None) \
+                if failed is None and result is not None else None
             if callable(stream_fn):
                 # done() does not run on this path, so its record is cleaned here.
                 utility.clean_explain(ctx)
@@ -172,7 +143,9 @@ class ObjectEntity:
                         return
                     yield item
             else:
-                data = utility.done(ctx)
+                # A failed step leaves through make_error, as an operation's does.
+                data = utility.done(ctx) if failed is None \
+                    else utility.make_error(ctx, failed)
                 if isinstance(data, list):
                     items = data
                 elif data is None:
@@ -184,11 +157,55 @@ class ObjectEntity:
                         return
                     yield item
         except Exception as err:
-            self._unexpected(ctx, err)
-            raise
+            # What a hook raises here must not escape the cleaning below.
+            try:
+                if not ctx.unexpected_fired:
+                    utility.feature_hook(ctx, "PreUnexpected")
+            except Exception as hookerr:
+                err = hookerr
+            if self._unexpected(ctx, err) is not None:
+                raise err from None
+
+    # The steps an operation runs, with their hooks; the first that fails
+    # hands back its error.
+    def _stream_steps(self, ctx):
+        utility = self._utility
+
+        utility.feature_hook(ctx, "PrePoint")
+        point, err = utility.make_point(ctx)
+        ctx.out["point"] = point
+        if err is not None:
+            return err
+
+        utility.feature_hook(ctx, "PreSpec")
+        spec, err = utility.make_spec(ctx)
+        ctx.out["spec"] = spec
+        if err is not None:
+            return err
+
+        utility.feature_hook(ctx, "PreRequest")
+        resp, err = utility.make_request(ctx)
+        ctx.out["request"] = resp
+        if err is not None:
+            return err
+
+        utility.feature_hook(ctx, "PreResponse")
+        resp2, err = utility.make_response(ctx)
+        ctx.out["response"] = resp2
+        if err is not None:
+            return err
+
+        utility.feature_hook(ctx, "PreResult")
+        result, err = utility.make_result(ctx)
+        ctx.out["result"] = result
+        if err is not None:
+            return err
+
+        utility.feature_hook(ctx, "PreDone")
+        return None
 
     
-    def load(self, reqmatch=None, ctrl=None) -> Object:
+    def load(self, reqmatch=None, ctrl=None) -> ObjectEntity:
         utility = self._utility
         # reqmatch is optional: an entity with no id-like key loads with no
         # match. Treat None as an empty match so client.Object().load()
@@ -215,7 +232,7 @@ class ObjectEntity:
 
 
     
-    def list(self, reqmatch=None, ctrl=None) -> list[Object]:
+    def list(self, reqmatch=None, ctrl=None) -> list[ObjectEntity]:
         utility = self._utility
         # reqmatch is optional: an omitted match lists all records. Treat None
         # as an empty match so client.Object().list() works with no args.
@@ -239,7 +256,7 @@ class ObjectEntity:
 
 
     
-    def create(self, reqdata: ObjectCreateData, ctrl=None) -> Object:
+    def create(self, reqdata: ObjectCreateData, ctrl=None) -> ObjectEntity:
         utility = self._utility
         ctx = utility.make_context({
             "opname": "create",
@@ -259,7 +276,7 @@ class ObjectEntity:
 
 
     
-    def update(self, reqdata: ObjectUpdateData, ctrl=None) -> Object:
+    def update(self, reqdata: ObjectUpdateData, ctrl=None) -> ObjectEntity:
         utility = self._utility
         ctx = utility.make_context({
             "opname": "update",
@@ -281,7 +298,29 @@ class ObjectEntity:
 
 
     
-    def remove(self, reqmatch=None, ctrl=None) -> Object:
+    def patch(self, reqdata: ObjectPatchData, ctrl=None) -> ObjectEntity:
+        utility = self._utility
+        ctx = utility.make_context({
+            "opname": "patch",
+            "ctrl": ctrl,
+            "match": self._match,
+            "data": self._data,
+            "reqdata": reqdata,
+        }, self._entctx)
+
+        def post_done():
+            if ctx.result is not None:
+                if ctx.result.resmatch is not None:
+                    self._match = ctx.result.resmatch
+                if ctx.result.resdata is not None:
+                    self._data = helpers.to_map(vs.clone(ctx.result.resdata)) or {}
+
+        return self._run_op(ctx, post_done)
+
+
+
+    
+    def remove(self, reqmatch=None, ctrl=None) -> ObjectEntity:
         utility = self._utility
         # reqmatch is optional: an entity with no id-like key removes with no
         # match. Treat None as an empty match so client.Object().remove()
@@ -372,16 +411,18 @@ class ObjectEntity:
         except Exception as err:
             # What a hook raises here must not escape the cleaning below.
             try:
-                utility.feature_hook(ctx, "PreUnexpected")
+                # Once per operation: make_error fires it for its own error.
+                if not ctx.unexpected_fired:
+                    utility.feature_hook(ctx, "PreUnexpected")
             except Exception as hookerr:
-                self._unexpected(ctx, hookerr)
-                raise hookerr from None
-
-            self._unexpected(ctx, err)
-            raise
+                err = hookerr
+            if self._unexpected(ctx, err) is None:
+                return None
+            raise err from None
 
     # An error a hook raised never passed through make_error: it is cleaned,
-    # and so is the explain record it interrupted.
+    # and so is the explain record it interrupted. None when the caller
+    # switched throwing off.
     def _unexpected(self, ctx, err):
         clean = self._utility.clean
         explain = ctx.ctrl.explain
@@ -393,3 +434,6 @@ class ObjectEntity:
             elif explain["err"].get("message") != cleanerr.get("message"):
                 explain["unexpected"] = cleanerr
         clean(ctx, err)
+        if ctx.ctrl.throw_err is False:
+            return None
+        return err

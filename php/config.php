@@ -93,6 +93,7 @@ class RealRestConfig
           ],
           'optspec' => [
             'clearTimer' => '`$FUNCTION`',
+            'now' => '`$FUNCTION`',
             'setTimer' => '`$FUNCTION`',
           ],
           'strict' => false,
@@ -112,6 +113,13 @@ class RealRestConfig
         'object' => [
           'fields' => [
             [
+              'name' => 'createdAt',
+              'title' => 'Created At',
+              'type' => '`$STRING`',
+              'short' => 'Timestamp when the object was created',
+              'format' => 'date-time',
+            ],
+            [
               'name' => 'data',
               'title' => 'Data',
               'type' => '`$OBJECT`',
@@ -130,6 +138,13 @@ class RealRestConfig
               'type' => '`$STRING`',
               'req' => true,
               'short' => 'Name of the object',
+            ],
+            [
+              'name' => 'updatedAt',
+              'title' => 'Updated At',
+              'type' => '`$STRING`',
+              'short' => 'Timestamp when the object was last updated',
+              'format' => 'date-time',
             ],
           ],
           'id' => [
@@ -161,6 +176,10 @@ class RealRestConfig
                   ],
                   'args' => [],
                   'select' => [],
+                  'response' => [
+                    'kind' => 'json',
+                    'media' => 'application/json',
+                  ],
                 ],
               ],
             ],
@@ -203,6 +222,7 @@ class RealRestConfig
                         'kind' => 'query',
                         'reqd' => true,
                         'example' => '1,2,3',
+                        'field' => true,
                       ],
                     ],
                   ],
@@ -211,6 +231,10 @@ class RealRestConfig
                       'id',
                       'ids',
                     ],
+                  ],
+                  'response' => [
+                    'kind' => 'json',
+                    'media' => 'application/json',
                   ],
                 ],
                 [
@@ -232,6 +256,10 @@ class RealRestConfig
                   ],
                   'args' => [],
                   'select' => [],
+                  'response' => [
+                    'kind' => 'json',
+                    'media' => 'application/json',
+                  ],
                 ],
               ],
             ],
@@ -277,6 +305,10 @@ class RealRestConfig
                       'id',
                     ],
                   ],
+                  'response' => [
+                    'kind' => 'json',
+                    'media' => 'application/json',
+                  ],
                 ],
               ],
             ],
@@ -320,6 +352,10 @@ class RealRestConfig
                     'exist' => [
                       'id',
                     ],
+                  ],
+                  'response' => [
+                    'kind' => 'json',
+                    'media' => 'application/json',
                   ],
                 ],
               ],
@@ -365,6 +401,10 @@ class RealRestConfig
                       'id',
                     ],
                   ],
+                  'response' => [
+                    'kind' => 'json',
+                    'media' => 'application/json',
+                  ],
                 ],
               ],
             ],
@@ -409,6 +449,10 @@ class RealRestConfig
                     'exist' => [
                       'id',
                     ],
+                  ],
+                  'response' => [
+                    'kind' => 'json',
+                    'media' => 'application/json',
                   ],
                 ],
               ],

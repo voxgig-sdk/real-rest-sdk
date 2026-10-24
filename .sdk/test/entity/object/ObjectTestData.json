@@ -2,21 +2,27 @@
   "existing": {
     "object": {
       "OBJECT00": {
+        "createdAt": "s32",
         "data": {},
         "id": "OBJECT00",
-        "name": "s20",
+        "name": "s35",
+        "updatedAt": "s36",
         "ids": "IDS01"
       },
       "OBJECT01": {
+        "createdAt": "s64",
         "data": {},
         "id": "OBJECT01",
-        "name": "s3e",
+        "name": "s67",
+        "updatedAt": "s68",
         "ids": "IDS01"
       },
       "OBJECT02": {
+        "createdAt": "s96",
         "data": {},
         "id": "OBJECT02",
-        "name": "s5c",
+        "name": "s99",
+        "updatedAt": "s9a",
         "ids": "IDS01"
       }
     }
@@ -24,8 +30,10 @@
   "new": {
     "object": {
       "object_ref01": {
+        "createdAt": "sc8",
         "data": {},
-        "name": "s7a"
+        "name": "scb",
+        "updatedAt": "scc"
       }
     }
   },

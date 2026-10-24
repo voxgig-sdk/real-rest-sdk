@@ -22,7 +22,9 @@ class ObjectRequired(TypedDict):
 
 
 class Object(ObjectRequired, total=False):
+    createdAt: str
     data: dict
+    updatedAt: str
 
 
 class ObjectLoadMatch(TypedDict):
@@ -35,7 +37,6 @@ class ObjectListMatch(TypedDict):
 
 
 class ObjectCreateDataRequired(TypedDict):
-    id: str
     name: str
 
 
@@ -48,6 +49,15 @@ class ObjectUpdateDataRequired(TypedDict):
 
 
 class ObjectUpdateData(ObjectUpdateDataRequired, total=False):
+    data: dict
+    name: str
+
+
+class ObjectPatchDataRequired(TypedDict):
+    id: str
+
+
+class ObjectPatchData(ObjectPatchDataRequired, total=False):
     data: dict
     name: str
 

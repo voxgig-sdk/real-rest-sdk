@@ -4,7 +4,7 @@
 
 The PHP SDK for the RealRest API — an entity-oriented client using PHP conventions.
 
-The SDK exposes the API as capitalised, semantic **Entities** — for example `$client->Object()` — with named operations (`list`/`load`/`create`/`update`/`remove`/`patch`) instead of raw URL paths and query strings. Working with resources and verbs keeps call sites self-describing and reduces cognitive load.
+The SDK exposes the API as capitalised, semantic **Entities** — for example `$client->Object()` — with named operations (`list`/`load`/`create`/`update`/`patch`/`remove`) instead of raw URL paths and query strings. Working with resources and verbs keeps call sites self-describing and reduces cognitive load.
 
 > Other languages, the CLI, and MCP server live alongside this one — see
 > the [top-level README](../README.md).
@@ -12,7 +12,7 @@ The SDK exposes the API as capitalised, semantic **Entities** — for example `$
 
 ## Install
 This package is not yet published to Packagist. Install it from the
-GitHub release tag (`php/vX.Y.Z`, see [Releases](https://github.com/voxgig-sdk/real-rest-sdk/releases)), or
+GitHub release tag (`php/vX.Y.Z`, see [Tags](https://github.com/voxgig-sdk/real-rest-sdk/tags)), or
 from a clone as a Composer path repository:
 
 ```bash
@@ -41,10 +41,10 @@ $client = new RealRestSDK();
 ```php
 try {
     // list() returns entity instances; data_get() reads each record.
-    $objects = $client->Object()->list();
+    $objects = $client->Object()->list(["ids" => "example", "id" => "example"]);
     foreach ($objects as $record) {
         $item = $record->data_get();
-        echo $item["id"] . " " . $item["data"] . "\n";
+        echo $item["id"] . " " . $item["createdAt"] . "\n";
     }
 } catch (\Throwable $err) {
     echo "Error: " . $err->getMessage();
@@ -67,10 +67,13 @@ try {
 
 ```php
 // create() returns the ENTITY — call data_get() for the created Object record.
-$created = $client->Object()->create(["id" => "example_id", "name" => "example_name"]);
+$created = $client->Object()->create(["name" => "example_name"]);
 
 // Update — index the record via data_get() ($created->data_get()["id"]).
 $client->Object()->update(["id" => $created->data_get()["id"], "data" => [], "name" => "example_name"]);
+
+// Patch — sends only the fields given
+$client->Object()->patch(["id" => $created->data_get()["id"], "data" => [], "name" => "example_name"]);
 
 // Remove
 $client->Object()->remove(["id" => $created->data_get()["id"]]);
@@ -84,7 +87,7 @@ Entity operations throw a `\Throwable` on failure, so wrap them in
 
 ```php
 try {
-    $objects = $client->Object()->list();
+    $objects = $client->Object()->list(["ids" => "example", "id" => "example"]);
 } catch (\Throwable $err) {
     echo "Error: " . $err->getMessage();
 }
@@ -156,12 +159,12 @@ data via the `entity` option so offline calls resolve without a live server:
 
 ```php
 $client = RealRestSDK::test([
-    "entity" => ["object" => ["test01" => ["id" => "test01"]]],
+    "entity" => ["object" => ["test01" => ["id" => "test01", "ids" => "example"]]],
 ]);
 
 // list() returns entity instances (throws on error);
 // call data_get() for the mock record.
-$object = $client->Object()->list();
+$object = $client->Object()->list(["id" => "test01", "ids" => "example"]);
 print_r(array_map(fn($item) => $item->data_get(), $object));
 ```
 
@@ -249,11 +252,12 @@ All entities share the same interface.
 
 | Method | Signature | Description |
 | --- | --- | --- |
-| `load` | `($reqmatch, $ctrl): array` | Load a single entity by match criteria. |
-| `list` | `(?array $reqmatch = null, $ctrl): array` | List entities matching the criteria (call with no argument to list all). |
-| `create` | `($reqdata, $ctrl): array` | Create a new entity. |
-| `update` | `($reqdata, $ctrl): array` | Update an existing entity. |
-| `remove` | `($reqmatch, $ctrl): array` | Remove an entity. |
+| `load` | `($reqmatch, $ctrl): mixed` | Load a single entity by match criteria, and return it. |
+| `list` | `(?array $reqmatch = null, $ctrl): mixed` | List entities matching the criteria (call with no argument to list all), one per record. |
+| `create` | `($reqdata, $ctrl): mixed` | Create a new entity, and return it. |
+| `update` | `($reqdata, $ctrl): mixed` | Update an existing entity, and return it. |
+| `patch` | `($reqdata, $ctrl): mixed` | Change part of an existing entity, and return it. |
+| `remove` | `($reqmatch, $ctrl): mixed` | Remove an entity, and return it marked as deleted. |
 | `data_get` | `(): array` | Get entity data. |
 | `data_set` | `($data): void` | Set entity data. |
 | `match_get` | `(): array` | Get entity match criteria. |
@@ -263,9 +267,9 @@ All entities share the same interface.
 
 ### Result shape
 
-Entity operations return the ENTITY (call data_get() for the record) (an `array` for single-entity
-ops, a `list` for `list`) and throw on error. Wrap calls in
-`try`/`catch` to handle failures.
+Entity operations return the entity, and `list` an `array` of entities, one
+per record; an entity's `data_get()` reads its record (an `array`). They
+throw on error, so wrap calls in `try`/`catch` to handle failures.
 
 The `direct()` escape hatch never throws — it returns a result `array`
 you branch on via `$result["ok"]`:
@@ -285,9 +289,11 @@ On error, `ok` is `false` and `$err` contains the error value.
 
 | Field | Description |
 | --- | --- |
+| `createdAt` | Timestamp when the object was created |
 | `data` | Flexible JSON object containing custom attributes of various types |
 | `id` | Unique identifier for the object |
 | `name` | Name of the object |
+| `updatedAt` | Timestamp when the object was last updated |
 
 Operations: Create, List, Load, Patch, Remove, Update.
 
@@ -309,6 +315,7 @@ Create an instance: `$object = $client->Object();`
 | `create(data)` | Create a new entity with the given data. |
 | `list(match)` | List entities matching the criteria. |
 | `load(match)` | Load a single entity by match criteria. |
+| `patch(data)` | Change part of an existing entity. |
 | `remove(match)` | Remove the matching entity. |
 | `update(data)` | Update an existing entity. |
 
@@ -316,9 +323,11 @@ Create an instance: `$object = $client->Object();`
 
 | Field | Type | Description |
 | --- | --- | --- |
+| `createdAt` | `string` | Timestamp when the object was created |
 | `data` | `array` | Flexible JSON object containing custom attributes of various types |
 | `id` | `string` | Unique identifier for the object |
 | `name` | `string` | Name of the object |
+| `updatedAt` | `string` | Timestamp when the object was last updated |
 
 #### Example: Load
 
@@ -330,15 +339,14 @@ $object = $client->Object()->load(["id" => "object_id"]);
 #### Example: List
 
 ```php
-// list() returns an array of Object records (throws on error).
-$objects = $client->Object()->list();
+// list() returns an array of Object entities, one per record (throws on error).
+$objects = $client->Object()->list(["ids" => "example", "id" => "example"]);
 ```
 
 #### Example: Create
 
 ```php
 $object = $client->Object()->create([
-    "id" => null, // string
     "name" => null, // string
 ]);
 ```
@@ -506,7 +514,7 @@ stores the returned data and match criteria internally.
 
 ```php
 $object = $client->Object();
-$object->list();
+$object->list(["ids" => "example", "id" => "example"]);
 
 // $object->data_get() now returns the object data from the last list
 // $object->match_get() returns the last match criteria

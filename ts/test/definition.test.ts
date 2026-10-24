@@ -17,7 +17,12 @@ const PLAN: any[] = [
     "args": [],
     "select": {},
     "headers": [],
+    "cookies": [],
+    "responseMedia": [
+      "application/json"
+    ],
     "query": [],
+    "queryArgs": [],
     "auth": null,
     "status": 200,
     "sample": {
@@ -49,8 +54,18 @@ const PLAN: any[] = [
       "id": "1,2,3"
     },
     "headers": [],
+    "cookies": [],
+    "responseMedia": [
+      "application/json"
+    ],
     "query": [
       "id"
+    ],
+    "queryArgs": [
+      {
+        "name": "id",
+        "wire": "id"
+      }
     ],
     "auth": null,
     "status": 200,
@@ -72,7 +87,12 @@ const PLAN: any[] = [
     "args": [],
     "select": {},
     "headers": [],
+    "cookies": [],
+    "responseMedia": [
+      "application/json"
+    ],
     "query": [],
+    "queryArgs": [],
     "auth": null,
     "status": 200,
     "sample": [
@@ -107,7 +127,12 @@ const PLAN: any[] = [
     ],
     "select": {},
     "headers": [],
+    "cookies": [],
+    "responseMedia": [
+      "application/json"
+    ],
     "query": [],
+    "queryArgs": [],
     "auth": null,
     "status": 200,
     "sample": {
@@ -117,6 +142,37 @@ const PLAN: any[] = [
         "price": 389.99,
         "color": "Purple"
       }
+    },
+    "idField": "id"
+  },
+  {
+    "entity": "object",
+    "accessor": "Object",
+    "op": "patch",
+    "method": "PATCH",
+    "path": "/objects/{id}",
+    "args": [
+      {
+        "name": "id",
+        "wire": "id",
+        "value": "p1"
+      }
+    ],
+    "select": {},
+    "headers": [],
+    "cookies": [],
+    "responseMedia": [
+      "application/json"
+    ],
+    "query": [],
+    "queryArgs": [],
+    "auth": null,
+    "status": 200,
+    "sample": {
+      "id": "x",
+      "name": "x",
+      "data": {},
+      "updatedAt": "2026-01-01T00:00:00Z"
     },
     "idField": "id"
   },
@@ -135,7 +191,12 @@ const PLAN: any[] = [
     ],
     "select": {},
     "headers": [],
+    "cookies": [],
+    "responseMedia": [
+      "application/json"
+    ],
     "query": [],
+    "queryArgs": [],
     "auth": null,
     "status": 200,
     "sample": {
@@ -158,7 +219,12 @@ const PLAN: any[] = [
     ],
     "select": {},
     "headers": [],
+    "cookies": [],
+    "responseMedia": [
+      "application/json"
+    ],
     "query": [],
+    "queryArgs": [],
     "auth": null,
     "status": 200,
     "sample": {

@@ -15,9 +15,11 @@ declare(strict_types=1);
 /** Object entity data model. */
 class ObjectType
 {
+    public ?string $createdAt = null;
     public ?array $data = null;
     public string $id;
     public string $name;
+    public ?string $updatedAt = null;
 }
 
 /** Request payload for Object#load. */
@@ -37,12 +39,19 @@ class ObjectListMatch
 class ObjectCreateData
 {
     public ?array $data = null;
-    public string $id;
     public string $name;
 }
 
 /** Request payload for Object#update. */
 class ObjectUpdateData
+{
+    public string $id;
+    public ?array $data = null;
+    public ?string $name = null;
+}
+
+/** Request payload for Object#patch. */
+class ObjectPatchData
 {
     public string $id;
     public ?array $data = null;

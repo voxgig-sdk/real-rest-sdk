@@ -35,7 +35,7 @@ main: kit: flow: BasicObjectFlow:
         ref: "object_ref01",
         srcdatavar: "object_ref01_data",
         suffix: "_up0",
-        textfield: "name"
+        textfield: "createdAt"
       }
 
       o: "update",

@@ -4,7 +4,7 @@
 
 The Ruby SDK for the RealRest API — an entity-oriented client using idiomatic Ruby conventions.
 
-The SDK exposes the API as capitalised, semantic **Entities** — for example `client.Object` — with named operations (`list`/`load`/`create`/`update`/`remove`/`patch`) instead of raw URL paths and query strings. Working with resources and verbs keeps call sites self-describing and reduces cognitive load.
+The SDK exposes the API as capitalised, semantic **Entities** — for example `client.Object` — with named operations (`list`/`load`/`create`/`update`/`patch`/`remove`) instead of raw URL paths and query strings. Working with resources and verbs keeps call sites self-describing and reduces cognitive load.
 
 > Other languages, the CLI, and MCP server live alongside this one — see
 > the [top-level README](../README.md).
@@ -12,7 +12,7 @@ The SDK exposes the API as capitalised, semantic **Entities** — for example `c
 
 ## Install
 This package is not yet published to RubyGems. Install it from the
-GitHub release tag (`rb/vX.Y.Z`, see [Releases](https://github.com/voxgig-sdk/real-rest-sdk/releases)), or
+GitHub release tag (`rb/vX.Y.Z`, see [Tags](https://github.com/voxgig-sdk/real-rest-sdk/tags)), or
 from a clone:
 
 ```bash
@@ -43,10 +43,11 @@ client = RealRestSDK.new
 
 ```ruby
 begin
-  # list returns an Array of Object records — iterate directly.
-  objects = client.Object.list
+  # list returns an Array of Object entities, one per record; data_get reads the record.
+  objects = client.Object.list({ "ids" => "example", "id" => "example" })
   objects.each do |item|
-    puts "#{item["id"]} #{item["data"]}"
+    record = item.data_get
+    puts "#{record["id"]} #{record["createdAt"]}"
   end
 rescue => err
   warn "list failed: #{err}"
@@ -59,7 +60,7 @@ end
 begin
   # load returns the ENTITY — call data_get for the Object record (raises on error).
   object = client.Object.load({ "id" => "example_id" })
-  puts object
+  puts object.data_get
 rescue => err
   warn "load failed: #{err}"
 end
@@ -69,10 +70,13 @@ end
 
 ```ruby
 # create returns the ENTITY — call data_get for the created Object record.
-created = client.Object.create({ "id" => "example_id", "name" => "example_name" })
+created = client.Object.create({ "name" => "example_name" })
 
 # Update — index the record via data_get (created.data_get["id"]).
 client.Object.update({ "id" => created.data_get["id"], "data" => {}, "name" => "example_name" })
+
+# Patch — sends only the fields given
+client.Object.patch({ "id" => created.data_get["id"], "data" => {}, "name" => "example_name" })
 
 # Remove
 client.Object.remove({ "id" => created.data_get["id"] })
@@ -85,7 +89,7 @@ Entity operations raise on failure, so rescue them:
 
 ```ruby
 begin
-  objects = client.Object.list()
+  objects = client.Object.list({ "ids" => "example", "id" => "example" })
 rescue => err
   warn "list failed: #{err}"
 end
@@ -153,13 +157,13 @@ data via the `entity` option so offline calls resolve without a live server:
 
 ```ruby
 client = RealRestSDK.test({
-  "entity" => { "object" => { "test01" => { "id" => "test01" } } },
+  "entity" => { "object" => { "test01" => { "id" => "test01", "ids" => "example" } } },
 })
 
-# Entity ops return the ENTITY (raises on error);
-# call data_get for the mock record.
-object = client.Object.list()
-puts object
+# list returns an Array of Object entities, one per mock record (raises on
+# error); data_get reads each record.
+objects = client.Object.list({ "id" => "test01", "ids" => "example" })
+objects.each { |item| puts item.data_get }
 ```
 
 ### Use a custom fetch function
@@ -243,11 +247,12 @@ All entities share the same interface.
 
 | Method | Signature | Description |
 | --- | --- | --- |
-| `load` | `(reqmatch, ctrl) -> any` | Load a single entity by match criteria. Raises on error. |
-| `list` | `(reqmatch = nil, ctrl) -> Array` | List entities matching the criteria (call with no argument to list all). Raises on error. |
-| `create` | `(reqdata, ctrl) -> any` | Create a new entity. Raises on error. |
-| `update` | `(reqdata, ctrl) -> any` | Update an existing entity. Raises on error. |
-| `remove` | `(reqmatch, ctrl) -> any` | Remove an entity. Raises on error. |
+| `load` | `(reqmatch, ctrl) -> any` | Load a single entity by match criteria, and return it. Raises on error. |
+| `list` | `(reqmatch = nil, ctrl) -> Array` | List entities matching the criteria (call with no argument to list all), one per record. Raises on error. |
+| `create` | `(reqdata, ctrl) -> any` | Create a new entity, and return it. Raises on error. |
+| `update` | `(reqdata, ctrl) -> any` | Update an existing entity, and return it. Raises on error. |
+| `patch` | `(reqdata, ctrl) -> any` | Change part of an existing entity, and return it. Raises on error. |
+| `remove` | `(reqmatch, ctrl) -> any` | Remove an entity, and return it marked as deleted. Raises on error. |
 | `data_get` | `() -> Hash` | Get entity data. |
 | `data_set` | `(data)` | Set entity data. |
 | `match_get` | `() -> Hash` | Get entity match criteria. |
@@ -257,9 +262,10 @@ All entities share the same interface.
 
 ### Result shape
 
-Entity operations return the result data directly. On failure they
-raise a `RealRestError` (a `StandardError` subclass), so wrap
-calls in `begin`/`rescue` where you need to handle errors.
+Entity operations return the entity, and `list` an `Array` of entities, one
+per record; an entity's `data_get` reads its record. On failure they raise a
+`RealRestError` (a `StandardError` subclass), so wrap calls in
+`begin`/`rescue` where you need to handle errors.
 
 The `direct` escape hatch is the exception: it never raises and instead
 returns a result `Hash` with these keys:
@@ -278,9 +284,11 @@ returns a result `Hash` with these keys:
 
 | Field | Description |
 | --- | --- |
+| `createdAt` | Timestamp when the object was created |
 | `data` | Flexible JSON object containing custom attributes of various types |
 | `id` | Unique identifier for the object |
 | `name` | Name of the object |
+| `updatedAt` | Timestamp when the object was last updated |
 
 Operations: Create, List, Load, Patch, Remove, Update.
 
@@ -302,6 +310,7 @@ Create an instance: `object = client.Object`
 | `create(data)` | Create a new entity with the given data. |
 | `list(match)` | List entities matching the criteria. |
 | `load(match)` | Load a single entity by match criteria. |
+| `patch(data)` | Change part of an existing entity. |
 | `remove(match)` | Remove the matching entity. |
 | `update(data)` | Update an existing entity. |
 
@@ -309,9 +318,11 @@ Create an instance: `object = client.Object`
 
 | Field | Type | Description |
 | --- | --- | --- |
+| `createdAt` | `String` | Timestamp when the object was created |
 | `data` | `Hash` | Flexible JSON object containing custom attributes of various types |
 | `id` | `String` | Unique identifier for the object |
 | `name` | `String` | Name of the object |
+| `updatedAt` | `String` | Timestamp when the object was last updated |
 
 #### Example: Load
 
@@ -323,15 +334,15 @@ object = client.Object.load({ "id" => "object_id" })
 #### Example: List
 
 ```ruby
-# list returns an Array of Object records (raises on error).
-objects = client.Object.list
+# list returns an Array of Object entities, one per record (raises on error).
+objects = client.Object.list({ "ids" => "example", "id" => "example" })
+objects.each { |item| puts item.data_get }
 ```
 
 #### Example: Create
 
 ```ruby
 object = client.Object.create({
-  "id" => "example_id", # String
   "name" => "example_name", # String
 })
 ```
@@ -499,7 +510,7 @@ stores the returned data and match criteria internally.
 
 ```ruby
 object = client.Object
-object.list()
+object.list({ "ids" => "example", "id" => "example" })
 
 # object.data_get now returns the object data from the last list
 # object.match_get returns the last match criteria

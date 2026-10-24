@@ -5,7 +5,7 @@
 The Python SDK for the RealRest API — an entity-oriented client following Pythonic conventions.
 
 The SDK exposes the API as capitalised, semantic **Entities** — for example `client.Object()` — each
-carrying a small, uniform set of operations (`list`, `load`, `create`, `update`, `remove`, `patch`) instead of raw URL
+carrying a small, uniform set of operations (`list`, `load`, `create`, `update`, `patch`, `remove`) instead of raw URL
 paths and query strings. You work with named resources and verbs, which
 keeps the cognitive load low.
 
@@ -15,7 +15,7 @@ keeps the cognitive load low.
 
 ## Install
 This package is not yet published to PyPI. Install it from the GitHub
-release tag (`py/vX.Y.Z`, see [Releases](https://github.com/voxgig-sdk/real-rest-sdk/releases)) or
+release tag (`py/vX.Y.Z`, see [Tags](https://github.com/voxgig-sdk/real-rest-sdk/tags)) or
 from a source checkout:
 
 ```bash
@@ -38,14 +38,14 @@ client = RealRestSDK()
 
 ### 2. List object records
 
-`list()` returns a `list` of records (each a `dict`) and raises on
-error — iterate it directly.
+`list()` returns a `list` of entities, one per record, and raises on
+error; an entity's `data_get()` reads its record (a `dict`).
 
 ```python
 try:
-    objects = client.Object().list({"ids": "example", "id": "example_id"})
+    objects = client.Object().list({"ids": "example", "id": "example"})
     for object in objects:
-        print(object)
+        print(object.data_get())
 except Exception as err:
     print(f"list failed: {err}")
 ```
@@ -57,7 +57,7 @@ except Exception as err:
 ```python
 try:
     object = client.Object().load({"id": "example_id"})
-    print(object)
+    print(object.data_get())
 except Exception as err:
     print(f"load failed: {err}")
 ```
@@ -66,10 +66,13 @@ except Exception as err:
 
 ```python
 # Create — returns the ENTITY (call data_get() for the record)
-created = client.Object().create({"id": "example_id", "name": "example_name"})
+created = client.Object().create({"name": "example_name"})
 
-# Update — the created record's id is a plain dict key
+# Update — the created entity's record holds its id
 client.Object().update({"id": created.data_get()["id"], "data": {}, "name": "example_name"})
+
+# Patch — sends only the fields given
+client.Object().patch({"id": created.data_get()["id"], "data": {}, "name": "example_name"})
 
 # Remove
 client.Object().remove({"id": created.data_get()["id"]})
@@ -82,8 +85,8 @@ Entity operations raise on failure, so wrap them in `try` / `except`:
 
 ```python
 try:
-    objects = client.Object().list()
-    print(objects)
+    objects = client.Object().list({"ids": "example", "id": "example"})
+    print([item.data_get() for item in objects])
 except Exception as err:
     print(f"list failed: {err}")
 ```
@@ -149,10 +152,9 @@ Create a mock client for unit testing — no server required:
 ```python
 client = RealRestSDK.test()
 
-# Entity ops return the ENTITY and raises on error;
-# call data_get() for the record.
-object = client.Object().list()
-# object contains the mock response record
+# Entity ops return the entity, and list one per record; they raise on error.
+object = client.Object().list({"id": "example", "ids": "example"})
+# data_get() on an entity reads its mock response record
 ```
 
 ### Use a custom fetch function
@@ -236,11 +238,12 @@ All entities share the same interface.
 
 | Method | Signature | Description |
 | --- | --- | --- |
-| `load` | `(reqmatch, ctrl) -> any` | Load a single entity by match criteria. Raises on error. |
-| `list` | `(reqmatch, ctrl) -> list` | List entities matching the criteria. Raises on error. |
-| `create` | `(reqdata, ctrl) -> any` | Create a new entity. Raises on error. |
-| `update` | `(reqdata, ctrl) -> any` | Update an existing entity. Raises on error. |
-| `remove` | `(reqmatch, ctrl) -> any` | Remove an entity. Raises on error. |
+| `load` | `(reqmatch, ctrl) -> any` | Load a single entity by match criteria, and return it. Raises on error. |
+| `list` | `(reqmatch, ctrl) -> list` | List entities matching the criteria, one per record. Raises on error. |
+| `create` | `(reqdata, ctrl) -> any` | Create a new entity, and return it. Raises on error. |
+| `update` | `(reqdata, ctrl) -> any` | Update an existing entity, and return it. Raises on error. |
+| `patch` | `(reqdata, ctrl) -> any` | Change part of an existing entity, and return it. Raises on error. |
+| `remove` | `(reqmatch, ctrl) -> any` | Remove an entity, and return it marked as deleted. Raises on error. |
 | `data_get` | `() -> dict` | Get entity data. |
 | `data_set` | `(data)` | Set entity data. |
 | `match_get` | `() -> dict` | Get entity match criteria. |
@@ -250,9 +253,9 @@ All entities share the same interface.
 
 ### Result shape
 
-Entity operations return the ENTITY (call data_get() for the record) (a `dict` for single-entity
-ops, a `list` for `list`) and raise on error. Wrap calls in
-`try`/`except` to handle failures.
+Entity operations return the entity, and `list` a `list` of entities, one
+per record; an entity's `data_get()` reads its record (a `dict`). They raise
+on error, so wrap calls in `try`/`except` to handle failures.
 
 The `direct()` escape hatch never raises — it returns a result `dict`
 you branch on via `result["ok"]`:
@@ -272,9 +275,11 @@ On error, `ok` is `False` and `err` contains the error value.
 
 | Field | Description |
 | --- | --- |
+| `createdAt` | Timestamp when the object was created |
 | `data` | Flexible JSON object containing custom attributes of various types |
 | `id` | Unique identifier for the object |
 | `name` | Name of the object |
+| `updatedAt` | Timestamp when the object was last updated |
 
 Operations: Create, List, Load, Patch, Remove, Update.
 
@@ -296,6 +301,7 @@ Create an instance: `object = client.Object()`
 | `create(data)` | Create a new entity with the given data. |
 | `list()` | List entities, optionally matching the given criteria. |
 | `load(match)` | Load a single entity by match criteria. |
+| `patch(data)` | Change part of an existing entity. |
 | `remove(match)` | Remove the matching entity. |
 | `update(data)` | Update an existing entity. |
 
@@ -303,9 +309,11 @@ Create an instance: `object = client.Object()`
 
 | Field | Type | Description |
 | --- | --- | --- |
+| `createdAt` | `str` | Timestamp when the object was created |
 | `data` | `dict` | Flexible JSON object containing custom attributes of various types |
 | `id` | `str` | Unique identifier for the object |
 | `name` | `str` | Name of the object |
+| `updatedAt` | `str` | Timestamp when the object was last updated |
 
 #### Example: Load
 
@@ -316,14 +324,13 @@ object = client.Object().load({"id": "object_id"})
 #### Example: List
 
 ```python
-objects = client.Object().list({"ids": "example", "id": "example_id"})
+objects = client.Object().list({"ids": "example", "id": "example"})
 ```
 
 #### Example: Create
 
 ```python
 object = client.Object().create({
-    "id": "example_id",  # str
     "name": "example_name",  # str
 })
 ```
@@ -490,7 +497,7 @@ stores the returned data and match criteria internally.
 
 ```python
 object = client.Object()
-object.list()
+object.list({"ids": "example", "id": "example"})
 
 # object.data_get() now returns the object data from the last list
 # object.match_get() returns the last match criteria

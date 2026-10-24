@@ -87,6 +87,7 @@ class Config {
             },
             "optspec": {
                 "clearTimer": "`$FUNCTION`",
+                "now": "`$FUNCTION`",
                 "setTimer": "`$FUNCTION`"
             },
             "strict": false,
@@ -106,6 +107,13 @@ class Config {
         "object": {
             "fields": [
                 {
+                    "name": "createdAt",
+                    "title": "Created At",
+                    "type": "`$STRING`",
+                    "short": "Timestamp when the object was created",
+                    "format": "date-time"
+                },
+                {
                     "name": "data",
                     "title": "Data",
                     "type": "`$OBJECT`",
@@ -124,6 +132,13 @@ class Config {
                     "type": "`$STRING`",
                     "req": true,
                     "short": "Name of the object"
+                },
+                {
+                    "name": "updatedAt",
+                    "title": "Updated At",
+                    "type": "`$STRING`",
+                    "short": "Timestamp when the object was last updated",
+                    "format": "date-time"
                 }
             ],
             "id": {
@@ -154,7 +169,11 @@ class Config {
                                 "res": "`body`"
                             },
                             "args": {},
-                            "select": {}
+                            "select": {},
+                            "response": {
+                                "kind": "json",
+                                "media": "application/json"
+                            }
                         }
                     ]
                 },
@@ -196,7 +215,8 @@ class Config {
                                         "type": "`$STRING`",
                                         "kind": "query",
                                         "reqd": true,
-                                        "example": "1,2,3"
+                                        "example": "1,2,3",
+                                        "field": true
                                     }
                                 ]
                             },
@@ -205,6 +225,10 @@ class Config {
                                     "id",
                                     "ids"
                                 ]
+                            },
+                            "response": {
+                                "kind": "json",
+                                "media": "application/json"
                             }
                         },
                         {
@@ -225,7 +249,11 @@ class Config {
                                 "res": "`body`"
                             },
                             "args": {},
-                            "select": {}
+                            "select": {},
+                            "response": {
+                                "kind": "json",
+                                "media": "application/json"
+                            }
                         }
                     ]
                 },
@@ -270,6 +298,10 @@ class Config {
                                 "exist": [
                                     "id"
                                 ]
+                            },
+                            "response": {
+                                "kind": "json",
+                                "media": "application/json"
                             }
                         }
                     ]
@@ -314,6 +346,10 @@ class Config {
                                 "exist": [
                                     "id"
                                 ]
+                            },
+                            "response": {
+                                "kind": "json",
+                                "media": "application/json"
                             }
                         }
                     ]
@@ -358,6 +394,10 @@ class Config {
                                 "exist": [
                                     "id"
                                 ]
+                            },
+                            "response": {
+                                "kind": "json",
+                                "media": "application/json"
                             }
                         }
                     ]
@@ -403,6 +443,10 @@ class Config {
                                 "exist": [
                                     "id"
                                 ]
+                            },
+                            "response": {
+                                "kind": "json",
+                                "media": "application/json"
                             }
                         }
                     ]
